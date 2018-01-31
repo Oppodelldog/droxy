@@ -8,6 +8,8 @@ import (
 	"strings"
 
 	"github.com/drone/envsubst"
+	"os/user"
+	"docker-proxy-command/helper"
 )
 
 func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
@@ -33,6 +35,36 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 
 	builder.AddCmdArguments(os.Args[1:])
 
+	err = autoBuildInteractiveMode(builder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = autoBuildAttachStreams(builder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = autoBuildTerminalContext(builder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = buildRemoveContainer(commandDef.RemoveContainer, builder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = buildGroups(commandDef.AddGroups, builder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = buildImpersonation(commandDef.Impersonate, builder)
+	if err != nil {
+		return nil, err
+	}
+
 	err = buildImage(commandDef.Image, builder)
 	if err != nil {
 		return nil, err
@@ -44,6 +76,78 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	}
 
 	return builder.Build(), nil
+}
+
+func autoBuildInteractiveMode(builder *DockerCommandBuilder) error {
+	builder.AddArgument("-i")
+
+	return nil
+}
+
+func autoBuildAttachStreams(builder *DockerCommandBuilder) error {
+	builder.
+		AttachTo("STDIN").
+		AttachTo("STDOUT").
+		AttachTo("STDERR")
+
+	return nil
+}
+
+func autoBuildTerminalContext(builder *DockerCommandBuilder) error {
+	if helper.IsTerminalContext() {
+		builder.AddArgument("-t")
+	}
+
+	return nil
+}
+
+func buildRemoveContainer(isContainerRemoved bool, builder *DockerCommandBuilder) error {
+	if !isContainerRemoved {
+		return nil
+	}
+
+	builder.AddArgument("--rm")
+
+	return nil
+}
+
+func buildGroups(areGroupsAdded bool, builder *DockerCommandBuilder) error {
+	if !areGroupsAdded {
+		return nil
+	}
+
+	currentUser, err := user.Current()
+	if err != nil {
+		return err
+	}
+
+	groupIds, err := currentUser.GroupIds()
+	if err != nil {
+		return err
+	}
+
+	if len(groupIds) > 0 {
+		for _, groupId := range groupIds {
+			builder.AdduserGroup(groupId)
+		}
+	}
+
+	return nil
+}
+
+func buildImpersonation(isImpersonated bool, builder *DockerCommandBuilder) error {
+	if !isImpersonated {
+		return nil
+	}
+
+	currentUser, err := user.Current()
+	if err != nil {
+		return err
+	}
+
+	builder.SetContainerUserAndGroup(currentUser.Uid, currentUser.Gid)
+
+	return nil
 }
 
 func buildImage(imageName string, builder *DockerCommandBuilder) error {

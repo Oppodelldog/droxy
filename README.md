@@ -3,11 +3,11 @@
 # The idea
 Create a tool that helps creating variants of commands that proxy execution into docker containers.
 
-HOW?!
+HOW AND WHY?!
 
 1. Commit dev-tools to your project by a config file
 2. Bootstrap all command executables from that config file
-
+3. Reduce custom commands to docker into one configuration file per project.
 
 ## the config (toml)
     Version="1"
@@ -42,3 +42,9 @@ In case of the configuration sample it would be a symlink called **php**.
 
 If the folder containing the symlinks is added to the $PATH (for example by direnv)
 you can execute exactly the configured php -version by just calling **php**.
+
+
+### bootstrap containers (?!)
+    docker-proxy prepare
+
+all required images are pulled
