@@ -13,12 +13,13 @@ HOW AND WHY?!
     Version="1"
 
     [[command]]
-      isTemplate = true
       name = "basic command"
+      isTemplate = true
       addGroups = true
       impersonate = true
       workDir = "/app"
       removeContainer=true
+      isInteractive=true
       volumes = [
           "${APP_DIR}:/app",
           "${SSH_AUTH_SOCK}:/run/ssh.sock",
@@ -27,6 +28,7 @@ HOW AND WHY?!
           "/run/docker.sock:/run/docker.sock"
       ]
       envvars = [
+          "APP_DIR=${APP_DIR}",
           "SSH_AUTH_SOCK:/run/ssh.sock",
           "DOCKER_HOST=unix:///run/docker.sock"
       ]
@@ -37,11 +39,34 @@ HOW AND WHY?!
         entryPoint = "php"
         image = "php:7.1.13"
 
+
+
     [[command]]
         template = "basic command"
         name = "npm"
         entryPoint = "npm"
         image = "node:8.4.0"
+        network="whatever-docker-net"
+
+
+    [[command]]
+        name = "node"
+        entryPoint = "node"
+        image = "node:8.4.0"
+        addGroups = true
+        impersonate = true
+        workDir = "/app"
+        removeContainer=true
+        volumes = [
+            "${SSH_AUTH_SOCK}:/run/ssh.sock",
+            "/etc/passwd:/etc/passwd:ro",
+            "/etc/group:/etc/group:ro",
+            "/run/docker.sock:/run/docker.sock"
+        ]
+        envvars = [
+            "SSH_AUTH_SOCK=/run/ssh.sock",
+            "DOCKER_HOST=unix:///run/docker.sock"
+        ]
 
 
 ### create symlink commands

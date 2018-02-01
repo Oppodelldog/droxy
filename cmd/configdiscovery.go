@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"bytes"
+	"docker-proxy-command/helper"
 	"fmt"
 	"os"
 	"path"
-	"docker-proxy-command/helper"
+
 	"github.com/pkg/errors"
 )
 
@@ -14,7 +15,7 @@ const configFileName = "docker-proxy.yml"
 func DiscoverConfigFile() (string, error) {
 
 	var possibleConfigFilePaths []string
-	var configFileProviders [] func() (string, error)
+	var configFileProviders []func() (string, error)
 
 	errorString := bytes.NewBufferString("")
 

@@ -6,10 +6,9 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-
-	"github.com/drone/envsubst"
-	"os/user"
 	"docker-proxy-command/helper"
+	"os/user"
+	"github.com/drone/envsubst"
 )
 
 func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
@@ -52,6 +51,13 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		builder.SetEntryPoint(*commandDef.EntryPoint)
 	}
 
+	if commandDef.HasPropertyNetwork() {
+		builder.SetNetwork(*commandDef.Network)
+	}
+
+	if commandDef.HasPropertyIsInteractive() && *commandDef.IsInteractive {
+		builder.AddArgument("-i")
+	}
 	if commandDef.HasPropertyRemoveContainer() {
 		err = buildRemoveContainer(*commandDef.RemoveContainer, builder)
 		if err != nil {
@@ -96,6 +102,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 
 	return builder.Build(), nil
 }
+
 func buildEnvVars(envVars []string, builder *DockerCommandBuilder) error {
 	for _, envVar := range envVars {
 		envVarValue, err := resolveEnvVar(envVar)

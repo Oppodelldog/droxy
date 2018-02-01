@@ -1,8 +1,8 @@
 package helper
 
 import (
-	"syscall"
 	"os"
+	"syscall"
 	"unsafe"
 )
 

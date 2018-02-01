@@ -14,6 +14,7 @@ type (
 		subCommand      string
 		imageName       string
 		entryPoint      string
+		network         []string
 		args            []string
 		portMappings    []string
 		volumeMappings  []string
@@ -138,6 +139,11 @@ func (b *DockerCommandBuilder) SetEntryPoint(entryPoint string) *DockerCommandBu
 	return b
 }
 
+func (b *DockerCommandBuilder) SetNetwork(network string) *DockerCommandBuilder {
+	b.network = []string{"--network", network}
+	return b
+}
+
 func (b *DockerCommandBuilder) SetImageName(imageName string) *DockerCommandBuilder {
 	b.imageName = imageName
 	return b
@@ -173,6 +179,7 @@ func (b *DockerCommandBuilder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.addedUserGroups...)
 	b.buildArgsAppend(b.containerUser...)
 	b.buildArgsAppend(b.attachedStreams...)
+	b.buildArgsAppend(b.network...)
 
 	b.buildArgAppend(b.imageName)
 	b.buildArgAppend(b.entryPoint)

@@ -3,9 +3,9 @@ package main
 import (
 	"docker-proxy-command/cmd"
 	"docker-proxy-command/config"
-	"os"
 	"fmt"
 	"log"
+	"os"
 )
 
 func init() {

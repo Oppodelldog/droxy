@@ -2,8 +2,8 @@ package symlinks
 
 import (
 	"docker-proxy-command/config"
-	"os"
 	"fmt"
+	"os"
 )
 
 func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configuration) error {

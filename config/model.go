@@ -17,6 +17,8 @@ type CommandDefinition struct {
 	EntryPoint      *string
 	Name            *string
 	Image           *string
+	Network         *string
+	IsInteractive   *bool
 	Volumes         *[]string
 	EnvVars         *[]string
 	AddGroups       *bool
@@ -37,6 +39,8 @@ func (c *CommandDefinition) HasPropertyAddGroups() bool       { return c.AddGrou
 func (c *CommandDefinition) HasPropertyImpersonate() bool     { return c.Impersonate != nil }
 func (c *CommandDefinition) HasPropertyWorkDir() bool         { return c.WorkDir != nil }
 func (c *CommandDefinition) HasPropertyRemoveContainer() bool { return c.RemoveContainer != nil }
+func (c *CommandDefinition) HasPropertyNetwork() bool         { return c.Network != nil }
+func (c *CommandDefinition) HasPropertyIsInteractive() bool   { return c.IsInteractive != nil }
 
 func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinition, error) {
 	for _, command := range c.Command {
@@ -74,10 +78,12 @@ func (c *Configuration) mergeCommand(baseCommand *CommandDefinition, overlayComm
 	mergedCommand.EntryPoint = resolvePropertyString(baseCommand.EntryPoint, overlayCommand.EntryPoint)
 	mergedCommand.Image = resolvePropertyString(baseCommand.Image, overlayCommand.Image)
 	mergedCommand.WorkDir = resolvePropertyString(baseCommand.WorkDir, overlayCommand.WorkDir)
+	mergedCommand.Network = resolvePropertyString(baseCommand.Network, overlayCommand.Network)
 
 	mergedCommand.AddGroups = resolvePropertyBool(baseCommand.AddGroups, overlayCommand.AddGroups)
 	mergedCommand.RemoveContainer = resolvePropertyBool(baseCommand.RemoveContainer, overlayCommand.RemoveContainer)
 	mergedCommand.Impersonate = resolvePropertyBool(baseCommand.Impersonate, overlayCommand.Impersonate)
+	mergedCommand.IsInteractive = resolvePropertyBool(baseCommand.IsInteractive, overlayCommand.IsInteractive)
 
 	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
 	mergedCommand.EnvVars = resolvePropertyStringArray(baseCommand.EnvVars, overlayCommand.EnvVars)

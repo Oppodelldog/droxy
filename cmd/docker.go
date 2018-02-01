@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"syscall"
 	"path/filepath"
+	"syscall"
 )
 
 func ExecuteDockerCommand(cfg *config.Configuration) {
