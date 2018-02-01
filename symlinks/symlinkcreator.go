@@ -8,8 +8,12 @@ import (
 
 func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configuration) error {
 	for _, command := range configuration.Command {
-		fmt.Printf(" - %s: ", command.Name)
-		err := CreateSymlink(commandBinaryFilePath, command.Name)
+		if !command.HasPropertyName() {
+			continue
+		}
+
+		fmt.Printf(" - %s: ", *command.Name)
+		err := CreateSymlink(commandBinaryFilePath, *command.Name)
 		if err != nil {
 			return err
 		}

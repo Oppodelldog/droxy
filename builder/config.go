@@ -31,14 +31,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 
 	var err error
 
-	builder.SetEntryPoint(commandDef.EntryPoint)
-
 	builder.AddCmdArguments(os.Args[1:])
-
-	err = autoBuildInteractiveMode(builder)
-	if err != nil {
-		return nil, err
-	}
 
 	err = autoBuildAttachStreams(builder)
 	if err != nil {
@@ -50,32 +43,69 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		return nil, err
 	}
 
-	err = buildRemoveContainer(commandDef.RemoveContainer, builder)
+	err = autoBuildInteractiveMode(builder)
 	if err != nil {
 		return nil, err
 	}
 
-	err = buildGroups(commandDef.AddGroups, builder)
-	if err != nil {
-		return nil, err
+	if commandDef.HasPropertyEntryPoint() {
+		builder.SetEntryPoint(*commandDef.EntryPoint)
 	}
 
-	err = buildImpersonation(commandDef.Impersonate, builder)
-	if err != nil {
-		return nil, err
+	if commandDef.HasPropertyRemoveContainer() {
+		err = buildRemoveContainer(*commandDef.RemoveContainer, builder)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	err = buildImage(commandDef.Image, builder)
-	if err != nil {
-		return nil, err
+	if commandDef.HasPropertyAddGroups() {
+		err = buildGroups(*commandDef.AddGroups, builder)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	err = buildVolumes(commandDef.Volumes, builder)
-	if err != nil {
-		return nil, err
+	if commandDef.HasPropertyImpersonate() {
+		err = buildImpersonation(*commandDef.Impersonate, builder)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if commandDef.HasPropertyImage() {
+		err = buildImage(*commandDef.Image, builder)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if commandDef.HasPropertyVolumes() {
+		err = buildVolumes(*commandDef.Volumes, builder)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if commandDef.HasPropertyEnvVars() {
+		err = buildEnvVars(*commandDef.EnvVars, builder)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return builder.Build(), nil
+}
+func buildEnvVars(envVars []string, builder *DockerCommandBuilder) error {
+	for _, envVar := range envVars {
+		envVarValue, err := resolveEnvVar(envVar)
+		if err != nil {
+			return err
+		}
+		builder.AddEnvVar(envVarValue)
+	}
+
+	return nil
 }
 
 func autoBuildInteractiveMode(builder *DockerCommandBuilder) error {
@@ -167,19 +197,19 @@ func buildVolumes(volumes []string, builder *DockerCommandBuilder) error {
 		var resolveErr error
 
 		if len(volumeParts) > 0 {
-			hostPart, resolveErr = resolve(volumeParts[0])
+			hostPart, resolveErr = resolveEnvVar(volumeParts[0])
 			if resolveErr != nil {
 				return resolveErr
 			}
 		}
 		if len(volumeParts) > 1 {
-			containerPart, resolveErr = resolve(volumeParts[1])
+			containerPart, resolveErr = resolveEnvVar(volumeParts[1])
 			if resolveErr != nil {
 				return resolveErr
 			}
 		}
 		if len(volumeParts) > 2 {
-			options, resolveErr = resolve(volumeParts[2])
+			options, resolveErr = resolveEnvVar(volumeParts[2])
 			if resolveErr != nil {
 				return resolveErr
 			}
@@ -191,7 +221,7 @@ func buildVolumes(volumes []string, builder *DockerCommandBuilder) error {
 	return nil
 }
 
-func resolve(envVarName string) (string, error) {
+func resolveEnvVar(envVarName string) (string, error) {
 	return envsubst.Eval(envVarName, func(normalizedEnvVarName string) string {
 		if envVar, ok := os.LookupEnv(normalizedEnvVarName); !ok {
 			panic(fmt.Sprintf("env var %v is not set!", normalizedEnvVarName))
