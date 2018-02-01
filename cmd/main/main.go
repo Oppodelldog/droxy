@@ -28,7 +28,7 @@ func main() {
 
 func getConfig() *config.Configuration {
 
-	configFilePath, err := cmd.GetConfigFilePath()
+	configFilePath, err := cmd.DiscoverConfigFile()
 	if err != nil {
 		panic(err)
 	}
