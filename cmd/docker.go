@@ -7,11 +7,12 @@ import (
 	"os"
 	"os/exec"
 	"syscall"
+	"path/filepath"
 )
 
 func ExecuteDockerCommand(cfg *config.Configuration) {
 
-	commandName := os.Args[0]
+	commandName := filepath.Base(os.Args[0])
 	cmd, err := builder.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {
 		panic(err)
