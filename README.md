@@ -40,7 +40,6 @@ HOW AND WHY?!
         image = "php:7.1.13"
 
 
-
     [[command]]
         template = "basic command"
         name = "npm"

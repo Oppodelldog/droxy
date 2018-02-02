@@ -8,7 +8,12 @@ import (
 
 func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configuration) error {
 	for _, command := range configuration.Command {
+
 		if !command.HasPropertyName() {
+			continue
+		}
+
+		if command.HasPropertyIsTemplate() && *command.IsTemplate {
 			continue
 		}
 
