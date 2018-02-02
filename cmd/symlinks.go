@@ -7,24 +7,31 @@ import (
 	"docker-proxy-command/helper"
 	"path"
 	"os"
-	"docker-proxy-command/symlinks"
 	"docker-proxy-command/config"
 	"github.com/sirupsen/logrus"
+	"docker-proxy-command/symlinks"
 )
 
-var Symlinks = &cobra.Command{
+var force bool
+
+func NewCommand() *cobra.Command {
+	symlinkCommand.Flags().BoolVarP(&force, "force", "f", false, "removes existing files before creation")
+	return symlinkCommand
+}
+
+var symlinkCommand = &cobra.Command{
 	Use:   "symlinks",
 	Short: "creates command symlinks",
 	Long:  `creates symlinks for all command in the current directory`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg := config.Load()
-		createSymlinks(cfg)
+		createSymlinks(cfg, force)
 	},
 }
 
 const commandFileName = "docker-proxy"
 
-func createSymlinks(cfg *config.Configuration) error {
+func createSymlinks(cfg *config.Configuration, isForced bool) error {
 
 	logrus.Info("creating symlinks...")
 
@@ -38,5 +45,5 @@ func createSymlinks(cfg *config.Configuration) error {
 		return fmt.Errorf("could not find docker-proxy command as expected at '%s'", commandFilepath)
 	}
 
-	return symlinks.CreateSymlinks(commandFilepath, cfg)
+	return symlinks.CreateSymlinks(commandFilepath, cfg,isForced)
 }

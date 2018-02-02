@@ -10,7 +10,7 @@ import (
 func main() {
 
 	var rootCmd = cmd.Root
-	cmd.Root.AddCommand(cmd.Symlinks)
+	cmd.Root.AddCommand(cmd.NewCommand())
 
 	if len(os.Args) >= 2 && os.Args[1] == "symlinks" {
 		err := rootCmd.Execute()
