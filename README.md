@@ -22,6 +22,7 @@ HOW AND WHY?!
       workDir = "/app"        # define working directory
       removeContainer=true    # remove container after command has finished
       isInteractive=true      # enable interaction with the called command
+
       # volume mappings
       volumes = [
           "${HOME}:${HOME}",
@@ -30,6 +31,7 @@ HOW AND WHY?!
           "/etc/group:/etc/group:ro",
           "/run/docker.sock:/run/docker.sock"
       ]
+
       # environment variable mappings
       envvars = [
           "HOME:${HOME}",
