@@ -7,8 +7,17 @@ import (
 type Configuration Commands
 
 type Commands struct {
-	Command []CommandDefinition
-	Version string
+	Command        []CommandDefinition
+	Version        string
+	configFilePath string
+	Logging        bool
+}
+
+func (c *Configuration) SetConfigurationFilePath(configFilePath string) {
+	c.configFilePath = configFilePath
+}
+func (c *Configuration) GetConfigurationFilePath() string {
+	return c.configFilePath
 }
 
 type CommandDefinition struct {

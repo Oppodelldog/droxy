@@ -12,5 +12,7 @@ func Load() *Configuration {
 		panic(err)
 	}
 
+	cfg.SetConfigurationFilePath(configFilePath)
+
 	return cfg
 }

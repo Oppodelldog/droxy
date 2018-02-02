@@ -58,6 +58,17 @@ If the folder containing the symlinks is added to the $PATH (for example by dire
 you can execute exactly the configured php -version by just calling **php**.
 
 
+### create clone commands
+    docker-proxy clones
+
+Since symlinks are very samll in size there is a usecase for a real binaries.
+If for example a foreign application (like IDE) tries to access the proxy command it will not be possible
+to load the config. the symlink directly points to the origin binary which might be located in a different path
+like /usr/bin.
+
+In this case cloning is the appropriate option, since when accessing the clone the directory of the clone and so the
+configuration is known.
+
 ### bootstrap containers (?!)
     docker-proxy prepare
 
