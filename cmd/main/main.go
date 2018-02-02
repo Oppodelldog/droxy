@@ -3,9 +3,9 @@ package main
 import (
 	"docker-proxy-command/cmd"
 	"docker-proxy-command/config"
-	"fmt"
-	"log"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -16,10 +16,10 @@ func main() {
 	cfg := getConfig()
 
 	if len(os.Args) == 2 && os.Args[1] == "symlinks" {
-		fmt.Println("creating symlinks...")
+		logrus.Info("creating symlinks...")
 		err := cmd.CreateSymlinks(cfg)
 		if err != nil {
-			log.Fatal(err)
+			logrus.Info(err)
 		}
 	} else {
 		cmd.ExecuteDockerCommand(cfg)

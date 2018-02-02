@@ -2,12 +2,13 @@ package builder
 
 import (
 	"docker-proxy-command/config"
+	"docker-proxy-command/helper"
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
-	"docker-proxy-command/helper"
 	"os/user"
+	"strings"
+
 	"github.com/drone/envsubst"
 )
 

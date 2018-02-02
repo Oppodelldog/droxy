@@ -2,14 +2,16 @@ package symlinks
 
 import (
 	"docker-proxy-command/config"
-	"fmt"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configuration) error {
 	for _, command := range configuration.Command {
 
 		if !command.HasPropertyName() {
+			logrus.Warnf("skipped command because name is missing!")
 			continue
 		}
 
@@ -17,12 +19,11 @@ func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configur
 			continue
 		}
 
-		fmt.Printf(" - %s: ", *command.Name)
 		err := CreateSymlink(commandBinaryFilePath, *command.Name)
 		if err != nil {
 			return err
 		}
-		fmt.Println("OK")
+		logrus.Infof("created '%s'", *command.Name)
 	}
 
 	return nil

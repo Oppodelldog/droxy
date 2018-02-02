@@ -12,6 +12,7 @@ import (
 const commandFileName = "docker-proxy"
 
 func CreateSymlinks(cfg *config.Configuration) error {
+
 	executableDir, err := helper.GetExecutablePath()
 	if err != nil {
 		return err

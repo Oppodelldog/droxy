@@ -3,11 +3,12 @@ package cmd
 import (
 	"docker-proxy-command/builder"
 	"docker-proxy-command/config"
-	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"syscall"
+
+	"github.com/sirupsen/logrus"
 )
 
 func ExecuteDockerCommand(cfg *config.Configuration) {
@@ -25,7 +26,7 @@ func ExecuteDockerCommand(cfg *config.Configuration) {
 		if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
 			os.Exit(status.ExitStatus())
 		} else {
-			log.Printf("Could not get exit code")
+			logrus.Info("Could not get exit code")
 			os.Exit(990)
 		}
 	}
@@ -33,7 +34,7 @@ func ExecuteDockerCommand(cfg *config.Configuration) {
 	if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
 		os.Exit(status.ExitStatus())
 	} else {
-		log.Printf("Could not get exit code")
+		logrus.Info("Could not get exit code")
 		os.Exit(991)
 	}
 }
