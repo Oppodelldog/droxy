@@ -39,7 +39,7 @@ ci: lint test ## Run all the tests and code checks
 
 
 build: ## build binary to .dist folder
-	go build -o ".dist/docker-proxy" cmd/main/main.go
+	go build -o ".dist/docker-proxy" main.go
 
 install: ## Install to <gopath>/src
 	go install ./...

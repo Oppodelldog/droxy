@@ -11,8 +11,9 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func ExecuteDockerCommand(cfg *config.Configuration) {
+func ProxyDockerCommand() {
 
+	cfg := config.Load()
 	commandName := filepath.Base(os.Args[0])
 	cmd, err := builder.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {

@@ -1,17 +1,32 @@
 package cmd
 
 import (
-	"docker-proxy-command/config"
-	"docker-proxy-command/helper"
-	"docker-proxy-command/symlinks"
 	"fmt"
-	"os"
+
+	"github.com/spf13/cobra"
+	"docker-proxy-command/helper"
 	"path"
+	"os"
+	"docker-proxy-command/symlinks"
+	"docker-proxy-command/config"
+	"github.com/sirupsen/logrus"
 )
+
+var Symlinks = &cobra.Command{
+	Use:   "symlinks",
+	Short: "creates command symlinks",
+	Long:  `creates symlinks for all command in the current directory`,
+	Run: func(cmd *cobra.Command, args []string) {
+		cfg := config.Load()
+		createSymlinks(cfg)
+	},
+}
 
 const commandFileName = "docker-proxy"
 
-func CreateSymlinks(cfg *config.Configuration) error {
+func createSymlinks(cfg *config.Configuration) error {
+
+	logrus.Info("creating symlinks...")
 
 	executableDir, err := helper.GetExecutablePath()
 	if err != nil {
