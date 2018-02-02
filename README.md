@@ -10,63 +10,39 @@ HOW AND WHY?!
 3. Reduce custom commands to docker into one configuration file per project.
 
 ## the config (toml)
+
+```TOML
     Version="1"
 
     [[command]]
-      name = "basic command"
-      isTemplate = true
-      addGroups = true
-      impersonate = true
-      workDir = "/app"
-      removeContainer=true
-      isInteractive=true
+      name = "basic command"  # name of the command
+      isTemplate = true       # this command can be used as a template, no command will be created
+      addGroups = true        # add current systems groups
+      impersonate = true      # use executing user and group for execution in the container
+      workDir = "/app"        # define working directory
+      removeContainer=true    # remove container after command has finished
+      isInteractive=true      # enable interaction with the called command
+      # volume mappings
       volumes = [
-          "${APP_DIR}:/app",
+          "${HOME}:${HOME}",
           "${SSH_AUTH_SOCK}:/run/ssh.sock",
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
           "/run/docker.sock:/run/docker.sock"
       ]
+      # environment variable mappings
       envvars = [
-          "APP_DIR=${APP_DIR}",
+          "HOME:${HOME}",
           "SSH_AUTH_SOCK:/run/ssh.sock",
           "DOCKER_HOST=unix:///run/docker.sock"
       ]
 
     [[command]]
-        template = "basic command"
-        name = "php"
-        entryPoint = "php"
-        image = "php:7.1.13"
-
-
-    [[command]]
-        template = "basic command"
-        name = "npm"
-        entryPoint = "npm"
-        image = "node:8.4.0"
-        network="whatever-docker-net"
-
-
-    [[command]]
-        name = "node"
-        entryPoint = "node"
-        image = "node:8.4.0"
-        addGroups = true
-        impersonate = true
-        workDir = "/app"
-        removeContainer=true
-        volumes = [
-            "${SSH_AUTH_SOCK}:/run/ssh.sock",
-            "/etc/passwd:/etc/passwd:ro",
-            "/etc/group:/etc/group:ro",
-            "/run/docker.sock:/run/docker.sock"
-        ]
-        envvars = [
-            "SSH_AUTH_SOCK=/run/ssh.sock",
-            "DOCKER_HOST=unix:///run/docker.sock"
-        ]
-
+        template = "basic command"  # apply settings from template 'basic command' to this command
+    	name = "php"                # name of the command which is created by calling 'docker-proxy symlinks'
+    	entryPoint = "php"          # basic binary to execute inside the container
+    	image = "php:7.1.13"        # docker image the container is run on
+```
 
 ### create symlink commands
     docker-proxy symlinks
