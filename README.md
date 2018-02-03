@@ -1,7 +1,7 @@
 # The idea
 This tool should help you in creating variants of commands that proxy execution into docker containers.
 
-**WHY?**
+**WHY?**  
 When working on many different projects that require different software or different versions you might want
 to have all those tools from one hand, maybe a configuration file.
 
