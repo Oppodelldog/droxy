@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/docker-proxy-command)](https://goreportcard.com/report/github.com/Oppodelldog/docker-proxy-command)
+
 # The idea
 This tool should help you in creating variants of commands that proxy execution into docker containers.
 
