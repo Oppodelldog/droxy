@@ -2,7 +2,6 @@ package logging
 
 import (
 	"docker-proxy-command/config"
-	"fmt"
 	"io"
 	"os"
 	"path"
@@ -18,8 +17,6 @@ func GetLogWriter(cfg *config.Configuration) (io.WriteCloser, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(logFilePath)
 
 	return file, nil
 }
