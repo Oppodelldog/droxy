@@ -46,29 +46,48 @@ HOW AND WHY?!
     	image = "php:7.1.13"        # docker image the container is run on
 ```
 
-### create symlink commands
-    docker-proxy symlinks
 
-symlinks are created and point to the docker-proxy exe, which will emulate the configured command
-depending on which symlink was called.
+### create commands
+So the idea is to create "real" commands in form of binaries.
+Why? Well for a bash user also bash files would apply, but when you are trying to trick an IDE to use such a bash
+file as a real executable some may fail. So in general it should be a good idea to create real binaries.
 
-In case of the configuration sample it would be a symlink called **php**.
+**What are the options?**
+There are three options to create custom docker-proxy commands into a directory:
 
-If the folder containing the symlinks is added to the $PATH (for example by direnv)
-you can execute exactly the configured php -version by just calling **php**.
+* **symlinks**
+    this sub-command creates a symlink for every command defined in the config into the current directory
+* **clones**
+    this sub-command creates copies of docker-proxy in the config into the current directory, renaming to the appropriate command name.
+* **hardlinks**
+    this sub-command creates a hardlink for every command defined in the config into the current directory
+
+#### Pros and Contras
+
+```bash
+docker-proxy symlinks
+```
+```bash
+docker-proxy hardlinks
+```
+```bash
+docker-proxy clones
+```
+
+use ```-f``` to force file creation. This will delete files with command names before creation.
 
 
-### create clone commands
-    docker-proxy clones
+**symlinks**
+**Pro:** low disc space consumption
+**Con:** config will only be found when defined by environment variable
 
-Since symlinks are very samll in size there is a usecase for a real binaries.
-If for example a foreign application (like IDE) tries to access the proxy command it will not be possible
-to load the config. the symlink directly points to the origin binary which might be located in a different path
-like /usr/bin.
+**hardlinks**
+**Pro:** config will be found
+**Con:** ?
 
-In this case cloning is the appropriate option, since when accessing the clone the directory of the clone and so the
-configuration is known.
-
+**clones**
+**Pro:** config will be found
+**Con:** needs more disc space
 
 
 ### bootstrap containers (?!)
