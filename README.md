@@ -52,14 +52,14 @@ So the idea is to create "real" commands in form of binaries.
 Why? Well for a bash user also bash files would apply, but when you are trying to trick an IDE to use such a bash
 file as a real executable some may fail. So in general it should be a good idea to create real binaries.
 
-**What are the options?**
-There are three options to create custom docker-proxy commands into a directory:
+**What are the options?**  
+There are three options to create custom docker-proxy commands into a directory:  
 
-* **symlinks**
+* **symlinks**  
     this sub-command creates a symlink for every command defined in the config into the current directory
-* **clones**
+* **clones**  
     this sub-command creates copies of docker-proxy in the config into the current directory, renaming to the appropriate command name.
-* **hardlinks**
+* **hardlinks**  
     this sub-command creates a hardlink for every command defined in the config into the current directory
 
 #### Pros and Contras
@@ -77,18 +77,18 @@ docker-proxy clones
 use ```-f``` to force file creation. This will delete files with command names before creation.
 
 
-**symlinks**
-**Pro:** low disc space consumption
-**Con:** config will only be found when defined by environment variable
-
-**hardlinks**
-**Pro:** config will be found
-**Con:** ?
-
-**clones**
-**Pro:** config will be found
-**Con:** needs more disc space
-
+**symlinks**  
+**Pro:** low disc space consumption  
+**Con:** config will only be found when defined by environment variable  
+  
+**hardlinks**  
+**Pro:** config will be found  
+**Con:** ?  
+  
+**clones**  
+**Pro:** config will be found  
+**Con:** needs more disc space  
+  
 
 ### bootstrap containers (?!)
     docker-proxy prepare
