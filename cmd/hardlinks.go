@@ -13,28 +13,26 @@ import (
 	"docker-proxy-command/proxyfile"
 )
 
-var forceSymlinks bool
+var forceHardlinks bool
 
-func NewSymlinkCommand() *cobra.Command {
-	symlinkCommand.Flags().BoolVarP(&forceSymlinks, "force", "f", false, "removes existing files before creation")
-	return symlinkCommand
+func NewHardCommand() *cobra.Command {
+	hardlinkCommand.Flags().BoolVarP(&forceHardlinks, "force", "f", false, "removes existing files before creation")
+	return hardlinkCommand
 }
 
-var symlinkCommand = &cobra.Command{
-	Use:   "symlinks",
-	Short: "creates command symlinks",
-	Long:  `creates symlinks for all command in the current directory`,
+var hardlinkCommand = &cobra.Command{
+	Use:   "hardlinks",
+	Short: "creates command hardlinks",
+	Long:  `creates hardlinks for all command in the current directory`,
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg := config.Load()
-		createSymlinks(cfg, forceSymlinks)
+		createHardlinks(cfg, forceHardlinks)
 	},
 }
 
-const commandFileName = "docker-proxy"
+func createHardlinks(cfg *config.Configuration, isForced bool) error {
 
-func createSymlinks(cfg *config.Configuration, isForced bool) error {
-
-	logrus.Info("creating symlinks...")
+	logrus.Info("creating hardlinks...")
 
 	executableDir, err := helper.GetExecutablePath()
 	if err != nil {
@@ -46,7 +44,7 @@ func createSymlinks(cfg *config.Configuration, isForced bool) error {
 		return fmt.Errorf("could not find docker-proxy command as expected at '%s'", commandFilepath)
 	}
 
-	profileFileCreator := proxyfile.New(proxyfile.NewSymlinkStrategy())
+	profileFileCreator := proxyfile.New(proxyfile.NewHardlinkStrategy())
 
 	return profileFileCreator.CreateProxyFiles(commandFilepath, cfg, isForced)
 }

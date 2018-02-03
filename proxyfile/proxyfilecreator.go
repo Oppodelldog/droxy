@@ -1,13 +1,26 @@
-package symlinks
+package proxyfile
 
 import (
 	"docker-proxy-command/config"
-	"os"
-
 	"github.com/sirupsen/logrus"
+	"os"
 )
 
-func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configuration, isForced bool) error {
+type FileCreationStrategy interface {
+	CreateProxyFile(string, string) error
+}
+
+func New(creationStrategy FileCreationStrategy) *Creator {
+	return &Creator{
+		creationStrategy: creationStrategy,
+	}
+}
+
+type Creator struct {
+	creationStrategy FileCreationStrategy
+}
+
+func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration *config.Configuration, isForced bool) error {
 	for _, command := range configuration.Command {
 
 		if !command.HasPropertyName() {
@@ -31,7 +44,7 @@ func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configur
 			}
 		}
 
-		err := CreateSymlink(commandBinaryFilePath, *command.Name)
+		err := pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, *command.Name)
 		if err != nil {
 			logrus.Errorf("error creating symlink '%s': %v", *command.Name, err)
 			continue
@@ -41,8 +54,4 @@ func CreateSymlinks(commandBinaryFilePath string, configuration *config.Configur
 	}
 
 	return nil
-}
-
-func CreateSymlink(commandBinaryFilePath, commandNameFilePath string) error {
-	return os.Symlink(commandBinaryFilePath, commandNameFilePath)
 }

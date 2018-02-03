@@ -8,10 +8,9 @@ import (
 	"os"
 	"path"
 
-	"docker-proxy-command/clones"
-
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"docker-proxy-command/proxyfile"
 )
 
 var forceClones bool
@@ -45,5 +44,7 @@ func createClones(cfg *config.Configuration, isForced bool) error {
 		return fmt.Errorf("could not find docker-proxy command as expected at '%s'", commandFilepath)
 	}
 
-	return clones.CreateClones(commandFilepath, cfg, isForced)
+	profileFileCreator := proxyfile.New(proxyfile.NewClonesStrategy())
+
+	return profileFileCreator.CreateProxyFiles(commandFilepath, cfg, isForced)
 }
