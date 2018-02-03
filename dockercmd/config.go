@@ -166,7 +166,7 @@ func buildGroups(areGroupsAdded bool, builder *Builder) error {
 
 	if len(groupIds) > 0 {
 		for _, groupId := range groupIds {
-			builder.AdduserGroup(groupId)
+			builder.AddGroup(groupId)
 		}
 	}
 
@@ -223,7 +223,7 @@ func buildVolumes(volumes []string, builder *Builder) error {
 			}
 		}
 
-		builder.AddVolumePlain(hostPart, containerPart, options)
+		builder.AddVolumeMapping(hostPart, containerPart, options)
 	}
 
 	return nil
