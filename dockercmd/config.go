@@ -1,4 +1,4 @@
-package builder
+package dockercmd
 
 import (
 	"docker-proxy-command/config"
@@ -18,7 +18,7 @@ func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exe
 		return nil, err
 	}
 
-	commandBuilder := NewDockerCommandBuilder()
+	commandBuilder := NewBuilder()
 	cmd, err := buildCommandFromCommandDefinition(commandDef, commandBuilder)
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exe
 	return cmd, nil
 }
 
-func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder *DockerCommandBuilder) (*exec.Cmd, error) {
+func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder *Builder) (*exec.Cmd, error) {
 
 	var err error
 
@@ -104,7 +104,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	return builder.Build(), nil
 }
 
-func buildEnvVars(envVars []string, builder *DockerCommandBuilder) error {
+func buildEnvVars(envVars []string, builder *Builder) error {
 	for _, envVar := range envVars {
 		envVarValue, err := resolveEnvVar(envVar)
 		if err != nil {
@@ -116,13 +116,13 @@ func buildEnvVars(envVars []string, builder *DockerCommandBuilder) error {
 	return nil
 }
 
-func autoBuildInteractiveMode(builder *DockerCommandBuilder) error {
+func autoBuildInteractiveMode(builder *Builder) error {
 	builder.AddArgument("-i")
 
 	return nil
 }
 
-func autoBuildAttachStreams(builder *DockerCommandBuilder) error {
+func autoBuildAttachStreams(builder *Builder) error {
 	builder.
 		AttachTo("STDIN").
 		AttachTo("STDOUT").
@@ -131,7 +131,7 @@ func autoBuildAttachStreams(builder *DockerCommandBuilder) error {
 	return nil
 }
 
-func autoBuildTerminalContext(builder *DockerCommandBuilder) error {
+func autoBuildTerminalContext(builder *Builder) error {
 	if helper.IsTerminalContext() {
 		builder.AddArgument("-t")
 	}
@@ -139,7 +139,7 @@ func autoBuildTerminalContext(builder *DockerCommandBuilder) error {
 	return nil
 }
 
-func buildRemoveContainer(isContainerRemoved bool, builder *DockerCommandBuilder) error {
+func buildRemoveContainer(isContainerRemoved bool, builder *Builder) error {
 	if !isContainerRemoved {
 		return nil
 	}
@@ -149,7 +149,7 @@ func buildRemoveContainer(isContainerRemoved bool, builder *DockerCommandBuilder
 	return nil
 }
 
-func buildGroups(areGroupsAdded bool, builder *DockerCommandBuilder) error {
+func buildGroups(areGroupsAdded bool, builder *Builder) error {
 	if !areGroupsAdded {
 		return nil
 	}
@@ -173,7 +173,7 @@ func buildGroups(areGroupsAdded bool, builder *DockerCommandBuilder) error {
 	return nil
 }
 
-func buildImpersonation(isImpersonated bool, builder *DockerCommandBuilder) error {
+func buildImpersonation(isImpersonated bool, builder *Builder) error {
 	if !isImpersonated {
 		return nil
 	}
@@ -188,13 +188,13 @@ func buildImpersonation(isImpersonated bool, builder *DockerCommandBuilder) erro
 	return nil
 }
 
-func buildImage(imageName string, builder *DockerCommandBuilder) error {
+func buildImage(imageName string, builder *Builder) error {
 	builder.SetImageName(imageName)
 
 	return nil
 }
 
-func buildVolumes(volumes []string, builder *DockerCommandBuilder) error {
+func buildVolumes(volumes []string, builder *Builder) error {
 	for _, volume := range volumes {
 		volumeParts := strings.Split(volume, ":")
 		if len(volumeParts) < 2 || len(volumeParts) > 3 {

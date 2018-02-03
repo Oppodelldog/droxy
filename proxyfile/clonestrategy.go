@@ -4,6 +4,8 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/sirupsen/logrus"
 )
 
 func NewClonesStrategy() *ClonesStrategy {
@@ -23,15 +25,25 @@ func (s *ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFileP
 	if err != nil {
 		return err
 	}
-	defer sf.Close()
-	if err := os.Remove(cleanDst); err != nil && !os.IsNotExist(err) {
+	defer func() {
+		err = sf.Close()
+		if err != nil {
+			logrus.Error(err)
+		}
+	}()
+	if err = os.Remove(cleanDst); err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	df, err := os.OpenFile(cleanDst, os.O_CREATE|os.O_WRONLY, 0766)
 	if err != nil {
 		return err
 	}
-	defer df.Close()
+	defer func() {
+		err = df.Close()
+		if err != nil {
+			logrus.Error(err)
+		}
+	}()
 
 	_, err = io.Copy(df, sf)
 

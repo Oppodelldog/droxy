@@ -1,4 +1,4 @@
-package builder
+package dockercmd
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	DockerCommandBuilder struct {
+	Builder struct {
 		command         string
 		subCommand      string
 		imageName       string
@@ -33,8 +33,8 @@ type (
 	}
 )
 
-func NewDockerCommandBuilder() *DockerCommandBuilder {
-	return &DockerCommandBuilder{
+func NewBuilder() *Builder {
+	return &Builder{
 		command:    "docker",
 		subCommand: "run",
 		stdIn:      os.Stdin,
@@ -42,55 +42,55 @@ func NewDockerCommandBuilder() *DockerCommandBuilder {
 		stdErr:     os.Stderr,
 	}
 }
-func (b *DockerCommandBuilder) SetStdIn(r io.Reader) *DockerCommandBuilder {
+func (b *Builder) SetStdIn(r io.Reader) *Builder {
 	b.stdIn = r
 
 	return b
 }
 
-func (b *DockerCommandBuilder) SetStdOut(w io.Writer) *DockerCommandBuilder {
+func (b *Builder) SetStdOut(w io.Writer) *Builder {
 	b.stdOut = w
 
 	return b
 }
 
-func (b *DockerCommandBuilder) SetStdErr(w io.Writer) *DockerCommandBuilder {
+func (b *Builder) SetStdErr(w io.Writer) *Builder {
 	b.stdErr = w
 
 	return b
 }
 
-func (b *DockerCommandBuilder) AddPortMapping(hostPort string, containerPort string) *DockerCommandBuilder {
+func (b *Builder) AddPortMapping(hostPort string, containerPort string) *Builder {
 	b.portMappings = append(b.portMappings, "-p", fmt.Sprintf("%s:%s", hostPort, containerPort))
 	return b
 }
 
-func (b *DockerCommandBuilder) AddCmdArguments(arguments []string) *DockerCommandBuilder {
+func (b *Builder) AddCmdArguments(arguments []string) *Builder {
 	b.cmdArgs = append(b.cmdArgs, arguments...)
 	return b
 }
 
-func (b *DockerCommandBuilder) AddArgument(argument string) *DockerCommandBuilder {
+func (b *Builder) AddArgument(argument string) *Builder {
 	b.args = append(b.args, argument)
 	return b
 }
 
-func (b *DockerCommandBuilder) AttachTo(stream string) *DockerCommandBuilder {
+func (b *Builder) AttachTo(stream string) *Builder {
 	b.attachedStreams = append(b.attachedStreams, "-a", stream)
 	return b
 }
 
-func (b *DockerCommandBuilder) AddMirrorVolume(path string) *DockerCommandBuilder {
+func (b *Builder) AddMirrorVolume(path string) *Builder {
 	b.volumeMappings = append(b.volumeMappings, "-v", fmt.Sprintf("%s:%s", path, path))
 	return b
 }
 
-func (b *DockerCommandBuilder) AddVolume(hostPath string, containerPath string) *DockerCommandBuilder {
+func (b *Builder) AddVolume(hostPath string, containerPath string) *Builder {
 	b.volumeMappings = append(b.volumeMappings, "-v", fmt.Sprintf("%s:%s", hostPath, containerPath))
 	return b
 }
 
-func (b *DockerCommandBuilder) AddVolumePlain(hostPath, containerPath, options string) *DockerCommandBuilder {
+func (b *Builder) AddVolumePlain(hostPath, containerPath, options string) *Builder {
 	s := bytes.NewBufferString("")
 	if hostPath != "" {
 		s.WriteString(hostPath)
@@ -111,17 +111,17 @@ func (b *DockerCommandBuilder) AddVolumePlain(hostPath, containerPath, options s
 	return b
 }
 
-func (b *DockerCommandBuilder) AddMirrorVolumeReadOnly(path string) *DockerCommandBuilder {
+func (b *Builder) AddMirrorVolumeReadOnly(path string) *Builder {
 	b.volumeMappings = append(b.volumeMappings, "-v", fmt.Sprintf("%s:%s:ro", path, path))
 	return b
 }
 
-func (b *DockerCommandBuilder) AddEnvVar(envVarDeclaration string) *DockerCommandBuilder {
+func (b *Builder) AddEnvVar(envVarDeclaration string) *Builder {
 	b.envVarMappings = append(b.envVarMappings, "-e", envVarDeclaration)
 	return b
 }
 
-func (b *DockerCommandBuilder) AddEnvVars(envVarDeclarations []string) *DockerCommandBuilder {
+func (b *Builder) AddEnvVars(envVarDeclarations []string) *Builder {
 	for _, envVarDeclaration := range envVarDeclarations {
 		b.envVarMappings = append(b.envVarMappings, "-e", envVarDeclaration)
 	}
@@ -129,44 +129,44 @@ func (b *DockerCommandBuilder) AddEnvVars(envVarDeclarations []string) *DockerCo
 	return b
 }
 
-func (b *DockerCommandBuilder) AdduserGroup(userGroup string) *DockerCommandBuilder {
+func (b *Builder) AdduserGroup(userGroup string) *Builder {
 	b.addedUserGroups = append(b.addedUserGroups, "--group-add", userGroup)
 	return b
 }
 
-func (b *DockerCommandBuilder) SetEntryPoint(entryPoint string) *DockerCommandBuilder {
+func (b *Builder) SetEntryPoint(entryPoint string) *Builder {
 	b.entryPoint = entryPoint
 	return b
 }
 
-func (b *DockerCommandBuilder) SetNetwork(network string) *DockerCommandBuilder {
+func (b *Builder) SetNetwork(network string) *Builder {
 	b.network = []string{"--network", network}
 	return b
 }
 
-func (b *DockerCommandBuilder) SetImageName(imageName string) *DockerCommandBuilder {
+func (b *Builder) SetImageName(imageName string) *Builder {
 	b.imageName = imageName
 	return b
 }
 
-func (b *DockerCommandBuilder) SetWorkingDir(workingDir string) *DockerCommandBuilder {
+func (b *Builder) SetWorkingDir(workingDir string) *Builder {
 	b.workingDir = []string{"-w", workingDir}
 	return b
 }
 
-func (b *DockerCommandBuilder) SetContainerName(containerName string) *DockerCommandBuilder {
+func (b *Builder) SetContainerName(containerName string) *Builder {
 	b.containerName = []string{"--name", containerName}
 
 	return b
 }
 
-func (b *DockerCommandBuilder) SetContainerUserAndGroup(userId string, groupId string) *DockerCommandBuilder {
+func (b *Builder) SetContainerUserAndGroup(userId string, groupId string) *Builder {
 	b.containerUser = []string{"-u", fmt.Sprintf("%s:%s", userId, groupId)}
 
 	return b
 }
 
-func (b *DockerCommandBuilder) Build() *exec.Cmd {
+func (b *Builder) Build() *exec.Cmd {
 
 	cmd := exec.Command(b.command, b.subCommand)
 
@@ -195,10 +195,10 @@ func (b *DockerCommandBuilder) Build() *exec.Cmd {
 	return cmd
 }
 
-func (b *DockerCommandBuilder) buildArgAppend(arg string) {
+func (b *Builder) buildArgAppend(arg string) {
 	b.buildArgs = append(b.buildArgs, arg)
 }
 
-func (b *DockerCommandBuilder) buildArgsAppend(args ...string) {
+func (b *Builder) buildArgsAppend(args ...string) {
 	b.buildArgs = append(b.buildArgs, args...)
 }

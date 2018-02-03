@@ -73,7 +73,7 @@ func (c *Configuration) resolveConfig(command *CommandDefinition) (*CommandDefin
 
 	templateDefinition, err := c.FindCommandByName(*command.Template)
 	if err != nil {
-		return nil, fmt.Errorf("could not find template '%s' to resolve config of '%s'", command.Template, command.Name)
+		return nil, fmt.Errorf("could not find template '%s' to resolve config of '%s'", *command.Template, *command.Name)
 	}
 
 	return c.mergeCommand(templateDefinition, command), nil

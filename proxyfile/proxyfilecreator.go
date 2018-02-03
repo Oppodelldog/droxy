@@ -2,8 +2,9 @@ package proxyfile
 
 import (
 	"docker-proxy-command/config"
-	"github.com/sirupsen/logrus"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 type FileCreationStrategy interface {

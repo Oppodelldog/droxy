@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"docker-proxy-command/builder"
 	"docker-proxy-command/config"
 	"os"
 	"os/exec"
@@ -10,6 +9,8 @@ import (
 
 	"docker-proxy-command/logging"
 	"io/ioutil"
+
+	"docker-proxy-command/dockercmd"
 
 	"github.com/sirupsen/logrus"
 )
@@ -25,7 +26,12 @@ func ProxyDockerCommand() {
 			logrus.SetOutput(ioutil.Discard)
 		} else {
 			logrus.SetOutput(logfileWriter)
-			defer logfileWriter.Close()
+			defer func() {
+				err := logfileWriter.Close()
+				if err != nil {
+					logrus.Error(err)
+				}
+			}()
 		}
 	} else {
 		logrus.SetOutput(ioutil.Discard)
@@ -47,7 +53,7 @@ func ProxyDockerCommand() {
 	logrus.Info("----------------------------------------------------------------------")
 
 	commandName := filepath.Base(os.Args[0])
-	cmd, err := builder.BuildCommandFromConfig(commandName, cfg)
+	cmd, err := dockercmd.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {
 		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)
 		os.Exit(900)

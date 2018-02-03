@@ -5,25 +5,32 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/sirupsen/logrus"
 	"docker-proxy-command/helper"
+
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
 func main() {
 	var rootCmd = cmd.Root
-	cmd.Root.AddCommand(cmd.NewSymlinkCommand())
-	cmd.Root.AddCommand(cmd.NewCloneCommand())
-	cmd.Root.AddCommand(cmd.NewHardCommand())
+	symlinkCommandWrapper := cmd.NewSymlinkCommandWrapper()
+	hardlinkCommandWrapper := cmd.NewHardlinkCommandWrapper()
+	cloneCommandWrapper := cmd.NewCloneCommandWrapper()
+
+	cmd.Root.AddCommand(symlinkCommandWrapper.GetCommand())
+	cmd.Root.AddCommand(hardlinkCommandWrapper.GetCommand())
+	cmd.Root.AddCommand(cloneCommandWrapper.GetCommand())
 
 	if len(os.Args) >= 2 && isSubCommand(os.Args[1], cmd.Root.Commands()) {
 		err := rootCmd.Execute()
-
 		if err != nil {
 			logrus.Info(err)
 		}
 	} else if len(os.Args) >= 1 && filepath.Base(os.Args[0]) == "docker-proxy" {
-		rootCmd.Help()
+		err := rootCmd.Help()
+		if err != nil {
+			logrus.Info(err)
+		}
 	} else {
 		cmd.ProxyDockerCommand()
 	}
