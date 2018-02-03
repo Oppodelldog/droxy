@@ -22,7 +22,7 @@ type (
 		attachedStreams []string
 		workingDir      []string
 		containerName   []string
-		addedUserGroups []string
+		addedGroups     []string
 		containerUser   []string
 		cmdArgs         []string
 		stdIn           io.Reader
@@ -80,17 +80,7 @@ func (b *Builder) AttachTo(stream string) *Builder {
 	return b
 }
 
-func (b *Builder) AddMirrorVolume(path string) *Builder {
-	b.volumeMappings = append(b.volumeMappings, "-v", fmt.Sprintf("%s:%s", path, path))
-	return b
-}
-
-func (b *Builder) AddVolume(hostPath string, containerPath string) *Builder {
-	b.volumeMappings = append(b.volumeMappings, "-v", fmt.Sprintf("%s:%s", hostPath, containerPath))
-	return b
-}
-
-func (b *Builder) AddVolumePlain(hostPath, containerPath, options string) *Builder {
+func (b *Builder) AddVolumeMapping(hostPath, containerPath, options string) *Builder {
 	s := bytes.NewBufferString("")
 	if hostPath != "" {
 		s.WriteString(hostPath)
@@ -111,26 +101,13 @@ func (b *Builder) AddVolumePlain(hostPath, containerPath, options string) *Build
 	return b
 }
 
-func (b *Builder) AddMirrorVolumeReadOnly(path string) *Builder {
-	b.volumeMappings = append(b.volumeMappings, "-v", fmt.Sprintf("%s:%s:ro", path, path))
-	return b
-}
-
 func (b *Builder) AddEnvVar(envVarDeclaration string) *Builder {
 	b.envVarMappings = append(b.envVarMappings, "-e", envVarDeclaration)
 	return b
 }
 
-func (b *Builder) AddEnvVars(envVarDeclarations []string) *Builder {
-	for _, envVarDeclaration := range envVarDeclarations {
-		b.envVarMappings = append(b.envVarMappings, "-e", envVarDeclaration)
-	}
-
-	return b
-}
-
-func (b *Builder) AdduserGroup(userGroup string) *Builder {
-	b.addedUserGroups = append(b.addedUserGroups, "--group-add", userGroup)
+func (b *Builder) AddGroup(groupName string) *Builder {
+	b.addedGroups = append(b.addedGroups, "--group-add", groupName)
 	return b
 }
 
@@ -176,7 +153,7 @@ func (b *Builder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.portMappings...)
 	b.buildArgsAppend(b.volumeMappings...)
 	b.buildArgsAppend(b.envVarMappings...)
-	b.buildArgsAppend(b.addedUserGroups...)
+	b.buildArgsAppend(b.addedGroups...)
 	b.buildArgsAppend(b.containerUser...)
 	b.buildArgsAppend(b.attachedStreams...)
 	b.buildArgsAppend(b.network...)
