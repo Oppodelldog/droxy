@@ -1,13 +1,14 @@
-# WIP - proof of concept
-
 # The idea
-Create a tool that helps creating variants of commands that proxy execution into docker containers.
+This tool should help you in creating variants of commands that proxy execution into docker containers.
 
-HOW AND WHY?!
+**WHY?**
+When working on many different projects that require different software or different versions you might want
+to have all those tools from one hand, maybe a configuration file.
 
+**HOW?**
 1. Commit dev-tools to your project by a config file
 2. Bootstrap all command executables from that config file
-3. Reduce custom commands to docker into one configuration file per project.
+3. Just use your new tools
 
 ## the config (toml)
 
