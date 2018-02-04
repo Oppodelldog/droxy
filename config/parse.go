@@ -6,12 +6,14 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+// Parse parses a toml configuration file into Configuration data model
 func Parse(filepath string) (*Configuration, error) {
-	if fileContent, err := ioutil.ReadFile(filepath); err == nil {
-		return parseFromBytes(fileContent)
-	} else {
+	fileContent, err := ioutil.ReadFile(filepath)
+	if err != nil {
 		return nil, err
 	}
+	return parseFromBytes(fileContent)
+
 }
 
 func parseFromBytes(bytes []byte) (*Configuration, error) {

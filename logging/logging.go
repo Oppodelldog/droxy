@@ -10,6 +10,7 @@ import (
 
 const logFileName = "docker-proxy.log"
 
+// GetLogWriter returns a logwriter which is used for debug logs
 func GetLogWriter(cfg *config.Configuration) (io.WriteCloser, error) {
 	configPath := filepath.Dir(cfg.GetConfigurationFilePath())
 	logFilePath := path.Join(configPath, logFileName)

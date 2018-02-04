@@ -12,6 +12,10 @@ import (
 
 const configFileName = "docker-proxy.yml"
 
+// DiscoverConfigFile tries to find a config file in different locations:
+// * current working directory
+// * directory the executable is located in
+// * filepath from an environment variable
 func DiscoverConfigFile() (string, error) {
 
 	var possibleConfigFilePaths []string
@@ -69,5 +73,5 @@ func envVarFilePathProvider() (string, error) {
 		return envConfigFile, nil
 	}
 
-	return "", errors.New("env var DOCKER_PROXY_CONFIG not defined.")
+	return "", errors.New("env var DOCKER_PROXY_CONFIG not defined")
 }

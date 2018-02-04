@@ -15,7 +15,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func ProxyDockerCommand() {
+// ExecuteCommand executes a proxy command
+func ExecuteCommand() {
 
 	cfg := config.Load()
 	cfg.Logging = true

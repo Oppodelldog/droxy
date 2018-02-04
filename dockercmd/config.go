@@ -12,6 +12,7 @@ import (
 	"github.com/drone/envsubst"
 )
 
+// BuildCommandFromConfig builds a docker-run command on base of the given configuration
 func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
 	commandDef, err := cfg.FindCommandByName(commandName)
 	if err != nil {
@@ -159,14 +160,14 @@ func buildGroups(areGroupsAdded bool, builder *Builder) error {
 		return err
 	}
 
-	groupIds, err := currentUser.GroupIds()
+	groupIDs, err := currentUser.GroupIds()
 	if err != nil {
 		return err
 	}
 
-	if len(groupIds) > 0 {
-		for _, groupId := range groupIds {
-			builder.AddGroup(groupId)
+	if len(groupIDs) > 0 {
+		for _, groupID := range groupIDs {
+			builder.AddGroup(groupID)
 		}
 	}
 

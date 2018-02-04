@@ -8,12 +8,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func NewClonesStrategy() *ClonesStrategy {
+// NewClonesStrategy creates a new FileCreationStrategy that produces clones of docker-proxy command
+func NewClonesStrategy() FileCreationStrategy {
 	return &ClonesStrategy{}
 }
 
+//ClonesStrategy contains the implementation of creating clones of docker-proxy execuable
 type ClonesStrategy struct{}
 
+//CreateProxyFile creates a clone of the given commandBinaryFilePath to commandNameFilePath
 func (s *ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFilePath string) error {
 
 	cleanSrc := filepath.Clean(commandBinaryFilePath)
