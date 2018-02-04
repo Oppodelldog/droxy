@@ -1,5 +1,6 @@
 package config
 
+// Load loads the configuration file.
 func Load() *Configuration {
 
 	configFilePath, err := DiscoverConfigFile()

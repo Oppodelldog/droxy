@@ -12,26 +12,33 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// NewCloneCommandWrapper creates and returns clones sub-command
 func NewCloneCommandWrapper() *FileCreationSubCommandWrapper {
 	return NewFileCreationSubCommand("clones", proxyfile.NewClonesStrategy())
 }
+
+// NewHardlinkCommandWrapper creates and returns hardlinks sub-command
 func NewHardlinkCommandWrapper() *FileCreationSubCommandWrapper {
 	return NewFileCreationSubCommand("hardlinks", proxyfile.NewHardlinkStrategy())
 }
+
+// NewSymlinkCommandWrapper creates and returns symlinks sub-command
 func NewSymlinkCommandWrapper() *FileCreationSubCommandWrapper {
-	return NewFileCreationSubCommand("symlinks", proxyfile.NewHardlinkStrategy())
+	return NewFileCreationSubCommand("symlinks", proxyfile.NewSymlinkStrategy())
 }
 
+// FileCreationSubCommandWrapper wraps a cobra command fields to hold parse flag options
 type FileCreationSubCommandWrapper struct {
 	cobraCommand *cobra.Command
 	isForced     bool
 }
 
+// GetCommand returns the wrapped cobra command
 func (w *FileCreationSubCommandWrapper) GetCommand() *cobra.Command {
 	return w.cobraCommand
 }
 
-func (w *FileCreationSubCommandWrapper) CreateCommand(commandName string, strategy proxyfile.FileCreationStrategy) *cobra.Command {
+func (w *FileCreationSubCommandWrapper) createCommand(commandName string, strategy proxyfile.FileCreationStrategy) *cobra.Command {
 	w.cobraCommand = &cobra.Command{
 		Use:   commandName,
 		Short: fmt.Sprintf("creates command %s", commandName),
@@ -62,10 +69,11 @@ func (w *FileCreationSubCommandWrapper) CreateCommand(commandName string, strate
 	return w.cobraCommand
 }
 
+// NewFileCreationSubCommand creates a subcommand which will execute proxy file creation
 func NewFileCreationSubCommand(commandName string, strategy proxyfile.FileCreationStrategy) *FileCreationSubCommandWrapper {
 
 	commandWrapper := new(FileCreationSubCommandWrapper)
-	commandWrapper.CreateCommand(commandName, strategy)
+	commandWrapper.createCommand(commandName, strategy)
 
 	return commandWrapper
 }

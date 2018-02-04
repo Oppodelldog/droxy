@@ -9,6 +9,7 @@ import (
 
 const commandFileName = "docker-proxy"
 
+// GetExecutablePath returns the path of the directory where docker-proxy binary is located
 func GetExecutablePath() (string, error) {
 	ex, err := os.Executable()
 	if err != nil {
@@ -17,6 +18,7 @@ func GetExecutablePath() (string, error) {
 	return filepath.Dir(ex), nil
 }
 
+// GetExecutableFilePath returns the file-path of the docker-proxy binary
 func GetExecutableFilePath() (string, error) {
 	executableDir, err := GetExecutablePath()
 	if err != nil {

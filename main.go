@@ -32,7 +32,7 @@ func main() {
 			logrus.Info(err)
 		}
 	} else {
-		cmd.ProxyDockerCommand()
+		cmd.ExecuteCommand()
 	}
 }
 

@@ -7,20 +7,24 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// FileCreationStrategy defines the interface for creation of a docker-proxy commands in filesystem
 type FileCreationStrategy interface {
 	CreateProxyFile(string, string) error
 }
 
+// New creates a new proxy file creator
 func New(creationStrategy FileCreationStrategy) *Creator {
 	return &Creator{
 		creationStrategy: creationStrategy,
 	}
 }
 
+// Creator creates commands
 type Creator struct {
 	creationStrategy FileCreationStrategy
 }
 
+// CreateProxyFiles creates docker-proxy commands
 func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration *config.Configuration, isForced bool) error {
 	for _, command := range configuration.Command {
 
