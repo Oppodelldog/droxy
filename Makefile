@@ -26,6 +26,7 @@ lint: ## Run all the linters
 		--enable=gosimple \
 		--enable=staticcheck \
 		--enable=gofmt \
+		--enable=golint \
 		--enable=goimports \
 		--enable=dupl \
 		--enable=misspell \
