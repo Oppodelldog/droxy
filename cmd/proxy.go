@@ -13,6 +13,7 @@ import (
 	"docker-proxy-command/dockercmd"
 
 	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 // ExecuteCommand executes a proxy command
@@ -60,6 +61,7 @@ func ExecuteCommand() {
 		os.Exit(900)
 	}
 	logrus.Infof("calling docker ro tun '%s'", commandName)
+	logrus.Infof(strings.Join(cmd.Args, " "))
 	err = runCommand(cmd)
 
 	if exitErr, ok := err.(*exec.ExitError); ok {

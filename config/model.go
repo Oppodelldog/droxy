@@ -36,6 +36,7 @@ type CommandDefinition struct {
 	IsInteractive   *bool
 	Volumes         *[]string
 	EnvVars         *[]string
+	Ports           *[]string
 	AddGroups       *bool
 	Impersonate     *bool
 	WorkDir         *string
@@ -65,6 +66,9 @@ func (c *CommandDefinition) HasPropertyVolumes() bool { return c.Volumes != nil 
 
 // HasPropertyEnvVars indicates if the command definition has the property EnvVars set
 func (c *CommandDefinition) HasPropertyEnvVars() bool { return c.EnvVars != nil }
+
+// HasPropertyPorts indicates if the command definition has the property ports set
+func (c *CommandDefinition) HasPropertyPorts() bool { return c.Ports != nil }
 
 // HasPropertyAddGroups indicates if the command definition has the property AddGroups set
 func (c *CommandDefinition) HasPropertyAddGroups() bool { return c.AddGroups != nil }
@@ -130,6 +134,7 @@ func (c *Configuration) mergeCommand(baseCommand *CommandDefinition, overlayComm
 
 	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
 	mergedCommand.EnvVars = resolvePropertyStringArray(baseCommand.EnvVars, overlayCommand.EnvVars)
+	mergedCommand.Ports = resolvePropertyStringArray(baseCommand.Ports, overlayCommand.Ports)
 
 	return mergedCommand
 }
