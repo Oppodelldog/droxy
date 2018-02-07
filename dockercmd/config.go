@@ -44,11 +44,6 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		return nil, err
 	}
 
-	err = autoBuildInteractiveMode(builder)
-	if err != nil {
-		return nil, err
-	}
-
 	if commandDef.HasPropertyEntryPoint() {
 		builder.SetEntryPoint(*commandDef.EntryPoint)
 	}
@@ -102,6 +97,13 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
+	if commandDef.HasPropertyPorts() {
+		err = buildPorts(*commandDef.Ports, builder)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return builder.Build(), nil
 }
 
@@ -113,12 +115,6 @@ func buildEnvVars(envVars []string, builder *Builder) error {
 		}
 		builder.AddEnvVar(envVarValue)
 	}
-
-	return nil
-}
-
-func autoBuildInteractiveMode(builder *Builder) error {
-	builder.AddArgument("-i")
 
 	return nil
 }
@@ -225,6 +221,19 @@ func buildVolumes(volumes []string, builder *Builder) error {
 		}
 
 		builder.AddVolumeMapping(hostPart, containerPart, options)
+	}
+
+	return nil
+}
+
+func buildPorts(portMappings []string, builder *Builder) error {
+	for _, portMapping := range portMappings {
+
+		portMappingWithValues, resolveErr := resolveEnvVar(portMapping)
+		if resolveErr != nil {
+			return resolveErr
+		}
+		builder.AddPortMapping(portMappingWithValues)
 	}
 
 	return nil
