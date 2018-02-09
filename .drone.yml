@@ -1,0 +1,15 @@
+workspace:
+  base: /go
+  path: src/docker-proxy-command
+
+pipeline:
+  build:
+    image: golang:1.9.2
+    commands:
+      - go get ./...
+      - go test -v ./...
+      - go build
+matrix:
+ GO_VERSION:
+   - latest
+   - "1.9"
