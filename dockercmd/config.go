@@ -43,7 +43,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	if err != nil {
 		return nil, err
 	}
-
+  
 	if entryPoint, ok := commandDef.GetEntryPoint(); ok {
 		builder.SetEntryPoint(entryPoint)
 	}
@@ -99,6 +99,13 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 
 	if ports, ok := commandDef.GetPorts(); ok {
 		err = buildPorts(ports, builder)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if commandDef.HasPropertyPorts() {
+		err = buildPorts(*commandDef.Ports, builder)
 		if err != nil {
 			return nil, err
 		}

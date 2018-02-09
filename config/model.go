@@ -15,6 +15,16 @@ type ConfigurationDefinition struct {
 	Logging        bool
 }
 
+// SetConfigurationFilePath sets the filepath the configuration was load from. this is for debugging purpose.
+func (c *Configuration) SetConfigurationFilePath(configFilePath string) {
+	c.configFilePath = configFilePath
+}
+
+// GetConfigurationFilePath returns the path the configuration was load from. this is for debugging purpose.
+func (c *Configuration) GetConfigurationFilePath() string {
+	return c.configFilePath
+}
+
 // FindCommandByName finds a command by the given name
 func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinition, error) {
 	for _, command := range c.Command {
