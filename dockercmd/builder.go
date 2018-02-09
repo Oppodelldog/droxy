@@ -68,7 +68,7 @@ func (b *Builder) SetStdErr(w io.Writer) *Builder {
 
 // AddPortMapping adds a mapping of ports between the docker container and the host
 func (b *Builder) AddPortMapping(portMapping string) *Builder {
-	b.portMappings = append(b.portMappings, "-p", fmt.Sprintf("%s", portMapping))
+	b.portMappings = append(b.portMappings, "-p", portMapping)
 	return b
 }
 

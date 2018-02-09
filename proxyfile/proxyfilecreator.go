@@ -28,12 +28,12 @@ type Creator struct {
 func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration *config.Configuration, isForced bool) error {
 	for _, command := range configuration.Command {
 
-		if !command.HasPropertyName() {
+		if !command.HasName() {
 			logrus.Warnf("skipped command because name is missing!")
 			continue
 		}
 
-		if command.HasPropertyIsTemplate() && *command.IsTemplate {
+		if isTemplate, ok := command.GetIsTemplate(); isTemplate && ok {
 			continue
 		}
 

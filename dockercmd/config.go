@@ -44,61 +44,61 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		return nil, err
 	}
 
-	if commandDef.HasPropertyEntryPoint() {
-		builder.SetEntryPoint(*commandDef.EntryPoint)
+	if entryPoint, ok := commandDef.GetEntryPoint(); ok {
+		builder.SetEntryPoint(entryPoint)
 	}
 
-	if commandDef.HasPropertyNetwork() {
-		builder.SetNetwork(*commandDef.Network)
+	if network, ok := commandDef.GetNetwork(); ok {
+		builder.SetNetwork(network)
 	}
 
-	if commandDef.HasPropertyIsInteractive() && *commandDef.IsInteractive {
+	if isInteractive, ok := commandDef.GetIsInteractive(); isInteractive && ok {
 		builder.AddArgument("-i")
 	}
-	if commandDef.HasPropertyRemoveContainer() {
-		err = buildRemoveContainer(*commandDef.RemoveContainer, builder)
+	if removeContainer, ok := commandDef.GetRemoveContainer(); ok {
+		err = buildRemoveContainer(removeContainer, builder)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if commandDef.HasPropertyAddGroups() {
-		err = buildGroups(*commandDef.AddGroups, builder)
+	if addGroups, ok := commandDef.GetAddGroups(); ok {
+		err = buildGroups(addGroups, builder)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if commandDef.HasPropertyImpersonate() {
-		err = buildImpersonation(*commandDef.Impersonate, builder)
+	if impersonate, ok := commandDef.GetImpersonate(); ok {
+		err = buildImpersonation(impersonate, builder)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if commandDef.HasPropertyImage() {
-		err = buildImage(*commandDef.Image, builder)
+	if image, ok := commandDef.GetImage(); ok {
+		err = buildImage(image, builder)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if commandDef.HasPropertyVolumes() {
-		err = buildVolumes(*commandDef.Volumes, builder)
+	if volumes, ok := commandDef.GetVolumes(); ok {
+		err = buildVolumes(volumes, builder)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if commandDef.HasPropertyEnvVars() {
-		err = buildEnvVars(*commandDef.EnvVars, builder)
+	if envVars, ok := commandDef.GetEnvVars(); ok {
+		err = buildEnvVars(envVars, builder)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	if commandDef.HasPropertyPorts() {
-		err = buildPorts(*commandDef.Ports, builder)
+	if ports, ok := commandDef.GetPorts(); ok {
+		err = buildPorts(ports, builder)
 		if err != nil {
 			return nil, err
 		}
