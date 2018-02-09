@@ -1,5 +1,5 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/docker-proxy-command)](https://goreportcard.com/report/github.com/Oppodelldog/docker-proxy-command)
-[![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/docker-proxy-command/go-report-card-badge/LICENSE)
+[![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/docker-proxy-command/go-report-card-badge/LICENSE) [![DroneIo](http://nulldog.de:12080/api/badges/Oppodelldog/docker-proxy-command/status.svg)](http://nulldog.de:12080/api/badges/Oppodelldog/docker-proxy-command/status.svg)
 
 # The idea
 This tool should help you in creating variants of commands that proxy execution into docker containers.
