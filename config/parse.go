@@ -12,8 +12,8 @@ func Parse(filepath string) (*Configuration, error) {
 	if err != nil {
 		return nil, err
 	}
-	return parseFromBytes(fileContent)
 
+	return parseFromBytes(fileContent)
 }
 
 func parseFromBytes(bytes []byte) (*Configuration, error) {
