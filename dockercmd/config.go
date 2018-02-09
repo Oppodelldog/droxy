@@ -104,8 +104,8 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
-	if commandDef.HasPropertyPorts() {
-		err = buildPorts(*commandDef.Ports, builder)
+	if ports,ok := commandDef.GetPorts(); ok {
+		err = buildPorts(ports, builder)
 		if err != nil {
 			return nil, err
 		}
