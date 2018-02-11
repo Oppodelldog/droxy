@@ -13,5 +13,5 @@ func ParseCommandNameFromCommandLine() string {
 }
 
 func GetCommandNameFilename(commandName string) string {
-	return GetCommandNameFilename
+	return commandName
 }
