@@ -43,7 +43,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	if err != nil {
 		return nil, err
 	}
-  
+
 	if entryPoint, ok := commandDef.GetEntryPoint(); ok {
 		builder.SetEntryPoint(entryPoint)
 	}
@@ -62,7 +62,10 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
-	addGroups(commandDef,builder)
+	err = addGroups(commandDef, builder)
+	if err != nil {
+		return nil, err
+	}
 
 	if impersonate, ok := commandDef.GetImpersonate(); ok {
 		err = buildImpersonation(impersonate, builder)
@@ -99,7 +102,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
-	if ports,ok := commandDef.GetPorts(); ok {
+	if ports, ok := commandDef.GetPorts(); ok {
 		err = buildPorts(ports, builder)
 		if err != nil {
 			return nil, err
