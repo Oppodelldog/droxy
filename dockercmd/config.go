@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"os/user"
 	"strings"
-
 	"github.com/drone/envsubst"
 )
 

@@ -1,10 +1,9 @@
 package proxyfile
 
 import (
-	"github.com/Oppodelldog/docker-proxy-command/config"
 	"os"
-
 	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/docker-proxy-command/config"
 	"github.com/Oppodelldog/docker-proxy-command/helper"
 )
 

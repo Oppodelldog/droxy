@@ -2,18 +2,15 @@ package cmd
 
 import (
 	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/dockercmd"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/logging"
+	"github.com/sirupsen/logrus"
+	"io/ioutil"
 	"os"
 	"os/exec"
-	"syscall"
-
-	"github.com/Oppodelldog/docker-proxy-command/logging"
-	"io/ioutil"
-
-	"github.com/Oppodelldog/docker-proxy-command/dockercmd"
-
-	"github.com/sirupsen/logrus"
 	"strings"
-	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"syscall"
 )
 
 // ExecuteCommand executes a proxy command
