@@ -1,8 +1,8 @@
 package dockercmd
 
 import (
-	"docker-proxy-command/config"
-	"docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
 	"fmt"
 	"os"
 	"os/exec"
@@ -62,12 +62,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
-	if addGroups, ok := commandDef.GetAddGroups(); ok {
-		err = buildGroups(addGroups, builder)
-		if err != nil {
-			return nil, err
-		}
-	}
+	addGroups(commandDef,builder)
 
 	if impersonate, ok := commandDef.GetImpersonate(); ok {
 		err = buildImpersonation(impersonate, builder)

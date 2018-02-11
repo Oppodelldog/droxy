@@ -1,11 +1,11 @@
 package main
 
 import (
-	"docker-proxy-command/cmd"
+	"github.com/Oppodelldog/docker-proxy-command/cmd"
 	"os"
 	"path/filepath"
 
-	"docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -26,7 +26,7 @@ func main() {
 		if err != nil {
 			logrus.Info(err)
 		}
-	} else if len(os.Args) >= 1 && filepath.Base(os.Args[0]) == "docker-proxy" {
+	} else if len(os.Args) >= 1 && filepath.Base(os.Args[0]) == helper.GetCommandName() {
 		err := rootCmd.Help()
 		if err != nil {
 			logrus.Info(err)
