@@ -1,5 +1,9 @@
 package helper
 
+import (
+	"path/filepath"
+	"os"
+)
 func GetCommandName() string {
 	return commandFileName
 }
