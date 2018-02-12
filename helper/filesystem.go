@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 )
 
-const commandFileName = "docker-proxy"
-
 // GetExecutablePath returns the path of the directory where docker-proxy binary is located
 func GetExecutablePath() (string, error) {
 	ex, err := os.Executable()
@@ -25,7 +23,7 @@ func GetExecutableFilePath() (string, error) {
 		return "", err
 	}
 
-	commandFilepath := path.Join(executableDir, commandFileName)
+	commandFilepath := path.Join(executableDir, GetCommandName())
 	if _, err := os.Stat(commandFilepath); os.IsNotExist(err) {
 		return "", fmt.Errorf("could not find docker-proxy command as expected at '%s'", commandFilepath)
 	}

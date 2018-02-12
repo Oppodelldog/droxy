@@ -1,10 +1,10 @@
 package proxyfile
 
 import (
-	"docker-proxy-command/config"
 	"os"
-
 	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
 )
 
 // FileCreationStrategy defines the interface for creation of a docker-proxy commands in filesystem
@@ -37,25 +37,30 @@ func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration
 			continue
 		}
 
-		if _, err := os.Stat(*command.Name); err == nil {
-			if isForced {
-				err := os.Remove(*command.Name)
-				if err != nil {
-					panic(err)
+		if commandName, ok := command.GetName(); ok {
+
+			commandNameFileName := helper.GetCommandNameFilename(commandName)
+			if _, err := os.Stat(commandNameFileName); err == nil {
+				if isForced {
+					err := os.Remove(commandNameFileName)
+					if err != nil {
+						panic(err)
+					}
+				} else {
+					logrus.Warnf("command proxy file (%s) already exists for command'%s'", commandNameFileName, commandName)
+					continue
 				}
-			} else {
-				logrus.Warnf("command symlink already exists for '%s'", *command.Name)
+			}
+
+			err := pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, commandNameFileName)
+			if err != nil {
+				logrus.Errorf("error creating symlink '%s': %v", commandName, err)
 				continue
 			}
+
+			logrus.Infof("created '%s'", commandName)
 		}
 
-		err := pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, *command.Name)
-		if err != nil {
-			logrus.Errorf("error creating symlink '%s': %v", *command.Name, err)
-			continue
-		}
-
-		logrus.Infof("created '%s'", *command.Name)
 	}
 
 	return nil

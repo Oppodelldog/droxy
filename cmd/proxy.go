@@ -1,19 +1,16 @@
 package cmd
 
 import (
-	"docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/dockercmd"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/logging"
+	"github.com/sirupsen/logrus"
+	"io/ioutil"
 	"os"
 	"os/exec"
-	"path/filepath"
-	"syscall"
-
-	"docker-proxy-command/logging"
-	"io/ioutil"
-
-	"docker-proxy-command/dockercmd"
-
-	"github.com/sirupsen/logrus"
 	"strings"
+	"syscall"
 )
 
 // ExecuteCommand executes a proxy command
@@ -54,7 +51,7 @@ func ExecuteCommand() {
 	}
 	logrus.Info("----------------------------------------------------------------------")
 
-	commandName := filepath.Base(os.Args[0])
+	commandName := helper.ParseCommandNameFromCommandLine()
 	cmd, err := dockercmd.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {
 		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)

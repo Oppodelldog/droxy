@@ -1,14 +1,13 @@
 package dockercmd
 
 import (
-	"docker-proxy-command/config"
-	"docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
 	"fmt"
 	"os"
 	"os/exec"
 	"os/user"
 	"strings"
-
 	"github.com/drone/envsubst"
 )
 
@@ -43,7 +42,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	if err != nil {
 		return nil, err
 	}
-  
+
 	if entryPoint, ok := commandDef.GetEntryPoint(); ok {
 		builder.SetEntryPoint(entryPoint)
 	}
@@ -62,11 +61,9 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
-	if addGroups, ok := commandDef.GetAddGroups(); ok {
-		err = buildGroups(addGroups, builder)
-		if err != nil {
-			return nil, err
-		}
+	err = addGroups(commandDef, builder)
+	if err != nil {
+		return nil, err
 	}
 
 	if impersonate, ok := commandDef.GetImpersonate(); ok {
@@ -104,7 +101,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		}
 	}
 
-	if ports,ok := commandDef.GetPorts(); ok {
+	if ports, ok := commandDef.GetPorts(); ok {
 		err = buildPorts(ports, builder)
 		if err != nil {
 			return nil, err

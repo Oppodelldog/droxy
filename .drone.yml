@@ -1,6 +1,6 @@
 workspace:
   base: /go
-  path: src/docker-proxy-command
+  path: src/github.com/Oppodelldog/docker-proxy-command
 
 pipeline:
   build:
