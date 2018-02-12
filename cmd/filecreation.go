@@ -1,9 +1,9 @@
 package cmd
 
 import (
-	"github.com/Oppodelldog/docker-proxy-command/config"
-	"github.com/Oppodelldog/docker-proxy-command/helper"
-	"github.com/Oppodelldog/docker-proxy-command/proxyfile"
+	"docker-proxy-command/config"
+	"docker-proxy-command/helper"
+	"docker-proxy-command/proxyfile"
 	"fmt"
 
 	"os"

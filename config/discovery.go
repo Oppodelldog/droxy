@@ -2,7 +2,7 @@ package config
 
 import (
 	"bytes"
-	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"docker-proxy-command/helper"
 	"fmt"
 	"os"
 	"path"
