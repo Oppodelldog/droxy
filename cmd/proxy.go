@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"docker-proxy-command/config"
-	"docker-proxy-command/dockercmd"
-	"docker-proxy-command/helper"
-	"docker-proxy-command/logging"
+	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/dockercmd"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/logging"
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"

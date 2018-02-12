@@ -1,8 +1,8 @@
 package dockercmd
 
 import (
-	"docker-proxy-command/config"
-	"docker-proxy-command/helper"
+	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/docker-proxy-command/helper"
 	"fmt"
 	"os"
 	"os/exec"
