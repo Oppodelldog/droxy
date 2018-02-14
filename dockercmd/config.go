@@ -66,11 +66,9 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 		return nil, err
 	}
 
-	if impersonate, ok := commandDef.GetImpersonate(); ok {
-		err = buildImpersonation(impersonate, builder)
-		if err != nil {
-			return nil, err
-		}
+	err = addImpersonation(commandDef, builder)
+	if err != nil {
+		return nil, err
 	}
 
 	if image, ok := commandDef.GetImage(); ok {
