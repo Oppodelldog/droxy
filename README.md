@@ -21,8 +21,8 @@ to have all those tools from one hand, maybe a configuration file.
     [[command]]
       name = "basic command"  # name of the command
       isTemplate = true       # this command can be used as a template, no command will be created
-      addGroups = true        # add current systems groups
-      impersonate = true      # use executing user and group for execution in the container
+      addGroups = true        # add current systems groups  (linux only)
+      impersonate = true      # use executing user and group for execution in the container (linux only)
       workDir = "/app"        # define working directory
       removeContainer=true    # remove container after command has finished
       isInteractive=true      # enable interaction with the called command
