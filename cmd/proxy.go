@@ -83,5 +83,17 @@ func ExecuteCommand() {
 
 func runCommand(cmd *exec.Cmd) error {
 
-	return cmd.Run()
+	cmd.Stdout = helper.NewLoggingWriter(os.Stdout, logrus.StandardLogger(), "StdOut")
+	cmd.Stderr = helper.NewLoggingWriter(os.Stderr, logrus.StandardLogger(), "StdErr")
+	err := cmd.Start()
+	if err != nil {
+		return err
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
