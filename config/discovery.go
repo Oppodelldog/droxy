@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-const configFileName = "droxy.yml"
+const configFileName = "droxy.toml"
 
 // DiscoverConfigFile tries to find a config file in different locations:
 // * current working directory

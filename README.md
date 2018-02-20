@@ -14,7 +14,8 @@ to have all those tools from one hand, maybe a configuration file.
 2. Bootstrap all command executables from that config file
 3. Just use your new tools
 
-## the config (toml)
+## the config
+> droxy.toml
 
 ```TOML
     Version="1"
