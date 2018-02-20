@@ -1,10 +1,11 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/helper"
 	"github.com/Oppodelldog/droxy/proxyfile"
-	"fmt"
 
 	"os"
 

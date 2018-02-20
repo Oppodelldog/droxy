@@ -2,10 +2,11 @@ package config
 
 import (
 	"bytes"
-	"github.com/Oppodelldog/droxy/helper"
 	"fmt"
 	"os"
 	"path"
+
+	"github.com/Oppodelldog/droxy/helper"
 
 	"github.com/pkg/errors"
 )

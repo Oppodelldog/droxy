@@ -1,11 +1,12 @@
 package logging
 
 import (
-	"github.com/Oppodelldog/droxy/config"
 	"io"
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/Oppodelldog/droxy/config"
 )
 
 const logFileName = "droxy.log"

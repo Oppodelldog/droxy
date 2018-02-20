@@ -2,9 +2,10 @@ package proxyfile
 
 import (
 	"os"
-	"github.com/sirupsen/logrus"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/helper"
+	"github.com/sirupsen/logrus"
 )
 
 // FileCreationStrategy defines the interface for creation of a droxy commands in filesystem

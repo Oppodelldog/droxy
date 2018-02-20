@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/Oppodelldog/droxy/cmd"
 	"os"
 	"path/filepath"
+
+	"github.com/Oppodelldog/droxy/cmd"
 
 	"github.com/Oppodelldog/droxy/helper"
 

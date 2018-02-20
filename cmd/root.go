@@ -8,7 +8,7 @@ import "github.com/spf13/cobra"
 var Root = &cobra.Command{
 	Use:   "droxy",
 	Short: "docker proxy commands by configuration",
-	Long:  `     _                             
+	Long: `     _                             
     | |                            
   __| |  ____   ___   _   _  _   _ 
  / _  | / ___) / _ \ ( \ / )| | | |

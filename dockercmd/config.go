@@ -1,13 +1,14 @@
 package dockercmd
 
 import (
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/helper"
 	"fmt"
 	"os"
 	"os/exec"
 	"os/user"
 	"strings"
+
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/helper"
 	"github.com/drone/envsubst"
 )
 

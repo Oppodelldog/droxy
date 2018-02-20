@@ -1,11 +1,12 @@
 package helper
 
 import (
-	"testing"
-	"github.com/sirupsen/logrus"
 	"bytes"
-	"github.com/magiconair/properties/assert"
 	"io/ioutil"
+	"testing"
+
+	"github.com/magiconair/properties/assert"
+	"github.com/sirupsen/logrus"
 )
 
 func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {

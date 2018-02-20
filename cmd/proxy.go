@@ -1,16 +1,17 @@
 package cmd
 
 import (
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockercmd"
-	"github.com/Oppodelldog/droxy/helper"
-	"github.com/Oppodelldog/droxy/logging"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"strings"
 	"syscall"
+
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercmd"
+	"github.com/Oppodelldog/droxy/helper"
+	"github.com/Oppodelldog/droxy/logging"
+	"github.com/sirupsen/logrus"
 )
 
 // ExecuteCommand executes a proxy command
@@ -90,10 +91,5 @@ func runCommand(cmd *exec.Cmd) error {
 		return err
 	}
 
-	err = cmd.Wait()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return cmd.Wait()
 }
