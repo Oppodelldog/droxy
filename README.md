@@ -1,7 +1,8 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/docker-proxy-command)](https://goreportcard.com/report/github.com/Oppodelldog/docker-proxy-command) [![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/docker-proxy-command/go-report-card-badge/LICENSE) [![DroneIo](http://nulldog.de:12080/api/badges/Oppodelldog/docker-proxy-command/status.svg)](http://nulldog.de:12080/Oppodelldog/docker-proxy-command)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/droxy)](https://goreportcard.com/report/github.com/Oppodelldog/droxy) [![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/droxy/go-report-card-badge/LICENSE) [![DroneIo](http://nulldog.de:12080/api/badges/Oppodelldog/droxy/status.svg)](http://nulldog.de:12080/Oppodelldog/droxy)
+# Droxy
+> create commands that proxy to docker
 
-
-# The idea
+## The idea
 This tool should help you in creating variants of commands that proxy execution into docker containers.
 
 **WHY?**  
