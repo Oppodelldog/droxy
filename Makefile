@@ -42,7 +42,7 @@ ci: lint test ## Run all the tests and code checks
 build: ## build binary to .dist folder
 	go build -o ".dist/droxy" main.go
 
-install: build ## Install to <gopath>/src
+install: ## Install to <gopath>/src
 	go install ./...
 
 

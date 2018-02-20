@@ -68,8 +68,6 @@ There are three options to create custom docker-proxy commands into a directory:
 * **hardlinks**  
     this sub-command creates a hardlink for every command defined in the config into the current directory
 
-#### Pros and Contras
-
 ```bash
 docker-proxy symlinks
 ```
@@ -83,6 +81,7 @@ docker-proxy clones
 use ```-f``` to force file creation. This will delete files with command names before creation.
 
 
+#### Pros and Contras
 **symlinks**  
 **Pro:** low disc space consumption  
 **Con:** config will only be found when defined by environment variable  
@@ -100,3 +99,11 @@ use ```-f``` to force file creation. This will delete files with command names b
     docker-proxy prepare
 
 all required images are pulled
+
+
+## Getting started
+```shell
+make setup     # install dependencies
+```
+If you have no make installed, execute the commands of the ```setup``` task manually.
+
