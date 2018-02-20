@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/Oppodelldog/docker-proxy-command/cmd"
+	"github.com/Oppodelldog/droxy/cmd"
 	"os"
 	"path/filepath"
 
-	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"github.com/Oppodelldog/droxy/helper"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

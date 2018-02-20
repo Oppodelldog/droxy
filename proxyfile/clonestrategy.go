@@ -8,12 +8,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// NewClonesStrategy creates a new FileCreationStrategy that produces clones of docker-proxy command
+// NewClonesStrategy creates a new FileCreationStrategy that produces clones of droxy command
 func NewClonesStrategy() FileCreationStrategy {
 	return &ClonesStrategy{}
 }
 
-//ClonesStrategy contains the implementation of creating clones of docker-proxy execuable
+//ClonesStrategy contains the implementation of creating clones of droxy execuable
 type ClonesStrategy struct{}
 
 //CreateProxyFile creates a clone of the given commandBinaryFilePath to commandNameFilePath

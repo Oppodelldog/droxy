@@ -1,3 +1,3 @@
 package helper
 
-const commandFileName = "docker-proxy"
+const commandFileName = "droxy"

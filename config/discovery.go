@@ -2,7 +2,7 @@ package config
 
 import (
 	"bytes"
-	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"github.com/Oppodelldog/droxy/helper"
 	"fmt"
 	"os"
 	"path"
@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-const configFileName = "docker-proxy.yml"
+const configFileName = "droxy.yml"
 
 // DiscoverConfigFile tries to find a config file in different locations:
 // * current working directory
@@ -69,9 +69,9 @@ func executableDirProvider() (string, error) {
 }
 
 func envVarFilePathProvider() (string, error) {
-	if envConfigFile, ok := os.LookupEnv("DOCKER_PROXY_CONFIG"); ok {
+	if envConfigFile, ok := os.LookupEnv("DROXY_CONFIG"); ok {
 		return envConfigFile, nil
 	}
 
-	return "", errors.New("env var DOCKER_PROXY_CONFIG not defined")
+	return "", errors.New("env var DROXY_CONFIG not defined")
 }
