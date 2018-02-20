@@ -7,8 +7,16 @@ import "github.com/spf13/cobra"
 // The logical part for execution is handled in main.
 var Root = &cobra.Command{
 	Use:   "droxy",
-	Short: "tool to create and run custom-command-containers",
-	Long:  `yeah`,
+	Short: "docker proxy commands by configuration",
+	Long:  `     _                             
+    | |                            
+  __| |  ____   ___   _   _  _   _ 
+ / _  | / ___) / _ \ ( \ / )| | | |
+( (_| || |    | |_| | ) X ( | |_| |
+ \____||_|     \___/ (_/ \_) \__  |
+                            (____/ 
+
+creates commands that proxy to docker`,
 	Run: func(cmd *cobra.Command, args []string) {
 	},
 }
