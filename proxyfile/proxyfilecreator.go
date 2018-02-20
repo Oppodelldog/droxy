@@ -7,7 +7,7 @@ import (
 	"github.com/Oppodelldog/droxy/helper"
 )
 
-// FileCreationStrategy defines the interface for creation of a docker-proxy commands in filesystem
+// FileCreationStrategy defines the interface for creation of a droxy commands in filesystem
 type FileCreationStrategy interface {
 	CreateProxyFile(string, string) error
 }
@@ -24,7 +24,7 @@ type Creator struct {
 	creationStrategy FileCreationStrategy
 }
 
-// CreateProxyFiles creates docker-proxy commands
+// CreateProxyFiles creates droxy commands
 func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration *config.Configuration, isForced bool) error {
 	for _, command := range configuration.Command {
 

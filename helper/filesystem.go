@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-// GetExecutablePath returns the path of the directory where docker-proxy binary is located
+// GetExecutablePath returns the path of the directory where droxy binary is located
 func GetExecutablePath() (string, error) {
 	ex, err := os.Executable()
 	if err != nil {
@@ -16,7 +16,7 @@ func GetExecutablePath() (string, error) {
 	return filepath.Dir(ex), nil
 }
 
-// GetExecutableFilePath returns the file-path of the docker-proxy binary
+// GetExecutableFilePath returns the file-path of the droxy binary
 func GetExecutableFilePath() (string, error) {
 	executableDir, err := GetExecutablePath()
 	if err != nil {
@@ -25,7 +25,7 @@ func GetExecutableFilePath() (string, error) {
 
 	commandFilepath := path.Join(executableDir, GetCommandName())
 	if _, err := os.Stat(commandFilepath); os.IsNotExist(err) {
-		return "", fmt.Errorf("could not find docker-proxy command as expected at '%s'", commandFilepath)
+		return "", fmt.Errorf("could not find droxy command as expected at '%s'", commandFilepath)
 	}
 
 	return commandFilepath, nil

@@ -42,7 +42,7 @@ func (w *FileCreationSubCommandWrapper) createCommand(commandName string, strate
 	w.cobraCommand = &cobra.Command{
 		Use:   commandName,
 		Short: fmt.Sprintf("creates command %s", commandName),
-		Long:  `creates clones of docker-proxy for all command in the current directory`,
+		Long:  `creates clones of droxy for all command in the current directory`,
 		Run: func(cmd *cobra.Command, args []string) {
 			cfg := config.Load()
 

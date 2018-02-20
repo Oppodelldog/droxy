@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-const configFileName = "docker-proxy.yml"
+const configFileName = "droxy.yml"
 
 // DiscoverConfigFile tries to find a config file in different locations:
 // * current working directory
