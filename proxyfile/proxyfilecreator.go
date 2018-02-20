@@ -47,7 +47,7 @@ func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration
 						panic(err)
 					}
 				} else {
-					logrus.Warnf("command proxy file (%s) already exists for command'%s'", commandNameFileName, commandName)
+					logrus.Warnf("droxy command file (%s) already exists for command '%s'", commandNameFileName, commandName)
 					continue
 				}
 			}

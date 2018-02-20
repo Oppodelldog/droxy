@@ -69,9 +69,9 @@ func executableDirProvider() (string, error) {
 }
 
 func envVarFilePathProvider() (string, error) {
-	if envConfigFile, ok := os.LookupEnv("DOCKER_PROXY_CONFIG"); ok {
+	if envConfigFile, ok := os.LookupEnv("DROXY_CONFIG"); ok {
 		return envConfigFile, nil
 	}
 
-	return "", errors.New("env var DOCKER_PROXY_CONFIG not defined")
+	return "", errors.New("env var DROXY_CONFIG not defined")
 }

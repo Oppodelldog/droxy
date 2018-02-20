@@ -6,7 +6,7 @@ import "github.com/spf13/cobra"
 // Basically it contains information to display the help message, but has no logic for execution.
 // The logical part for execution is handled in main.
 var Root = &cobra.Command{
-	Use:   "docker-command-proxy",
+	Use:   "droxy",
 	Short: "tool to create and run custom-command-containers",
 	Long:  `yeah`,
 	Run: func(cmd *cobra.Command, args []string) {
