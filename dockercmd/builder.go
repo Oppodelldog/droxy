@@ -185,7 +185,9 @@ func (b *Builder) Build() *exec.Cmd {
 
 	b.buildArgsAppend(b.cmdArgs...)
 
-	cmd.Args = append(cmd.Args, b.buildArgs...)
+	if len(b.buildArgs) > 0 {
+		cmd.Args = append(cmd.Args, b.buildArgs...)
+	}
 
 	cmd.Stdout = b.stdOut
 	cmd.Stderr = b.stdErr
