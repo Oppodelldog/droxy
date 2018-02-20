@@ -1,7 +1,7 @@
 package logging
 
 import (
-	"github.com/Oppodelldog/docker-proxy-command/config"
+	"github.com/Oppodelldog/droxy/config"
 	"io"
 	"os"
 	"path"

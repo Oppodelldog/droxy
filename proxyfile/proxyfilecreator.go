@@ -3,8 +3,8 @@ package proxyfile
 import (
 	"os"
 	"github.com/sirupsen/logrus"
-	"github.com/Oppodelldog/docker-proxy-command/config"
-	"github.com/Oppodelldog/docker-proxy-command/helper"
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/helper"
 )
 
 // FileCreationStrategy defines the interface for creation of a docker-proxy commands in filesystem
