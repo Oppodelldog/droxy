@@ -1,1 +1,6 @@
-build.sh
+.build
+.release/v*
+.idea
+vendor
+coverage.txt
+.dist

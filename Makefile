@@ -38,12 +38,14 @@ lint: ## Run all the linters
 
 ci: lint test ## Run all the tests and code checks
 
-
-build: ## build binary to .dist folder
-	go build -o ".dist/droxy" main.go
+build: ## build binary to .build folder
+	go build -o ".build/droxy" main.go
 
 install: ## Install to <gopath>/src
 	go install ./...
+
+build-release: ## builds the checked out version into the .release/${tag} folder
+	.release/build.sh
 
 
 # Self-Documented Makefile see https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
