@@ -30,11 +30,12 @@ func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exe
 
 func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder *Builder) (*exec.Cmd, error) {
 
-	var err error
+	args := prepareCommandLineArguments(commandDef, os.Args[1:])
+	args = prependAdditionalArguments(commandDef, args)
 
-	builder.AddCmdArguments(os.Args[1:])
+	builder.AddCmdArguments(args)
 
-	err = autoBuildAttachStreams(builder)
+	err := autoBuildAttachStreams(builder)
 	if err != nil {
 		return nil, err
 	}
