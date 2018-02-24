@@ -10,7 +10,7 @@ pipeline:
       - dep ensure
       - go get ./...
       - go get github.com/mattn/goveralls
-      - goveralls -v -service drone.io
+      - goveralls -v -service drone.io -repotoken $COVERALLS_TOKEN
       - go build
 
 matrix:
