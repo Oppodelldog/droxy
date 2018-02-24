@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
 	"fmt"
+
 	"github.com/Oppodelldog/droxy/version"
+	"github.com/spf13/cobra"
 )
 
 // Root is the root cobra command.

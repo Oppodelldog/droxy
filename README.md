@@ -50,6 +50,24 @@ to have all those tools from one hand, maybe a configuration file.
     	name = "php"                # name of the command which is created by calling 'docker-proxy symlinks'
     	entryPoint = "php"          # basic binary to execute inside the container
     	image = "php:7.1.13"        # docker image the container is run on
+
+    [[command]]
+        template = "basic command"
+    	name = "phpstorm-php-unittest-integration"
+    	entryPoint = "php"
+    	image = "php:7.1.13"
+
+    	# replace  127.0.0.1 with docker ip of host
+        replaceArgs = [
+            [
+              "-dxdebug.remote_host=127.0.0.1",
+              "-dxdebug.remote_host=172.17.0.1"
+            ]
+        ]
+
+        # ensure xdebug will startup and communicate
+        additionalArgs = ["-dxdebug.remote_autostart=1"]
+
 ```
 
 

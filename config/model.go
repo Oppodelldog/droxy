@@ -72,6 +72,9 @@ func (c *Configuration) mergeCommand(baseCommand *CommandDefinition, overlayComm
 	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
 	mergedCommand.EnvVars = resolvePropertyStringArray(baseCommand.EnvVars, overlayCommand.EnvVars)
 	mergedCommand.Ports = resolvePropertyStringArray(baseCommand.Ports, overlayCommand.Ports)
+	mergedCommand.AdditionalArgs = resolvePropertyStringArray(baseCommand.AdditionalArgs, overlayCommand.AdditionalArgs)
+
+	mergedCommand.ReplaceArgs = resolvePropertyStringArray2D(baseCommand.ReplaceArgs, overlayCommand.ReplaceArgs)
 
 	return mergedCommand
 }
@@ -106,6 +109,20 @@ func resolvePropertyString(sBase *string, sOverlay *string) *string {
 
 func resolvePropertyStringArray(sBase *[]string, sOverlay *[]string) *[]string {
 	var s []string
+
+	if sBase != nil {
+		s = *sBase
+	}
+
+	if sOverlay != nil {
+		s = *sOverlay
+	}
+
+	return &s
+}
+
+func resolvePropertyStringArray2D(sBase *[][]string, sOverlay *[][]string) *[][]string {
+	var s [][]string
 
 	if sBase != nil {
 		s = *sBase

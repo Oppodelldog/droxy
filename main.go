@@ -12,8 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var DroxyVersion string
-
 func main() {
 	var rootCmd = cmd.Root
 	symlinkCommandWrapper := cmd.NewSymlinkCommandWrapper()
