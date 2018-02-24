@@ -16,6 +16,8 @@ type CommandDefinition struct {
 	Impersonate     *bool
 	WorkDir         *string
 	RemoveContainer *bool
+	ReplaceArgs     *[][]string
+	AdditionalArgs  *[]string
 }
 
 // GetIsTemplate returns value of IsTemplate and an boolean indicating if value is set.
@@ -126,6 +128,22 @@ func (c *CommandDefinition) GetEnvVars() ([]string, bool) {
 func (c *CommandDefinition) GetPorts() ([]string, bool) {
 	if c.Ports != nil {
 		return *c.Ports, true
+	}
+	return []string{}, false
+}
+
+// GetReplaceArgs returns value of ReplaceArgs and an boolean indicating if value is set.
+func (c *CommandDefinition) GetReplaceArgs() ([][]string, bool) {
+	if c.ReplaceArgs != nil {
+		return *c.ReplaceArgs, true
+	}
+	return [][]string{}, false
+}
+
+// GetAdditionalArgs returns value of AdditionalArgs and an boolean indicating if value is set.
+func (c *CommandDefinition) GetAdditionalArgs() ([]string, bool) {
+	if c.AdditionalArgs != nil {
+		return *c.AdditionalArgs, true
 	}
 	return []string{}, false
 }

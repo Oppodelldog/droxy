@@ -42,6 +42,16 @@ do
         echo 'An error has occurred! Aborting the script execution...'
         exit 1
     fi
+
+    # compress binary and remove builds
+    currentWd=$(pwd)
+    cd ${target_folder}/${tag}/${output_folder}
+
+    tar -cvzf ../${output_name}-${output_folder}.tar.gz ${output_name}
+
+    cd $currentWd
+    rm -rf ${target_folder}/${tag}/${output_folder}
 done
+
 
 git checkout ${workingBranch}

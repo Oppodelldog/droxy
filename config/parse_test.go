@@ -51,6 +51,17 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		"8081:9081",
 	}
 
+	replaceArgs := [][]string{
+		{
+			"-dxdebug.remote_host=127.0.0.1",
+			"-dxdebug.remote_host=172.17.0.1",
+		},
+	}
+
+	additionalArgs := []string{
+		"additionalArgument=123",
+	}
+
 	return CommandDefinition{
 		IsTemplate:      &isTemplate,
 		Template:        &template,
@@ -66,8 +77,9 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		Volumes:         &volumes,
 		EnvVars:         &envVars,
 		Ports:           &ports,
+		ReplaceArgs:     &replaceArgs,
+		AdditionalArgs:  &additionalArgs,
 	}
-
 }
 
 func getFullFeatureConfigFixture() []byte {
@@ -107,6 +119,15 @@ func getFullFeatureConfigFixture() []byte {
           "8080:9080",
 	      "8081:9081",
       ]
+
+      replaceArgs = [
+      	[
+			"-dxdebug.remote_host=127.0.0.1",
+			"-dxdebug.remote_host=172.17.0.1"		
+	    ]
+      ]
+
+	  additionalArgs = ["additionalArgument=123"]
 `)
 }
 
