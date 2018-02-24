@@ -1,20 +1,18 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/droxy)](https://goreportcard.com/report/github.com/Oppodelldog/droxy) [![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/droxy/master/LICENSE) [![DroneIo](http://nulldog.de:12080/api/badges/Oppodelldog/droxy/status.svg)](http://nulldog.de:12080/Oppodelldog/droxy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/droxy)](https://goreportcard.com/report/github.com/Oppodelldog/droxy) [![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/droxy/master/LICENSE) [![DroneIo](http://nulldog.de:12080/api/badges/Oppodelldog/droxy/status.svg)](http://nulldog.de:12080/Oppodelldog/droxy) [![Coverage Status](https://coveralls.io/repos/github/Oppodelldog/droxy/badge.svg?branch=coveralls-integration)](https://coveralls.io/github/Oppodelldog/droxy?branch=coveralls-integration)
 # Droxy
 > create commands that proxy to docker
 
 ## The idea
 This tool should help you in creating variants of commands that proxy execution into docker containers.
 
-**WHY?**  
-When working on many different projects that require different software or different versions you might want
-to have all those tools from one hand, maybe a configuration file.
+## Getting started
+To get started you either download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).
+If you would like to build the tool from source code, read the contribution part of this document.
 
-**HOW?**
-1. Commit dev-tools to your project by a config file
-2. Bootstrap all command executables from that config file
-3. Just use your new tools
+## Configuration
+In the config file, you define the commands you want to create.
+The config file must be named ```droxy.toml```.
 
-## the config
 > droxy.toml
 
 ```TOML
@@ -50,6 +48,24 @@ to have all those tools from one hand, maybe a configuration file.
     	name = "php"                # name of the command which is created by calling 'docker-proxy symlinks'
     	entryPoint = "php"          # basic binary to execute inside the container
     	image = "php:7.1.13"        # docker image the container is run on
+
+    [[command]]
+        template = "basic command"
+    	name = "phpstorm-php-unittest-integration"
+    	entryPoint = "php"
+    	image = "php:7.1.13"
+
+    	# replace  127.0.0.1 with docker ip of host
+        replaceArgs = [
+            [
+              "-dxdebug.remote_host=127.0.0.1",
+              "-dxdebug.remote_host=172.17.0.1"
+            ]
+        ]
+
+        # ensure xdebug will startup and communicate
+        additionalArgs = ["-dxdebug.remote_autostart=1"]
+
 ```
 
 
@@ -81,29 +97,23 @@ docker-proxy clones
 use ```-f``` to force file creation. This will delete files with command names before creation.
 
 
-#### Pros and Contras
-**symlinks**  
-**Pro:** low disc space consumption  
-**Con:** config will only be found when defined by environment variable  
-  
-**hardlinks**  
-**Pro:** config will be found  
-**Con:** ?  
-  
-**clones**  
-**Pro:** config will be found  
-**Con:** needs more disc space  
-  
+## Contribute
+Feature requests and pull requests are welcome.
 
-### bootstrap containers (?!)
-    docker-proxy prepare
+### How to
+Clone the repository into your go folder.
+The path should look like this ```.../go/src/github.com/Oppodelldog/droxy.```
 
-all required images are pulled
+There are some make targets that help you with several tasks, first: ```setup```:
 
-
-## Getting started
 ```shell
-make setup     # install dependencies
+make setup
 ```
-If you have no make installed, execute the commands of the ```setup``` task manually.
+This installs necessary go tools to get further jobs done and installs vendors.
+
+Now you are ready to go.
+```make install``` builds and installs the **droxy** command in **.../go/bin**
+so you can directly use or test it.
+
+> If you have no make installed, execute the commands of the ```setup``` task manually.
 
