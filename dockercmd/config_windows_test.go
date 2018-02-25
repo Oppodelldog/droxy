@@ -2,7 +2,7 @@ package dockercmd
 
 import (
 	"testing"
-	"github.com/testify/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAddGroups(t *testing.T) {

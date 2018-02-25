@@ -2,7 +2,7 @@ package helper
 
 import (
 	"testing"
-	"github.com/testify/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStringInSlice_StringIsInSlice(t *testing.T) {
