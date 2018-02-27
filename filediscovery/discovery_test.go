@@ -3,7 +3,7 @@ package filediscovery
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/testify/assert"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path"
 	"testing"
