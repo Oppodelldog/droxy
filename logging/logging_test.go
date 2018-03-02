@@ -1,12 +1,13 @@
 package logging
 
 import (
-	"testing"
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
 	"path"
+	"testing"
+
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/stretchr/testify/assert"
 )
 
 const testFolder = "/tmp/droxy-tests"

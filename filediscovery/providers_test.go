@@ -1,11 +1,12 @@
 package filediscovery
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"path"
 	"path/filepath"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestWorkingDirProvider(t *testing.T) {

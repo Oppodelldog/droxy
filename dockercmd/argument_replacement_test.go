@@ -4,10 +4,11 @@ import (
 	"testing"
 
 	"bytes"
+	"io/ioutil"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"io/ioutil"
 )
 
 func TestPrepareArguments(t *testing.T) {

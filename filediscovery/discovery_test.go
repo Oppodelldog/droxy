@@ -2,11 +2,12 @@ package filediscovery
 
 import (
 	"fmt"
-	"github.com/pkg/errors"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/pkg/errors"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNew(t *testing.T) {

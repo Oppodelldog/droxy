@@ -7,13 +7,13 @@ import (
 )
 
 func TestGetCommandName(t *testing.T) {
-	assert.Equal(t, "droxy.exe", GetCommandName())
+	assert.Equal(t, "droxy", GetCommandName())
 }
 
 func TestParseCommandNameFromCommandLine(t *testing.T) {
-	assert.Equal(t, "___commandname_windows_test_go", ParseCommandNameFromCommandLine())
+	assert.Equal(t, "___commandname_linux_test_go", ParseCommandNameFromCommandLine())
 }
 
 func TestGetCommandNameFilename(t *testing.T) {
-	assert.Equal(t, "testFileName.exe", GetCommandNameFilename("testFileName"))
+	assert.Equal(t, "testFileName", GetCommandNameFilename("testFileName"))
 }

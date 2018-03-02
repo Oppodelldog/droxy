@@ -3,8 +3,9 @@ package filediscovery
 import (
 	"bytes"
 	"fmt"
-	"github.com/pkg/errors"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 type (
