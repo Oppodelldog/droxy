@@ -1,20 +1,24 @@
 package proxyfile
 
 import (
-	"io"
-	"os"
 	"path/filepath"
 
-	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/droxy/helper"
 )
 
 // NewClonesStrategy creates a new FileCreationStrategy that produces clones of droxy command
 func NewClonesStrategy() FileCreationStrategy {
-	return &ClonesStrategy{}
+	return &ClonesStrategy{
+		copyFileFunction: helper.CopyFile,
+	}
 }
 
 //ClonesStrategy contains the implementation of creating clones of droxy execuable
-type ClonesStrategy struct{}
+type ClonesStrategy struct {
+	copyFileFunction copyFileFunctionDef
+}
+
+type copyFileFunctionDef func(string, string) error
 
 //CreateProxyFile creates a clone of the given commandBinaryFilePath to commandNameFilePath
 func (s *ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFilePath string) error {
@@ -24,32 +28,6 @@ func (s *ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFileP
 	if cleanSrc == cleanDst {
 		return nil
 	}
-	sf, err := os.Open(cleanSrc)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		err = sf.Close()
-		if err != nil {
-			logrus.Error(err)
-		}
-	}()
-	if err = os.Remove(cleanDst); err != nil && !os.IsNotExist(err) {
-		return err
-	}
-	df, err := os.OpenFile(cleanDst, os.O_CREATE|os.O_WRONLY, 0766)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		err = df.Close()
-		if err != nil {
-			logrus.Error(err)
-		}
-	}()
 
-	_, err = io.Copy(df, sf)
-
-	return err
-
+	return s.copyFileFunction(cleanSrc, cleanDst)
 }
