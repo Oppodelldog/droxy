@@ -1,10 +1,11 @@
 package filediscovery
 
 import (
-	"fmt"
 	"os"
 	"path"
 	"testing"
+
+	"bytes"
 
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
@@ -70,7 +71,10 @@ func TestFileDiscovery_Discover_ifFileNotFoundReturnsError(t *testing.T) {
 	testFilename := "test-file"
 	_, err := discovery.Discover(testFilename)
 
-	assert.Equal(t, fmt.Errorf("could not find config file at ''\n").Error(), err.Error())
+	expectedError := bytes.NewBufferString("could not find config file at ''")
+	expectedError.WriteString("\n")
+
+	assert.Equal(t, expectedError.String(), err.Error())
 }
 
 func TestFileDiscovery_Discover_ifFileWasFoundReturnsFilePath(t *testing.T) {
@@ -79,7 +83,7 @@ func TestFileDiscovery_Discover_ifFileWasFoundReturnsFilePath(t *testing.T) {
 	testFilePath := path.Join(os.TempDir(), testFilename)
 	f, err := os.Create(testFilePath)
 	if err != nil {
-		t.Fatalf("Did not expect os.Create to return an error, but got: %v", err)
+		t.Fatalf("did not expect os.Create to return an error, but got: %v", err)
 	}
 	f.Close()
 
@@ -93,13 +97,13 @@ func TestFileDiscovery_Discover_ifFileWasFoundReturnsFilePath(t *testing.T) {
 
 	result, err := discovery.Discover(testFilename)
 	if err != nil {
-		t.Fatalf("Did not expect discovery.Discover to return an error, but got: %v", err)
+		t.Fatalf("did not expect discovery.Discover to return an error, but got: %v", err)
 	}
 
 	assert.Equal(t, testFilePath, result)
 
 	err = os.Remove(testFilePath)
 	if err != nil {
-		t.Fatalf("Did not expect os.Remove to return an error, but got: %v", err)
+		t.Fatalf("did not expect os.Remove to return an error, but got: %v", err)
 	}
 }

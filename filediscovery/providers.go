@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 )
 
+// WorkingDirProvider provides the working directory as a possible file location
 func WorkingDirProvider() FileLocationProvider {
 
 	return func(fileName string) (string, error) {
@@ -19,6 +20,7 @@ func WorkingDirProvider() FileLocationProvider {
 	}
 }
 
+// ExecutableDirProvider provides the executables directory as a possible file location
 func ExecutableDirProvider() FileLocationProvider {
 
 	return func(fileName string) (string, error) {
@@ -39,6 +41,9 @@ func getExecutablePath() (string, error) {
 	return filepath.Dir(ex), nil
 }
 
+// EnvVarFilePathProvider provides a filePath in the given environment variable.
+// In contrast to other FileLocationProviders, this file location provider expects a complete filePath in the given
+// environment variable.
 func EnvVarFilePathProvider(envVar string) FileLocationProvider {
 	return func(fileName string) (string, error) {
 		_ = fileName
