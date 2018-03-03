@@ -1,9 +1,8 @@
 package helper
 
 import (
-	"testing"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestGetCommandName(t *testing.T) {
@@ -11,7 +10,7 @@ func TestGetCommandName(t *testing.T) {
 }
 
 func TestParseCommandNameFromCommandLine(t *testing.T) {
-	assert.Equal(t, "___commandname_windows_test_go", ParseCommandNameFromCommandLine())
+	assert.Equal(t, "helper.test", ParseCommandNameFromCommandLine())
 }
 
 func TestGetCommandNameFilename(t *testing.T) {
