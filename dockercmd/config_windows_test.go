@@ -2,6 +2,7 @@ package dockercmd
 
 import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 
