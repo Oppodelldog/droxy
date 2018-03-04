@@ -1,8 +1,11 @@
 package arguments
 
-import "github.com/Oppodelldog/droxy/config"
+import (
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercmd/builder"
+)
 
-func addGroups(commandDef *config.CommandDefinition, builder *Builder) error {
+func addGroups(commandDef *config.CommandDefinition, builder *builder.Builder) error {
 	if addGroups, ok := commandDef.GetAddGroups(); ok {
 		err := buildGroups(addGroups, builder)
 		if err != nil {
@@ -36,7 +39,7 @@ func buildGroups(areGroupsAdded bool, builder *builder.Builder) error {
 	return nil
 }
 
-func addImpersonation(commandDef *config.CommandDefinition, builder *Builder) error {
+func addImpersonation(commandDef *config.CommandDefinition, builder *builder.Builder) error {
 	if impersonate, ok := commandDef.GetImpersonate(); ok {
 		err := buildImpersonation(impersonate, builder)
 		if err != nil {
