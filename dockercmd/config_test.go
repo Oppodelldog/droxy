@@ -8,8 +8,6 @@ import (
 
 	"os"
 
-	"fmt"
-	"github.com/pmezard/go-difflib/difflib"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,19 +30,6 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	expectedCommandStrings := []string{
 		strings.TrimSpace(strings.Join([]string{"docker run -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-	}
-
-	for _, expected := range expectedCommandStrings {
-		diff := difflib.UnifiedDiff{
-			A:        difflib.SplitLines(expected),
-			B:        difflib.SplitLines(commandString),
-			FromFile: "Original",
-			ToFile:   "Current",
-			Context:  3,
-		}
-		text, _ := difflib.GetUnifiedDiffString(diff)
-		fmt.Printf(text)
-		fmt.Println("------------------------------------------------")
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
