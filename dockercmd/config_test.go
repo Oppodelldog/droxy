@@ -27,10 +27,12 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	expectedArgsFromTestCall := strings.Join(os.Args[1:], " ")
 	commandString := strings.Join(cmd.Args, " ")
 
-	expectedCommandString := "docker run -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123"
-	expectedCommandString = strings.Join([]string{expectedCommandString, expectedArgsFromTestCall}, " ")
+	expectedCommandStrings := []string{
+		strings.Join([]string{"docker run -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " "),
+		strings.Join([]string{"docker run -t -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " "),
+	}
 
-	assert.Equal(t, expectedCommandString, commandString)
+	assert.Contains(t, expectedCommandStrings, commandString)
 
 	os.Unsetenv("VOLUME_ENV_VAR")
 	os.Unsetenv("ENV_VAR")

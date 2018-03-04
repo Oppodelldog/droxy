@@ -10,7 +10,12 @@ func TestGetCommandName(t *testing.T) {
 }
 
 func TestParseCommandNameFromCommandLine(t *testing.T) {
-	assert.Equal(t, "helper.test", ParseCommandNameFromCommandLine())
+	possibleTestRunners := []string{
+		"___TestParseCommandNameFromCommandLine_in_commandname_windows_test_go",
+		"helper.test",
+	}
+
+	assert.Contains(t, possibleTestRunners, ParseCommandNameFromCommandLine())
 }
 
 func TestGetCommandNameFilename(t *testing.T) {

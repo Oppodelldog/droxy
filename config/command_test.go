@@ -70,6 +70,7 @@ func TestHasTemplate_configNotSet(t *testing.T) {
 	commandDef := CommandDefinition{}
 	assert.False(t, commandDef.HasTemplate())
 }
+
 func TestHasTemplate_configSetButEmpty(t *testing.T) {
 	template := ""
 	commandDef := CommandDefinition{
@@ -89,6 +90,7 @@ func TestHasName_configNotSet(t *testing.T) {
 	commandDef := CommandDefinition{}
 	assert.False(t, commandDef.HasName())
 }
+
 func TestHasName_configSetButEmpty(t *testing.T) {
 	name := ""
 	commandDef := CommandDefinition{
@@ -96,6 +98,7 @@ func TestHasName_configSetButEmpty(t *testing.T) {
 	}
 	assert.False(t, commandDef.HasName())
 }
+
 func TestHasName_configSetAndNotEmpty(t *testing.T) {
 	name := "some-name"
 	commandDef := CommandDefinition{
