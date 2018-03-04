@@ -8,8 +8,8 @@ import (
 
 	"os"
 
-	"encoding/hex"
 	"fmt"
+	"github.com/pmezard/go-difflib/difflib"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,8 +35,15 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	}
 
 	for _, expected := range expectedCommandStrings {
-		fmt.Printf("expected: %s\r\n", hex.EncodeToString([]byte(expected)))
-		fmt.Printf("actual  : %s\r\n", hex.EncodeToString([]byte(commandString)))
+		diff := difflib.UnifiedDiff{
+			A:        difflib.SplitLines(expected),
+			B:        difflib.SplitLines(commandString),
+			FromFile: "Original",
+			ToFile:   "Current",
+			Context:  3,
+		}
+		text, _ := difflib.GetUnifiedDiffString(diff)
+		fmt.Printf(text)
 		fmt.Println("------------------------------------------------")
 	}
 
