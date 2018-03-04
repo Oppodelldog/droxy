@@ -3,6 +3,7 @@ package arguments
 import (
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
+	"os/user"
 )
 
 func addGroups(commandDef *config.CommandDefinition, builder *builder.Builder) error {
