@@ -33,6 +33,12 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 
 	builder.AddCmdArguments(args)
 
+	buildArguments(commandDef, builder)
+
+	return builder.Build(), nil
+}
+
+func buildArguments(commandDef *config.CommandDefinition, builder *builder.Builder) error {
 	argumentBuilderFuncs := []argumentBuilderDef{
 		arguments.AttachStreams,
 		arguments.BuildTerminalContext,
@@ -51,9 +57,9 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	for _, argumentBuilderFunc := range argumentBuilderFuncs {
 		err := argumentBuilderFunc(commandDef, builder)
 		if err != nil {
-			return nil, err
+			return err
 		}
 	}
 
-	return builder.Build(), nil
+	return nil
 }
