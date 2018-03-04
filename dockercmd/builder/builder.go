@@ -1,4 +1,4 @@
-package dockercmd
+package builder
 
 import (
 	"bytes"
@@ -35,7 +35,7 @@ type (
 )
 
 // NewBuilder returns a new docker command builder
-func NewBuilder() *Builder {
+func New() *Builder {
 	return &Builder{
 		command:    "docker",
 		subCommand: "run",

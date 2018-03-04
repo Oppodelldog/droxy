@@ -1,4 +1,4 @@
-package dockercmd
+package builder
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 )
 
 func TestNewBuilder(t *testing.T) {
-	assert.IsType(t, new(Builder), NewBuilder())
+	assert.IsType(t, new(Builder), New())
 }
 
 func TestBuilder_FullFeature(t *testing.T) {
@@ -18,7 +18,7 @@ func TestBuilder_FullFeature(t *testing.T) {
 	testWriterB := bytes.NewBufferString("")
 	testReader := bytes.NewBufferString("")
 
-	b := NewBuilder()
+	b := New()
 	b.AddArgument("arg1")
 	b.AddArgument("arg2")
 	b.AddCmdArguments([]string{"cmdArg1", "cmdArg2"})

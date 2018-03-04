@@ -1,4 +1,4 @@
-package dockercmd
+package arguments
 
 import (
 	"testing"
