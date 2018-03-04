@@ -30,13 +30,13 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandString := strings.Join(cmd.Args, " ")
 
 	expectedCommandStrings := []string{
-		strings.Join([]string{"docker run -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " "),
-		strings.Join([]string{"docker run -t  -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " "),
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t  -i --rm -p 8080:9080 -p 8081:9081 -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network some-image:v1.02 some-entrypoint-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	for _, expected := range expectedCommandStrings {
-		fmt.Printf("expected: %s", hex.EncodeToString([]byte(expected)))
-		fmt.Printf("actual  : %s", hex.EncodeToString([]byte(commandString)))
+		fmt.Printf("expected: %s\r\n", hex.EncodeToString([]byte(expected)))
+		fmt.Printf("actual  : %s\r\n", hex.EncodeToString([]byte(commandString)))
 		fmt.Println("------------------------------------------------")
 	}
 
