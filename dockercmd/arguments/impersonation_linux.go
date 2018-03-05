@@ -6,7 +6,7 @@ import (
 	"os/user"
 )
 
-func addImpersonation(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func addImpersonation(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if impersonate, ok := commandDef.GetImpersonate(); ok {
 		err := buildImpersonation(impersonate, builder)
 		if err != nil {
@@ -17,7 +17,7 @@ func addImpersonation(commandDef *config.CommandDefinition, builder *builder.Bui
 	return nil
 }
 
-func buildImpersonation(isImpersonated bool, builder *builder.Builder) error {
+func buildImpersonation(isImpersonated bool, builder builder.Builder) error {
 	if !isImpersonated {
 		return nil
 	}

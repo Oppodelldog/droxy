@@ -5,6 +5,6 @@ import (
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
 )
 
-func BuildImpersonation(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func BuildImpersonation(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	return addImpersonation(commandDef, builder)
 }

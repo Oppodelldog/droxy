@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
 )
 
-func BuildPorts(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func BuildPorts(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if ports, ok := commandDef.GetPorts(); ok {
 		return buildPorts(ports, builder)
 	}
@@ -13,7 +13,7 @@ func BuildPorts(commandDef *config.CommandDefinition, builder *builder.Builder) 
 	return nil
 }
 
-func buildPorts(portMappings []string, builder *builder.Builder) error {
+func buildPorts(portMappings []string, builder builder.Builder) error {
 	for _, portMapping := range portMappings {
 
 		portMappingWithValues, resolveErr := resolveEnvVar(portMapping)

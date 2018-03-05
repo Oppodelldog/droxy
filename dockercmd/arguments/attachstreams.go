@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
 )
 
-func AttachStreams(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func AttachStreams(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	_ = commandDef
 	builder.
 		AttachTo("STDIN").

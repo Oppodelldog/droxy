@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-func BuildVolumes(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func BuildVolumes(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if volumes, ok := commandDef.GetVolumes(); ok {
 		return buildVolumes(volumes, builder)
 	}
 	return nil
 }
 
-func buildVolumes(volumes []string, builder *builder.Builder) error {
+func buildVolumes(volumes []string, builder builder.Builder) error {
 	for _, volume := range volumes {
 		volumeParts := strings.Split(volume, ":")
 		if len(volumeParts) < 2 || len(volumeParts) > 3 {

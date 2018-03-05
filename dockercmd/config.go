@@ -24,21 +24,40 @@ func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exe
 	return cmd, nil
 }
 
-type argumentBuilderDef func(commandDef *config.CommandDefinition, builder *builder.Builder) error
+type argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
+type argumentBuilderInterface interface {
+	BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error
+}
 
-func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder *builder.Builder) (*exec.Cmd, error) {
+func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder builder.Builder) (*exec.Cmd, error) {
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
 	args = prependAdditionalArguments(commandDef, args)
 
 	builder.AddCmdArguments(args)
 
-	buildArguments(commandDef, builder)
+	buildArgumentsFromFuncs(commandDef, builder)
+	buildArgumentsFromBuilders(commandDef, builder)
 
 	return builder.Build(), nil
 }
 
-func buildArguments(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func buildArgumentsFromBuilders(commandDef *config.CommandDefinition, builder builder.Builder) error {
+	argumentBuilders := []argumentBuilderInterface{
+		arguments.NewUserGroupsArgumentBuilder(),
+	}
+
+	for _, argumentBuilder := range argumentBuilders {
+		err := argumentBuilder.BuildArgument(commandDef, builder)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func buildArgumentsFromFuncs(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	argumentBuilderFuncs := []argumentBuilderDef{
 		arguments.AttachStreams,
 		arguments.BuildTerminalContext,
@@ -46,7 +65,6 @@ func buildArguments(commandDef *config.CommandDefinition, builder *builder.Build
 		arguments.BuildNetwork,
 		arguments.BuildInteractiveFlag,
 		arguments.BuildRemoveContainerFlag,
-		arguments.BuildGroups,
 		arguments.BuildImpersonation,
 		arguments.BuildImage,
 		arguments.BuildEnvVars,

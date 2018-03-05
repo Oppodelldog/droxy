@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
 )
 
-func BuildNetwork(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func BuildNetwork(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if network, ok := commandDef.GetNetwork(); ok {
 		builder.SetNetwork(network)
 	}

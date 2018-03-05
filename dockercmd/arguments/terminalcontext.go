@@ -6,7 +6,7 @@ import (
 	"github.com/Oppodelldog/droxy/helper"
 )
 
-func BuildTerminalContext(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func BuildTerminalContext(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	_ = commandDef
 	if helper.IsTerminalContext() {
 		builder.AddArgument("-t")

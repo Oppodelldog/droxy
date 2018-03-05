@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
 )
 
-func BuildEnvVars(commandDef *config.CommandDefinition, builder *builder.Builder) error {
+func BuildEnvVars(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if envVars, ok := commandDef.GetEnvVars(); ok {
 		for _, envVar := range envVars {
 			envVarValue, err := resolveEnvVar(envVar)
@@ -15,6 +15,6 @@ func BuildEnvVars(commandDef *config.CommandDefinition, builder *builder.Builder
 			builder.AddEnvVar(envVarValue)
 		}
 	}
-	return nil
 
+	return nil
 }

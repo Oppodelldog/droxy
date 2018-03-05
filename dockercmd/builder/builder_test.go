@@ -9,7 +9,7 @@ import (
 )
 
 func TestNewBuilder(t *testing.T) {
-	assert.IsType(t, new(Builder), New())
+	assert.IsType(t, new(builder), New())
 }
 
 func TestBuilder_FullFeature(t *testing.T) {
