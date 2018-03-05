@@ -1,11 +1,12 @@
 package dockercmd
 
 import (
+	"os"
+	"os/exec"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercmd/arguments"
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
-	"os"
-	"os/exec"
 )
 
 // BuildCommandFromConfig builds a docker-run command on base of the given configuration

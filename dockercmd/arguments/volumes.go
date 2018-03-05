@@ -2,9 +2,10 @@ package arguments
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
-	"strings"
 )
 
 func BuildVolumes(commandDef *config.CommandDefinition, builder builder.Builder) error {

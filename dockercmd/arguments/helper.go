@@ -2,8 +2,9 @@ package arguments
 
 import (
 	"fmt"
-	"github.com/drone/envsubst"
 	"os"
+
+	"github.com/drone/envsubst"
 )
 
 func resolveEnvVar(envVarName string) (string, error) {

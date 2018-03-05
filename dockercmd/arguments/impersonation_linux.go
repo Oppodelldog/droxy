@@ -1,9 +1,10 @@
 package arguments
 
 import (
+	"os/user"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
-	"os/user"
 )
 
 func addImpersonation(commandDef *config.CommandDefinition, builder builder.Builder) error {
