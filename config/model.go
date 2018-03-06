@@ -58,7 +58,7 @@ func (c *Configuration) resolveConfig(command *CommandDefinition) (*CommandDefin
 func (c *Configuration) mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinition) *CommandDefinition {
 	mergedCommand := new(CommandDefinition)
 
-	mergedCommand.Image = resolvePropertyString(baseCommand.Name, overlayCommand.Name)
+	mergedCommand.Name = resolvePropertyString(baseCommand.Name, overlayCommand.Name)
 	mergedCommand.EntryPoint = resolvePropertyString(baseCommand.EntryPoint, overlayCommand.EntryPoint)
 	mergedCommand.Image = resolvePropertyString(baseCommand.Image, overlayCommand.Image)
 	mergedCommand.WorkDir = resolvePropertyString(baseCommand.WorkDir, overlayCommand.WorkDir)
