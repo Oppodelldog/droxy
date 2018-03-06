@@ -1,11 +1,12 @@
 package arguments
 
 import (
+	"os"
 	"testing"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockerrun/builder/mocks"
 	"github.com/stretchr/testify/assert"
-	"os"
 )
 
 func TestBuildWorkDir_WorkDirIsSet(t *testing.T) {

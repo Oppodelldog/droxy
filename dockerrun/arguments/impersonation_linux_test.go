@@ -1,10 +1,11 @@
 package arguments
 
 import (
+	"os/user"
 	"testing"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockerrun/builder/mocks"
-	"os/user"
 )
 
 func TestBuildImpersonation(t *testing.T) {

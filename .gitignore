@@ -1,4 +1,5 @@
 .build
+!.build/droxy.toml
 .release/v*
 .idea
 vendor
