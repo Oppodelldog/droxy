@@ -5,6 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockerrun/builder/mocks"
 	"github.com/stretchr/testify/assert"
+	"os"
 )
 
 func TestBuildWorkDir_WorkDirIsSet(t *testing.T) {
@@ -20,6 +21,26 @@ func TestBuildWorkDir_WorkDirIsSet(t *testing.T) {
 	BuildWorkDir(commandDef, builder)
 
 	builder.AssertExpectations(t)
+}
+
+func TestBuildWorkDir_ResolvesEnvVars(t *testing.T) {
+	expectedWorkingDir := "/home/somewhere"
+	os.Setenv("CURRENT_WORKING_DIR", expectedWorkingDir)
+	defer os.Unsetenv("CURRENT_WORKING_DIR")
+
+	workDir := "${CURRENT_WORKING_DIR}"
+	commandDef := &config.CommandDefinition{
+		WorkDir: &workDir,
+	}
+
+	builder := &mocks.Builder{}
+
+	builder.On("SetWorkingDir", expectedWorkingDir).Return(builder)
+
+	BuildWorkDir(commandDef, builder)
+
+	builder.AssertExpectations(t)
+
 }
 
 func TestBuildWorkDir_WorkDirIsNotSet(t *testing.T) {
