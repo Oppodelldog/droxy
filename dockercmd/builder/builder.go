@@ -33,7 +33,7 @@ type (
 	}
 )
 
-// NewBuilder returns a new docker command builder
+// New returns a new docker command builder
 func New() Builder {
 	return &builder{
 		command:    "docker",

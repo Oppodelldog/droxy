@@ -1,10 +1,11 @@
 package arguments
 
 import (
+	"testing"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercmd/builder/mocks"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestBuildImage_ImageDefined(t *testing.T) {

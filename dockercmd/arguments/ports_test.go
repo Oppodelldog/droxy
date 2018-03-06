@@ -1,11 +1,12 @@
 package arguments
 
 import (
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockercmd/builder/mocks"
-	"github.com/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercmd/builder/mocks"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBuildPorts_portsDefined(t *testing.T) {

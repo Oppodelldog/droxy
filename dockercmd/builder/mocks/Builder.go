@@ -91,13 +91,13 @@ func (_m *Builder) AddPortMapping(portMapping string) builder.Builder {
 	return r0
 }
 
-// AddVolumeMapping provides a mock function with given fields: hostPath, containerPath, options
-func (_m *Builder) AddVolumeMapping(hostPath string, containerPath string, options string) builder.Builder {
-	ret := _m.Called(hostPath, containerPath, options)
+// AddVolumeMapping provides a mock function with given fields: volumeMapping
+func (_m *Builder) AddVolumeMapping(volumeMapping string) builder.Builder {
+	ret := _m.Called(volumeMapping)
 
 	var r0 builder.Builder
-	if rf, ok := ret.Get(0).(func(string, string, string) builder.Builder); ok {
-		r0 = rf(hostPath, containerPath, options)
+	if rf, ok := ret.Get(0).(func(string) builder.Builder); ok {
+		r0 = rf(volumeMapping)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(builder.Builder)

@@ -34,8 +34,15 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 
 	builder.AddCmdArguments(args)
 
-	buildArgumentsFromFuncs(commandDef, builder)
-	buildArgumentsFromBuilders(commandDef, builder)
+	err := buildArgumentsFromFuncs(commandDef, builder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = buildArgumentsFromBuilders(commandDef, builder)
+	if err != nil {
+		return nil, err
+	}
 
 	return builder.Build(), nil
 }

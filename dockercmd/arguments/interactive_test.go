@@ -1,10 +1,11 @@
 package arguments
 
 import (
+	"testing"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercmd/builder/mocks"
-	"github.com/testify/assert"
-	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBuildInteractiveFlag_InteractiveIsTrue(t *testing.T) {
