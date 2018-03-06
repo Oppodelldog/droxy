@@ -76,6 +76,7 @@ func buildArgumentsFromFuncs(commandDef *config.CommandDefinition, builder build
 		arguments.BuildPorts,
 		arguments.BuildVolumes,
 		arguments.BuildName,
+		arguments.BuildWorkDir,
 	}
 
 	for _, argumentBuilderFunc := range argumentBuilderFuncs {
