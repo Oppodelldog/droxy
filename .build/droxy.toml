@@ -1,0 +1,40 @@
+Version="1"
+
+    [[command]]
+      name = "basic go command"
+      isTemplate = true
+      addGroups = true
+      impersonate = true
+      workDir = "${PWD}"
+      removeContainer=true
+      isInteractive=true
+
+      # volume mappings
+      volumes = [
+          "${GOPATH}:${GOPATH}",
+          "/etc/passwd:/etc/passwd:ro",
+          "/etc/group:/etc/group:ro",
+      ]
+
+      # environment variable mappings
+      envvars = [
+          "GOPATH=${GOPATH}",
+      ]
+
+#    [[command]]
+#        template = "basic go command"
+#    	name = "go"
+#    	entryPoint = "go"
+#    	image = "golang:1.10.0"
+#
+    [[command]]
+        template = "basic go command"
+    	name = "make"
+    	entryPoint = "make"
+    	image = "golang:1.10.0"
+
+    [[command]]
+        template = "basic go command"
+    	name = "baesch"
+    	entryPoint = "bash"
+    	image = "golang:1.10.0"
