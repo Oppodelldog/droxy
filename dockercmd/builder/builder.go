@@ -1,7 +1,6 @@
 package builder
 
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"os"
@@ -92,24 +91,9 @@ func (b *builder) AttachTo(stream string) Builder {
 }
 
 // AddVolumeMapping adds a volulme mapping between the docker container and the host
-func (b *builder) AddVolumeMapping(hostPath, containerPath, options string) Builder {
-	s := bytes.NewBufferString("")
-	if hostPath != "" {
-		s.WriteString(hostPath)
-	}
-	if containerPath != "" {
-		if s.Len() > 0 {
-			s.WriteString(":")
-		}
-		s.WriteString(containerPath)
-	}
-	if options != "" {
-		if s.Len() > 0 {
-			s.WriteString(":")
-		}
-		s.WriteString(options)
-	}
-	b.volumeMappings = append(b.volumeMappings, "-v", s.String())
+func (b *builder) AddVolumeMapping(volume string) Builder {
+
+	b.volumeMappings = append(b.volumeMappings, "-v", volume)
 	return b
 }
 

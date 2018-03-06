@@ -7,17 +7,18 @@ import (
 	"github.com/Oppodelldog/droxy/dockercmd/builder"
 )
 
-func NewUserGroupsArgumentBuilder() *UserGroupsArgumentBuilder {
-	return &UserGroupsArgumentBuilder{
+//NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out
+func NewUserGroupsArgumentBuilder() ArgumentBuilderInterface {
+	return &userGroupsArgumentBuilder{
 		userGroupIdsResolver: &currentUserGroupIDsResolver{},
 	}
 }
 
-type UserGroupsArgumentBuilder struct {
+type userGroupsArgumentBuilder struct {
 	userGroupIdsResolver userGroupIdsResolverInterface
 }
 
-func (b *UserGroupsArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func (b *userGroupsArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error {
 
 	if addGroups, ok := commandDef.GetAddGroups(); ok && addGroups {
 

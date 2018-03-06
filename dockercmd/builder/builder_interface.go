@@ -13,7 +13,7 @@ type Builder interface {
 	AddCmdArguments(arguments []string) Builder
 	AddArgument(argument string) Builder
 	AttachTo(stream string) Builder
-	AddVolumeMapping(hostPath, containerPath, options string) Builder
+	AddVolumeMapping(volumeMapping string) Builder
 	AddEnvVar(envVarDeclaration string) Builder
 	AddGroup(groupName string) Builder
 	SetEntryPoint(entryPoint string) Builder

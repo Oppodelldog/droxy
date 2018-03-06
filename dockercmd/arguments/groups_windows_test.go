@@ -3,10 +3,11 @@ package arguments
 import (
 	"testing"
 
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercmd/builder/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAddGroups(t *testing.T) {
-	res := addGroups(nil, nil)
-	assert.Nil(t, res)
+	assert.Nil(t, NewUserGroupsArgumentBuilder().BuildArgument(&config.CommandDefinition{}, &mocks.Builder{}))
 }

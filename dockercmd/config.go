@@ -26,9 +26,6 @@ func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exe
 }
 
 type argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
-type argumentBuilderInterface interface {
-	BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error
-}
 
 func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder builder.Builder) (*exec.Cmd, error) {
 
@@ -44,7 +41,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 }
 
 func buildArgumentsFromBuilders(commandDef *config.CommandDefinition, builder builder.Builder) error {
-	argumentBuilders := []argumentBuilderInterface{
+	argumentBuilders := []arguments.ArgumentBuilderInterface{
 		arguments.NewUserGroupsArgumentBuilder(),
 	}
 
