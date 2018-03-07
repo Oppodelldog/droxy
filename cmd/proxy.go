@@ -8,7 +8,7 @@ import (
 	"syscall"
 
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockercmd"
+	"github.com/Oppodelldog/droxy/dockerrun"
 	"github.com/Oppodelldog/droxy/helper"
 	"github.com/Oppodelldog/droxy/logging"
 	"github.com/sirupsen/logrus"
@@ -53,7 +53,7 @@ func ExecuteCommand() {
 	logrus.Info("----------------------------------------------------------------------")
 
 	commandName := helper.ParseCommandNameFromCommandLine()
-	cmd, err := dockercmd.BuildCommandFromConfig(commandName, cfg)
+	cmd, err := dockerrun.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {
 		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)
 		os.Exit(900)

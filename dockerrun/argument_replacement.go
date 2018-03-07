@@ -1,4 +1,4 @@
-package dockercmd
+package dockerrun
 
 import (
 	"github.com/Oppodelldog/droxy/config"
