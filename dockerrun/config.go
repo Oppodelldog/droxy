@@ -50,6 +50,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 func buildArgumentsFromBuilders(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	argumentBuilders := []arguments.ArgumentBuilderInterface{
 		arguments.NewUserGroupsArgumentBuilder(),
+		arguments.NewNameArgumentBuilder(),
 	}
 
 	for _, argumentBuilder := range argumentBuilders {
@@ -75,7 +76,6 @@ func buildArgumentsFromFuncs(commandDef *config.CommandDefinition, builder build
 		arguments.BuildEnvVars,
 		arguments.BuildPorts,
 		arguments.BuildVolumes,
-		arguments.BuildName,
 		arguments.BuildWorkDir,
 	}
 

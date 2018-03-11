@@ -6,6 +6,7 @@ type CommandDefinition struct {
 	Template        *string
 	EntryPoint      *string
 	Name            *string
+	UniqueNames     *bool
 	Image           *string
 	Network         *string
 	IsInteractive   *bool
@@ -104,6 +105,14 @@ func (c *CommandDefinition) GetWorkDir() (string, bool) {
 func (c *CommandDefinition) GetRemoveContainer() (bool, bool) {
 	if c.RemoveContainer != nil {
 		return *c.RemoveContainer, true
+	}
+	return false, false
+}
+
+// GetUniqueNames returns value of UniqueNames and an boolean indicating if value is set.
+func (c *CommandDefinition) GetUniqueNames() (bool, bool) {
+	if c.UniqueNames != nil {
+		return *c.UniqueNames, true
 	}
 	return false, false
 }

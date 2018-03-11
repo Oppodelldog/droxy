@@ -33,6 +33,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	addGroups := true
 	impersonate := true
 	removeContainer := true
+	uniqueNames := true
 	workDir := "someDir/"
 	volumes := []string{
 		"${HOME}:${HOME}",
@@ -67,6 +68,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		Template:        &template,
 		EntryPoint:      &entryPoint,
 		Name:            &name,
+		UniqueNames:     &uniqueNames,
 		Image:           &image,
 		Network:         &network,
 		IsInteractive:   &isInteractive,
@@ -94,6 +96,7 @@ func getFullFeatureConfigFixture() []byte {
       workDir = "someDir/"        # define working directory
       removeContainer=true    # remove container after command has finished
       isInteractive=true      # enable interaction with the called command
+      uniqueNames=true
       network="some-docker-network"
       image="some-image:v1.02"
       entryPoint="some-entrypoint-cmd"
