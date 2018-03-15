@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/stretchr/testify/assert"
+	"fmt"
 )
 
 func TestCreator_CreateProxyFiles(t *testing.T) {
