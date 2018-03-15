@@ -33,7 +33,7 @@ func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.
 
 	exitCode := commandResultHandler.HandleCommandResult(cmd, err)
 
-	assert.Equal(t, 2, exitCode)
+	assert.NotEqual(t, 0, exitCode)
 }
 
 func TestCommandResultHandler_HandleCommandResult_ExtCodeError(t *testing.T) {
