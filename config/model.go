@@ -22,8 +22,6 @@ func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinitio
 			if configCommandName == commandName {
 				return c.resolveConfig(&command)
 			}
-		} else {
-			continue
 		}
 	}
 
