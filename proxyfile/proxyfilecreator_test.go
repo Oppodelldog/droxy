@@ -9,29 +9,6 @@ import (
 	"testing"
 )
 
-func TestCreator_CreateProxyFiles(t *testing.T) {
-	logrus.SetOutput(ioutil.Discard)
-
-	fileCreatorMock := &mockFileCreationStrategy{}
-	creator := New(fileCreatorMock)
-
-	commandBinaryFilePathStub := "droxy-file-somewhere"
-	commandNameStub := "some-command-name"
-
-	cfg := &config.Configuration{
-		Command: []config.CommandDefinition{
-			{
-				Name: &commandNameStub,
-			},
-		},
-	}
-	creator.CreateProxyFiles(commandBinaryFilePathStub, cfg, false)
-
-	assert.Equal(t, 1, fileCreatorMock.calls)
-	assert.Equal(t, commandBinaryFilePathStub, fileCreatorMock.parmCommandBinaryFilePath)
-	assert.Equal(t, commandNameStub, fileCreatorMock.parmCommandNameFileName)
-}
-
 func TestCreator_CreateProxyFiles_Forced(t *testing.T) {
 
 	testFolder := "/tmp/droxy/createProxyFilesTest/force"
