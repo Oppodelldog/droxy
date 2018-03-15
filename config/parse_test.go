@@ -4,6 +4,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/BurntSushi/toml"
+	"os"
+	"path"
 )
 
 func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
@@ -149,4 +152,64 @@ func TestParseFromBytes_emptyConfig(t *testing.T) {
 
 func getEmptyConfig() []byte {
 	return []byte{}
+}
+
+func TestParse(t *testing.T) {
+	const testFolder = "/tmp/droxy/test/config/parse"
+	const testFile = "testFile.toml"
+	err := os.RemoveAll(testFolder)
+	if err != nil {
+		t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
+	}
+
+	err = os.MkdirAll(testFolder, 0777)
+	if err != nil {
+		t.Fatalf("Did not expect os.MkDirAll to return an error, but got: %v", err)
+	}
+
+	commandName := "test-command"
+	command := CommandDefinition{
+		Name: &commandName,
+	}
+	cfg := Configuration{
+		Version: "4711",
+		Command: []CommandDefinition{
+			command,
+		},
+	}
+
+	testFilePath := path.Join(testFolder, testFile)
+	tempFile, err := os.OpenFile(testFilePath, os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		t.Fatalf("Did not expect os.OpenFile to return an error, but got: %v", err)
+	}
+	defer tempFile.Close()
+
+	tomlEncoder := toml.NewEncoder(tempFile)
+	err = tomlEncoder.Encode(cfg)
+	if err != nil {
+		t.Fatalf("Did not expect tomlEncoder.Encode to return an error, but got: %v", err)
+	}
+
+	parsedCfg, err := Parse(testFilePath)
+	if err != nil {
+		t.Fatalf("Did not expect Parse to return an error, but got: %v", err)
+	}
+
+	assert.Equal(t, &cfg, parsedCfg)
+
+	err = os.RemoveAll(testFolder)
+	if err != nil {
+		t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
+	}
+}
+
+func TestParse_FileNotExists_Error(t *testing.T) {
+	_, err := Parse("/tmp/tdroxy/his-does-not-exist.toml")
+	assert.Error(t, err)
+}
+
+func TestParseBytes_InvalidInput_ExpectError(t *testing.T) {
+	_, err := parseFromBytes([]byte("SBSGUOPGBSUOsg"))
+	assert.Error(t, err)
 }
