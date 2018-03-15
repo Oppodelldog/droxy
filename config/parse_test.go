@@ -184,13 +184,14 @@ func TestParse(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect os.OpenFile to return an error, but got: %v", err)
 	}
-	defer tempFile.Close()
+
 
 	tomlEncoder := toml.NewEncoder(tempFile)
 	err = tomlEncoder.Encode(cfg)
 	if err != nil {
 		t.Fatalf("Did not expect tomlEncoder.Encode to return an error, but got: %v", err)
 	}
+	tempFile.Close()
 
 	parsedCfg, err := Parse(testFilePath)
 	if err != nil {
