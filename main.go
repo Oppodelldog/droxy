@@ -8,6 +8,8 @@ import (
 
 	"github.com/Oppodelldog/droxy/helper"
 
+	"fmt"
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -33,8 +35,23 @@ func main() {
 			logrus.Info(err)
 		}
 	} else {
+		if shallRevealItsDroxy() {
+			fmt.Println("YES-IT-IS")
+			os.Exit(0)
+		}
 		cmd.ExecuteCommand()
 	}
+}
+
+func shallRevealItsDroxy() bool {
+	for _, arg := range os.Args {
+		if arg == "--is-it-droxy" {
+
+			return true
+		}
+	}
+
+	return false
 }
 
 func isSubCommand(s string, commands []*cobra.Command) bool {

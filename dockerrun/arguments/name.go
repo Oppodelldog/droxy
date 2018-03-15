@@ -1,11 +1,12 @@
 package arguments
 
 import (
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockerrun/builder"
 	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockerrun/builder"
 )
 
 //NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out

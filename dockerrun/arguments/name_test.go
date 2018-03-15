@@ -3,10 +3,11 @@ package arguments
 import (
 	"testing"
 
+	"fmt"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockerrun/builder/mocks"
 	"github.com/stretchr/testify/assert"
-	"fmt"
 )
 
 func TestBuildName_NameIsSet_AndNotUnique_ExpectAppropriateBuilderCall(t *testing.T) {
