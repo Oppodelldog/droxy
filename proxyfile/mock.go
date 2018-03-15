@@ -14,3 +14,18 @@ func (m *fileCreationFunctionMock) FileCreationFunc(src, dst string) error {
 
 	return m.returnValue
 }
+
+type mockFileCreationStrategy struct {
+	returnValue               error
+	parmCommandBinaryFilePath string
+	parmCommandNameFileName   string
+	calls                     int
+}
+
+func (m *mockFileCreationStrategy) CreateProxyFile(commandBinaryFilePath string, commandNameFileName string) error {
+	m.parmCommandBinaryFilePath = commandBinaryFilePath
+	m.parmCommandNameFileName = commandNameFileName
+	m.calls++
+
+	return m.returnValue
+}
