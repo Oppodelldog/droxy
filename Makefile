@@ -22,6 +22,7 @@ fmt: ## gofmt and goimports all go files
 lint: ## Run all the linters
 	gometalinter --vendor --disable-all \
 		--enable=deadcode \
+		--enable=gocyclo \
 		--enable=ineffassign \
 		--enable=gosimple \
 		--enable=staticcheck \
@@ -33,6 +34,10 @@ lint: ## Run all the linters
 		--enable=errcheck \
 		--enable=vet \
 		--enable=vetshadow \
+		--enable=varcheck \
+		--enable=structcheck \
+		--enable=interfacer \
+		--enable=goconst \
 		--deadline=10m \
 		./...
 

@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"testing"
-	"github.com/stretchr/testify/assert"
 	"os/exec"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewCommandRunner(t *testing.T) {

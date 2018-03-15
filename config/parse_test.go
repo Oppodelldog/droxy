@@ -3,10 +3,11 @@ package config
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/BurntSushi/toml"
 	"os"
 	"path"
+
+	"github.com/BurntSushi/toml"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestParseFromBytes_fullFeatureConfig(t *testing.T) {

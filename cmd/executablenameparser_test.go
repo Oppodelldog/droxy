@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"testing"
-	"github.com/stretchr/testify/assert"
+
 	"github.com/Oppodelldog/droxy/helper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewExecutableNameParser(t *testing.T) {
