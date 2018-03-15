@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewExecutableNameParser(t *testing.T) {
-	assert.Implements(t, new(ExecutableNameParser), NewExecutableNameParser())
+	assert.IsType(t, new(executableNameParser), NewExecutableNameParser())
 }
 
 func TestExecutableNameParser_ParseCommandNameFromCommandLine(t *testing.T) {

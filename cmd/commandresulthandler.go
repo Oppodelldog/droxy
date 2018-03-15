@@ -7,6 +7,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+//ExtCodeError general error occurred when executing cmd
+const ExtCodeError = 993
+
+//ExitError ExitCode of excuted cmd could not be determined
+const ExitCodeExitError = 990
+
+//ExitSuccessError ExitCode of successfully executed cmd could not be determined
+const ExitSuccessError = 991
+
 type (
 	commandResultHandler struct{}
 )
@@ -18,15 +27,22 @@ func NewCommandResultHandler() *commandResultHandler {
 
 // HandleCommandResult tries to get to ExitCode of and already run cmd. Returns the exit code or a custom one if original exitcode could not be determined.
 func (rh *commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int {
-	if exitErr, ok := err.(*exec.ExitError); ok {
 
+	switch exitErr := err.(type) {
+	case *exec.Error:
+		logrus.Warning("Could execute command")
+
+		return ExtCodeError
+	case *exec.ExitError:
 		if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
 			logrus.Infof("docker finished with exit code '%v'", status.ExitStatus())
 			return status.ExitStatus()
 		}
 
 		logrus.Warning("Could not get exit code")
-		return 990
+
+		return ExitCodeExitError
+
 	}
 
 	if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
@@ -35,5 +51,5 @@ func (rh *commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) in
 	}
 
 	logrus.Warning("Could not get exit code")
-	return 991
+	return ExitSuccessError
 }

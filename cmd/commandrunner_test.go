@@ -8,7 +8,7 @@ import (
 )
 
 func TestNewCommandRunner(t *testing.T) {
-	assert.Implements(t, new(CommandRunner), NewCommandRunner())
+	assert.IsType(t, new(commandRunner), NewCommandRunner())
 }
 
 func TestCommandRunner_RunCommand_smokeTest(t *testing.T) {
