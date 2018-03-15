@@ -5,10 +5,17 @@ import "github.com/Oppodelldog/droxy/filediscovery"
 const configFileName = "droxy.toml"
 const configEnvVarName = "DROXY_CONFIG"
 
-// Load loads the configuration file.
-func Load() *Configuration {
+//NewLoader returns a new config loader that is able to locate and load configuration from a config file
+func NewLoader() *configLoader {
+	return &configLoader{}
+}
 
-	configFileDiscovery := createFileDiscovery()
+type configLoader struct{}
+
+// Load loads the configuration file.
+func (cl *configLoader) Load() *Configuration {
+
+	configFileDiscovery := cl.createFileDiscovery()
 	configFilePath, err := configFileDiscovery.Discover(configFileName)
 	if err != nil {
 		panic(err)
@@ -24,7 +31,7 @@ func Load() *Configuration {
 	return cfg
 }
 
-func createFileDiscovery() filediscovery.FileDiscovery {
+func (cl *configLoader) createFileDiscovery() filediscovery.FileDiscovery {
 	return filediscovery.New(
 		[]filediscovery.FileLocationProvider{
 			filediscovery.WorkingDirProvider(),

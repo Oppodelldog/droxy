@@ -3,21 +3,16 @@ package cmd
 import (
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"strings"
-	"syscall"
 
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockerrun"
-	"github.com/Oppodelldog/droxy/helper"
 	"github.com/Oppodelldog/droxy/logging"
 	"github.com/sirupsen/logrus"
 )
 
 // ExecuteCommand executes a proxy command
-func ExecuteCommand() {
+func ExecuteCommand(commandBuilder CommandBuilder, configLoader ConfigLoader, commandResultHandler CommandResultHandler, commandRunner CommandRunner, executableNameParser ExecutableNameParser) int {
 
-	cfg := config.Load()
+	cfg := configLoader.Load()
 	cfg.Logging = true
 	if cfg.Logging {
 		logfileWriter, err := logging.GetLogWriter(cfg)
@@ -52,44 +47,17 @@ func ExecuteCommand() {
 	}
 	logrus.Info("----------------------------------------------------------------------")
 
-	commandName := helper.ParseCommandNameFromCommandLine()
-	cmd, err := dockerrun.BuildCommandFromConfig(commandName, cfg)
+	commandName := executableNameParser.ParseCommandNameFromCommandLine()
+	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {
 		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)
-		os.Exit(900)
+		return 900
 	}
 	logrus.Infof("calling docker ro tun '%s'", commandName)
 	logrus.Infof(strings.Join(cmd.Args, " "))
-	err = runCommand(cmd)
+	err = commandRunner.RunCommand(cmd)
 
-	if exitErr, ok := err.(*exec.ExitError); ok {
+	exitCode := commandResultHandler.HandleCommandResult(cmd, err)
 
-		if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
-			logrus.Infof("docker finished with exit code '%v'", status.ExitStatus())
-			os.Exit(status.ExitStatus())
-		} else {
-			logrus.Warning("Could not get exit code")
-			os.Exit(990)
-		}
-	}
-
-	if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
-		logrus.Infof("docker finished with exit code '%v'", status.ExitStatus())
-		os.Exit(status.ExitStatus())
-	} else {
-		logrus.Warning("Could not get exit code")
-		os.Exit(991)
-	}
-}
-
-func runCommand(cmd *exec.Cmd) error {
-
-	cmd.Stdout = helper.NewLoggingWriter(os.Stdout, logrus.StandardLogger(), "StdOut")
-	cmd.Stderr = helper.NewLoggingWriter(os.Stderr, logrus.StandardLogger(), "StdErr")
-	err := cmd.Start()
-	if err != nil {
-		return err
-	}
-
-	return cmd.Wait()
+	return exitCode
 }

@@ -9,15 +9,26 @@ import (
 	"github.com/Oppodelldog/droxy/dockerrun/builder"
 )
 
+//NewCommandBuilder returns a new commandBuilder
+func NewCommandBuilder() *commandBuilder {
+	return &commandBuilder{}
+}
+
+type (
+	commandBuilder struct{}
+
+	argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
+)
+
 // BuildCommandFromConfig builds a docker-run command on base of the given configuration
-func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
+func (cb *commandBuilder) BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
 	commandDef, err := cfg.FindCommandByName(commandName)
 	if err != nil {
 		return nil, err
 	}
 
 	commandBuilder := builder.New()
-	cmd, err := buildCommandFromCommandDefinition(commandDef, commandBuilder)
+	cmd, err := cb.buildCommandFromCommandDefinition(commandDef, commandBuilder)
 	if err != nil {
 		return nil, err
 	}
@@ -25,21 +36,19 @@ func BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exe
 	return cmd, nil
 }
 
-type argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
-
-func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder builder.Builder) (*exec.Cmd, error) {
+func (cb *commandBuilder) buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, builder builder.Builder) (*exec.Cmd, error) {
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
 	args = prependAdditionalArguments(commandDef, args)
 
 	builder.AddCmdArguments(args)
 
-	err := buildArgumentsFromFuncs(commandDef, builder)
+	err := cb.buildArgumentsFromFuncs(commandDef, builder)
 	if err != nil {
 		return nil, err
 	}
 
-	err = buildArgumentsFromBuilders(commandDef, builder)
+	err = cb.buildArgumentsFromBuilders(commandDef, builder)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +56,7 @@ func buildCommandFromCommandDefinition(commandDef *config.CommandDefinition, bui
 	return builder.Build(), nil
 }
 
-func buildArgumentsFromBuilders(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func (cb *commandBuilder) buildArgumentsFromBuilders(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	argumentBuilders := []arguments.ArgumentBuilderInterface{
 		arguments.NewUserGroupsArgumentBuilder(),
 		arguments.NewNameArgumentBuilder(),
@@ -63,7 +72,7 @@ func buildArgumentsFromBuilders(commandDef *config.CommandDefinition, builder bu
 	return nil
 }
 
-func buildArgumentsFromFuncs(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func (cb *commandBuilder) buildArgumentsFromFuncs(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	argumentBuilderFuncs := []argumentBuilderDef{
 		arguments.AttachStreams,
 		arguments.BuildTerminalContext,

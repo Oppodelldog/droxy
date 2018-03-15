@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
 	"github.com/spf13/cobra"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewRoot(t *testing.T) {

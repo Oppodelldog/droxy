@@ -10,6 +10,8 @@ import (
 
 	"fmt"
 
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockerrun"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -32,7 +34,14 @@ func main() {
 			fmt.Println("YES-IT-IS")
 			os.Exit(0)
 		}
-		cmd.ExecuteCommand()
+
+		dockerRunCommandBuilder := dockerrun.NewCommandBuilder()
+		configLoader := config.NewLoader()
+		commandresultHandler := cmd.NewCommandResultHandler()
+		commandRunner := cmd.NewCommandRunner()
+		executableNameParser := cmd.NewExecutableNameParser()
+		exitCode := cmd.ExecuteCommand(dockerRunCommandBuilder, configLoader, commandresultHandler, commandRunner, executableNameParser)
+		os.Exit(exitCode)
 	}
 }
 

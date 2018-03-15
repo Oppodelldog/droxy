@@ -9,7 +9,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockerrun/builder"
 )
 
-//NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out
+//NewNameArgumentBuilder has no implementation for windows, it is stubbed out
 func NewNameArgumentBuilder() ArgumentBuilderInterface {
 	return &nameArgumentBuilder{
 		nameRandomizerFunc: defaultNameRandomizerFunc,

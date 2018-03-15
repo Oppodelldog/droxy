@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+//NewRoot returns a new root command.
 // Root is the root cobra command.
 // Basically it contains information to display the help message, but has no logic for execution.
 // The logical part for execution is handled in main.

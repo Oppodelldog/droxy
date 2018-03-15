@@ -9,12 +9,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type groupIdResolverStub struct {
+type groupIDResolverStub struct {
 	returnValue1 []string
 	returnValue2 error
 }
 
-func (stub *groupIdResolverStub) getUserGroupIDs() ([]string, error) {
+func (stub *groupIDResolverStub) getUserGroupIDs() ([]string, error) {
 	return stub.returnValue1, stub.returnValue2
 }
 
@@ -37,7 +37,7 @@ func TestAddGroups_AddGroupsTrue_ExpectAllUsersGroupsAddedToBuilder(t *testing.T
 		On("AddGroup", "99").Return(builder).
 		On("AddGroup", "1002").Return(builder)
 
-	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIdResolverStub{userGroupIDs, nil}}
+	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{userGroupIDs, nil}}
 
 	argumentBuilder.BuildArgument(commandDef, builder)
 
@@ -53,7 +53,7 @@ func TestAddGroups_AddGroupsTrue_IdResolverReturnsError_ExpectError(t *testing.T
 	builder := &mocks.Builder{}
 
 	idResolverError := errors.New("Id resolver error")
-	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIdResolverStub{nil, idResolverError}}
+	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{nil, idResolverError}}
 
 	err := argumentBuilder.BuildArgument(commandDef, builder)
 
@@ -64,7 +64,7 @@ func TestAddGroups_AddGroupsFalse_ExpectBuilderNotCalled(t *testing.T) {
 	commandDef := &config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
-	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIdResolverStub{}}
+	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{}}
 	argumentBuilder.BuildArgument(commandDef, builder)
 
 	assert.Empty(t, builder.Calls)

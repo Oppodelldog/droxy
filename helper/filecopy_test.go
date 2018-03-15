@@ -1,11 +1,12 @@
 package helper
 
 import (
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCopyFile(t *testing.T) {

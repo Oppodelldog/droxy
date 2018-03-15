@@ -19,7 +19,8 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandName := "some-command"
 	confgiuration := getFullFeatureConfig(commandName)
 
-	cmd, err := BuildCommandFromConfig(commandName, confgiuration)
+	commandBuilder := NewCommandBuilder()
+	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, confgiuration)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
 	}
