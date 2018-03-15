@@ -15,16 +15,16 @@ import (
 )
 
 func main() {
-	var rootCmd = cmd.Root
+	var rootCmd = cmd.NewRoot()
 	symlinkCommandWrapper := cmd.NewSymlinkCommandWrapper()
 	hardlinkCommandWrapper := cmd.NewHardlinkCommandWrapper()
 	cloneCommandWrapper := cmd.NewCloneCommandWrapper()
 
-	cmd.Root.AddCommand(symlinkCommandWrapper.GetCommand())
-	cmd.Root.AddCommand(hardlinkCommandWrapper.GetCommand())
-	cmd.Root.AddCommand(cloneCommandWrapper.GetCommand())
+	rootCmd.AddCommand(symlinkCommandWrapper.GetCommand())
+	rootCmd.AddCommand(hardlinkCommandWrapper.GetCommand())
+	rootCmd.AddCommand(cloneCommandWrapper.GetCommand())
 
-	if len(os.Args) >= 2 && isSubCommand(os.Args[1], cmd.Root.Commands()) {
+	if len(os.Args) >= 2 && isSubCommand(os.Args[1], rootCmd.Commands()) {
 		err := rootCmd.Execute()
 		if err != nil {
 			logrus.Info(err)

@@ -1,10 +1,10 @@
 package helper
 
 import (
+	"github.com/stretchr/testify/assert"
 	"os"
 	"path/filepath"
 	"testing"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestGetExecutablePath(t *testing.T) {

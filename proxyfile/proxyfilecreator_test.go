@@ -1,12 +1,12 @@
 package proxyfile
 
 import (
-	"testing"
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/stretchr/testify/assert"
 	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
+	"testing"
 )
 
 func TestCreator_CreateProxyFiles(t *testing.T) {

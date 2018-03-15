@@ -10,10 +10,12 @@ import (
 // Root is the root cobra command.
 // Basically it contains information to display the help message, but has no logic for execution.
 // The logical part for execution is handled in main.
-var Root = &cobra.Command{
-	Use:   "droxy",
-	Short: "docker proxy commands by configuration",
-	Long: fmt.Sprintf(`     _                             
+func NewRoot() *cobra.Command {
+	return &cobra.Command{
+		Use:   "droxy",
+		Short: "docker proxy commands by configuration",
+		Long: fmt.Sprintf(`
+     _                             
     | |                            
   __| |  ____   ___   _   _  _   _ 
  / _  | / ___) / _ \ ( \ / )| | | |
@@ -22,6 +24,7 @@ var Root = &cobra.Command{
                             (____/ 
 Version: %s
 About  : droxy creates commands that proxy to docker`, version.Number),
-	Run: func(cmd *cobra.Command, args []string) {
-	},
+		Run: func(cmd *cobra.Command, args []string) {
+		},
+	}
 }
