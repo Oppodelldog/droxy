@@ -16,13 +16,6 @@ import (
 
 func main() {
 	var rootCmd = cmd.NewRoot()
-	symlinkCommandWrapper := cmd.NewSymlinkCommandWrapper()
-	hardlinkCommandWrapper := cmd.NewHardlinkCommandWrapper()
-	cloneCommandWrapper := cmd.NewCloneCommandWrapper()
-
-	rootCmd.AddCommand(symlinkCommandWrapper.GetCommand())
-	rootCmd.AddCommand(hardlinkCommandWrapper.GetCommand())
-	rootCmd.AddCommand(cloneCommandWrapper.GetCommand())
 
 	if len(os.Args) >= 2 && isSubCommand(os.Args[1], rootCmd.Commands()) {
 		err := rootCmd.Execute()

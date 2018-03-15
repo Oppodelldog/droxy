@@ -11,7 +11,8 @@ import (
 // Basically it contains information to display the help message, but has no logic for execution.
 // The logical part for execution is handled in main.
 func NewRoot() *cobra.Command {
-	return &cobra.Command{
+
+	rootCmd := &cobra.Command{
 		Use:   "droxy",
 		Short: "docker proxy commands by configuration",
 		Long: fmt.Sprintf(`
@@ -27,4 +28,14 @@ About  : droxy creates commands that proxy to docker`, version.Number),
 		Run: func(cmd *cobra.Command, args []string) {
 		},
 	}
+
+	symlinkCommandWrapper := NewSymlinkCommandWrapper()
+	hardlinkCommandWrapper := NewHardlinkCommandWrapper()
+	cloneCommandWrapper := NewCloneCommandWrapper()
+
+	rootCmd.AddCommand(symlinkCommandWrapper.GetCommand())
+	rootCmd.AddCommand(hardlinkCommandWrapper.GetCommand())
+	rootCmd.AddCommand(cloneCommandWrapper.GetCommand())
+
+	return rootCmd
 }
