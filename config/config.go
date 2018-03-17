@@ -1,6 +1,6 @@
 package config
 
-import "github.com/Oppodelldog/droxy/filediscovery"
+import "github.com/Oppodelldog/filediscovery"
 
 const configFileName = "droxy.toml"
 const configEnvVarName = "DROXY_CONFIG"

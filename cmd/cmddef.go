@@ -5,9 +5,10 @@ import (
 
 	"github.com/Oppodelldog/droxy/version"
 	"github.com/spf13/cobra"
+	"github.com/Oppodelldog/droxy/cmd/subcmd"
 )
 
-//NewRoot returns a new root command.
+// NewRoot returns a new root command.
 // Root is the root cobra command.
 // Basically it contains information to display the help message, but has no logic for execution.
 // The logical part for execution is handled in main.
@@ -30,9 +31,9 @@ About  : droxy creates commands that proxy to docker`, version.Number),
 		},
 	}
 
-	symlinkCommandWrapper := NewSymlinkCommandWrapper()
-	hardlinkCommandWrapper := NewHardlinkCommandWrapper()
-	cloneCommandWrapper := NewCloneCommandWrapper()
+	symlinkCommandWrapper := subcmd.NewSymlinkCommandWrapper()
+	hardlinkCommandWrapper := subcmd.NewHardlinkCommandWrapper()
+	cloneCommandWrapper := subcmd.NewCloneCommandWrapper()
 
 	rootCmd.AddCommand(symlinkCommandWrapper.GetCommand())
 	rootCmd.AddCommand(hardlinkCommandWrapper.GetCommand())
