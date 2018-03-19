@@ -29,7 +29,8 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 func getFullFeatureCommandDefinition() CommandDefinition {
 	isTemplate := true
 	template := "some template"
-	entryPoint := "some-entrypoint-cmd"
+	entryPoint := "some-entryPoint"
+	command := "some-cmd"
 	name := "some command"
 	image := "some-image:v1.02"
 	network := "some-docker-network"
@@ -71,6 +72,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		IsTemplate:      &isTemplate,
 		Template:        &template,
 		EntryPoint:      &entryPoint,
+		Command:         &command,
 		Name:            &name,
 		UniqueNames:     &uniqueNames,
 		Image:           &image,
@@ -103,7 +105,8 @@ func getFullFeatureConfigFixture() []byte {
       uniqueNames=true
       network="some-docker-network"
       image="some-image:v1.02"
-      entryPoint="some-entrypoint-cmd"
+	  entryPoint="some-entryPoint"
+      command="some-cmd"
       template="some template"
 
       # volume mappings

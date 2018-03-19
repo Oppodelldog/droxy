@@ -1,15 +1,16 @@
 package cmd
 
 import (
-	"os"
-	"github.com/sirupsen/logrus"
-	"path/filepath"
-	"github.com/Oppodelldog/droxy/helper"
 	"fmt"
-	"github.com/Oppodelldog/droxy/dockerrun"
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/spf13/cobra"
+	"os"
+	"path/filepath"
+
 	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockerrun"
+	"github.com/Oppodelldog/droxy/helper"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
 )
 
 func Execute() int {

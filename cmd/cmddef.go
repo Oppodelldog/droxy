@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/Oppodelldog/droxy/cmd/subcmd"
 	"github.com/Oppodelldog/droxy/version"
 	"github.com/spf13/cobra"
-	"github.com/Oppodelldog/droxy/cmd/subcmd"
 )
 
 // NewRoot returns a new root command.

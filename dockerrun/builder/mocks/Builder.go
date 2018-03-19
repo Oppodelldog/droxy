@@ -139,6 +139,22 @@ func (_m *Builder) Build() *exec.Cmd {
 	return r0
 }
 
+// SetCommand provides a mock function with given fields: command
+func (_m *Builder) SetCommand(command string) builder.Builder {
+	ret := _m.Called(command)
+
+	var r0 builder.Builder
+	if rf, ok := ret.Get(0).(func(string) builder.Builder); ok {
+		r0 = rf(command)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(builder.Builder)
+		}
+	}
+
+	return r0
+}
+
 // SetContainerName provides a mock function with given fields: containerName
 func (_m *Builder) SetContainerName(containerName string) builder.Builder {
 	ret := _m.Called(containerName)

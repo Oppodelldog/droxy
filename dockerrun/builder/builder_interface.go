@@ -18,6 +18,7 @@ type Builder interface {
 	AddEnvVar(envVarDeclaration string) Builder
 	AddGroup(groupName string) Builder
 	SetEntryPoint(entryPoint string) Builder
+	SetCommand(command string) Builder
 	SetNetwork(network string) Builder
 	SetImageName(imageName string) Builder
 	SetWorkingDir(workingDir string) Builder

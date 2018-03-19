@@ -35,7 +35,7 @@ func TestBuilder_FullFeature(t *testing.T) {
 	b.AttachTo("Stderr")
 	b.SetContainerName("containerName")
 	b.SetContainerUserAndGroup("userId", "userGroup")
-	b.SetEntryPoint("entryPoint")
+	b.SetCommand("command")
 	b.SetImageName("imageName")
 	b.SetNetwork("network")
 	b.SetStdOut(testWriterA)
@@ -64,7 +64,7 @@ arg2
 -a Stderr
 --network network
 imageName
-entryPoint
+command
 cmdArg1
 cmdArg2`,
 		"\n", " ", -1)

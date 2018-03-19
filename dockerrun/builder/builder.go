@@ -10,24 +10,25 @@ import (
 type (
 	// builder can be used to build a docker run command
 	builder struct {
-		command         string
-		subCommand      string
-		imageName       string
-		entryPoint      string
-		network         []string
-		args            []string
-		portMappings    []string
-		volumeMappings  []string
-		envVarMappings  []string
-		attachedStreams []string
-		workingDir      []string
-		containerName   []string
-		addedGroups     []string
-		containerUser   []string
-		cmdArgs         []string
-		stdIn           io.Reader
-		stdOut          io.Writer
-		stdErr          io.Writer
+		dockerBinaryName string
+		dockerSubCommand string
+		imageName        string
+		entryPoint       []string
+		command          string
+		network          []string
+		args             []string
+		portMappings     []string
+		volumeMappings   []string
+		envVarMappings   []string
+		attachedStreams  []string
+		workingDir       []string
+		containerName    []string
+		addedGroups      []string
+		containerUser    []string
+		cmdArgs          []string
+		stdIn            io.Reader
+		stdOut           io.Writer
+		stdErr           io.Writer
 
 		buildArgs []string
 	}
@@ -36,11 +37,11 @@ type (
 // New returns a new docker command builder
 func New() Builder {
 	return &builder{
-		command:    "docker",
-		subCommand: "run",
-		stdIn:      os.Stdin,
-		stdOut:     os.Stdout,
-		stdErr:     os.Stderr,
+		dockerBinaryName: "docker",
+		dockerSubCommand: "run",
+		stdIn:            os.Stdin,
+		stdOut:           os.Stdout,
+		stdErr:           os.Stderr,
 	}
 }
 
@@ -71,7 +72,7 @@ func (b *builder) AddPortMapping(portMapping string) Builder {
 	return b
 }
 
-// AddCmdArguments adds command arguments that are applied to the command executed inside the container
+// AddCmdArguments adds command arguments that are applied to the dockerBinaryName executed inside the container
 func (b *builder) AddCmdArguments(arguments []string) Builder {
 	b.cmdArgs = append(b.cmdArgs, arguments...)
 	return b
@@ -110,9 +111,15 @@ func (b *builder) AddGroup(groupName string) Builder {
 	return b
 }
 
-// SetEntryPoint sets the entry point for the docker run command
+// SetEntryPoint sets the entryPoint for the docker run command
 func (b *builder) SetEntryPoint(entryPoint string) Builder {
-	b.entryPoint = entryPoint
+	b.entryPoint = []string{"--entrypoint", fmt.Sprintf(`%s`, entryPoint)}
+	return b
+}
+
+// SetCommand sets the command/CMD for the docker run command
+func (b *builder) SetCommand(command string) Builder {
+	b.command = command
 	return b
 }
 
@@ -151,7 +158,7 @@ func (b *builder) SetContainerUserAndGroup(userID string, groupID string) Builde
 // Build builds the exec.Cmd which will start a docker-container
 func (b *builder) Build() *exec.Cmd {
 
-	cmd := exec.Command(b.command, b.subCommand)
+	cmd := exec.Command(b.dockerBinaryName, b.dockerSubCommand)
 
 	b.buildArgsAppend(b.args...)
 	b.buildArgsAppend(b.containerName...)
@@ -163,9 +170,10 @@ func (b *builder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.containerUser...)
 	b.buildArgsAppend(b.attachedStreams...)
 	b.buildArgsAppend(b.network...)
+	b.buildArgsAppend(b.entryPoint...)
 
 	b.buildArgAppend(b.imageName)
-	b.buildArgAppend(b.entryPoint)
+	b.buildArgAppend(b.command)
 
 	b.buildArgsAppend(b.cmdArgs...)
 

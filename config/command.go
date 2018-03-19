@@ -5,6 +5,7 @@ type CommandDefinition struct {
 	IsTemplate      *bool
 	Template        *string
 	EntryPoint      *string
+	Command         *string
 	Name            *string
 	UniqueNames     *bool
 	Image           *string
@@ -37,10 +38,18 @@ func (c *CommandDefinition) GetTemplate() (string, bool) {
 	return "", false
 }
 
-// GetEntryPoint returns value of EntryPoint and an boolean indicating if value is set.
+// GetEntryPoint returns entrypoint and an boolean indicating if value is set.
 func (c *CommandDefinition) GetEntryPoint() (string, bool) {
 	if c.EntryPoint != nil {
 		return *c.EntryPoint, true
+	}
+	return "", false
+}
+
+// GetCommand returns value of Command (CMD) and an boolean indicating if value is set.
+func (c *CommandDefinition) GetCommand() (string, bool) {
+	if c.Command != nil {
+		return *c.Command, true
 	}
 	return "", false
 }

@@ -5,6 +5,7 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 
 	mergedCommand.Name = resolvePropertyString(baseCommand.Name, overlayCommand.Name)
 	mergedCommand.EntryPoint = resolvePropertyString(baseCommand.EntryPoint, overlayCommand.EntryPoint)
+	mergedCommand.Command = resolvePropertyString(baseCommand.Command, overlayCommand.Command)
 	mergedCommand.Image = resolvePropertyString(baseCommand.Image, overlayCommand.Image)
 	mergedCommand.WorkDir = resolvePropertyString(baseCommand.WorkDir, overlayCommand.WorkDir)
 	mergedCommand.Network = resolvePropertyString(baseCommand.Network, overlayCommand.Network)

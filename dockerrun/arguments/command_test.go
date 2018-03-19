@@ -8,26 +8,26 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBuildEntryPoint_EntryPointDefined(t *testing.T) {
+func TestBuildCommand_CommandDefined(t *testing.T) {
 
-	entryPoint := "entryPoint"
+	command := "command"
 	commandDef := &config.CommandDefinition{
-		EntryPoint: &entryPoint,
+		Command: &command,
 	}
 
 	builder := &mocks.Builder{}
-	builder.On("SetEntryPoint", entryPoint).Return(builder)
+	builder.On("SetCommand", command).Return(builder)
 
-	BuildEntryPoint(commandDef, builder)
+	BuildCommand(commandDef, builder)
 
 	builder.AssertExpectations(t)
 }
 
-func TestBuildEntryPoint_NoEntryPointDefined(t *testing.T) {
+func TestBuildCommand_NoCommandDefined(t *testing.T) {
 	commandDef := &config.CommandDefinition{Command: nil}
 	builder := &mocks.Builder{}
 
-	BuildEntryPoint(commandDef, builder)
+	BuildCommand(commandDef, builder)
 
 	assert.Empty(t, builder.Calls)
 }
