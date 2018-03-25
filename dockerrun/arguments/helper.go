@@ -7,10 +7,20 @@ import (
 	"github.com/drone/envsubst"
 )
 
-func resolveEnvVar(envVarName string) (string, error) {
+func resolveEnvVarStrict(envVarName string) (string, error) {
 	return envsubst.Eval(envVarName, func(normalizedEnvVarName string) string {
 		if envVar, ok := os.LookupEnv(normalizedEnvVarName); !ok {
 			panic(fmt.Sprintf("env var %v is not set!", normalizedEnvVarName))
+		} else {
+			return envVar
+		}
+	})
+}
+
+func resolveEnvVar(envVarName string) (string, error) {
+	return envsubst.Eval(envVarName, func(normalizedEnvVarName string) string {
+		if envVar, ok := os.LookupEnv(normalizedEnvVarName); !ok {
+			return ""
 		} else {
 			return envVar
 		}

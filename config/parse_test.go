@@ -28,6 +28,7 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 
 func getFullFeatureCommandDefinition() CommandDefinition {
 	isTemplate := true
+	requireEnvVars := true
 	template := "some template"
 	entryPoint := "some-entryPoint"
 	command := "some-cmd"
@@ -69,6 +70,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	}
 
 	return CommandDefinition{
+		RequireEnvVars:  &requireEnvVars,
 		IsTemplate:      &isTemplate,
 		Template:        &template,
 		EntryPoint:      &entryPoint,

@@ -26,6 +26,7 @@ The config file must be named ```droxy.toml```.
       workDir = "/app"        # define working directory
       removeContainer=true    # remove container after command has finished
       isInteractive=true      # enable interaction with the called command
+      RequireEnvVars=false    # if true, not defined env vars that are configured will lead to an error
 
       # volume mappings
       volumes = [
