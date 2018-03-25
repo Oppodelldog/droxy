@@ -189,9 +189,13 @@ func (b *builder) Build() *exec.Cmd {
 }
 
 func (b *builder) buildArgAppend(arg string) {
-	b.buildArgs = append(b.buildArgs, arg)
+	if len(arg) > 0 {
+		b.buildArgs = append(b.buildArgs, arg)
+	}
 }
 
 func (b *builder) buildArgsAppend(args ...string) {
-	b.buildArgs = append(b.buildArgs, args...)
+	for _, v := range args {
+		b.buildArgAppend(v)
+	}
 }

@@ -39,6 +39,37 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	os.Unsetenv("ENV_VAR")
 }
 
+func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *testing.T) {
+
+	commandName := "some-command"
+
+	configuration := &config.Configuration{
+		Command:[]config.CommandDefinition{
+			{
+				Name:&commandName,
+			},
+		},
+	}
+
+	commandBuilder := NewCommandBuilder()
+	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
+	if err != nil {
+		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
+	}
+
+	expectedArgsFromTestCall := strings.Join(os.Args[1:], " ")
+	commandString := strings.Join(cmd.Args, " ")
+
+	expectedCommandStrings := []string{
+		strings.TrimSpace(strings.Join([]string{"docker run --name some-command -a STDIN -a STDOUT -a STDERR", expectedArgsFromTestCall}, " ")),
+	}
+
+	assert.Contains(t, expectedCommandStrings, commandString)
+
+	os.Unsetenv("VOLUME_ENV_VAR")
+	os.Unsetenv("ENV_VAR")
+}
+
 func getFullFeatureConfig(commandName string) *config.Configuration {
 
 	fullFeatureTemplate := getFullFeatureTemplateDef()
