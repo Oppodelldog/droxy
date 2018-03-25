@@ -62,6 +62,7 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 
 	expectedCommandStrings := []string{
 		strings.TrimSpace(strings.Join([]string{"docker run --name some-command -a STDIN -a STDOUT -a STDERR", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t --name some-command -a STDIN -a STDOUT -a STDERR", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
