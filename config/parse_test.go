@@ -97,6 +97,7 @@ func getFullFeatureConfigFixture() []byte {
 	Version="1"	
 
     [[command]]
+      requireEnvVars=true
       name = "some command"  # name of the command
       isTemplate = true       # this command can be used as a template, no command will be created
       addGroups = true        # add current systems groups

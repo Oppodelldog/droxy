@@ -22,6 +22,7 @@ type CommandDefinition struct {
 	ReplaceArgs     *[][]string
 	AdditionalArgs  *[]string
 }
+
 // GetRequireEnvVars returns value of RequireEnvVars and an boolean indicating if value is set.
 func (c *CommandDefinition) GetRequireEnvVars() (bool, bool) {
 	if c.RequireEnvVars != nil {

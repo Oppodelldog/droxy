@@ -21,8 +21,8 @@ func TestBuildEnvVars_EnvVarsNotRequired_EnvVarsresolved(t *testing.T) {
 	}
 	requireEnvVars := false
 	commandDef := &config.CommandDefinition{
-		RequireEnvVars:&requireEnvVars,
-		EnvVars: envVars,
+		RequireEnvVars: &requireEnvVars,
+		EnvVars:        envVars,
 	}
 	builder := &mocks.Builder{}
 	builder.On("AddEnvVar", val1).Return(builder)
@@ -46,8 +46,8 @@ func TestBuildEnvVars_EnvVarsRequired_EnvVarsResolved(t *testing.T) {
 	}
 	requireEnvVars := true
 	commandDef := &config.CommandDefinition{
-		RequireEnvVars:&requireEnvVars,
-		EnvVars: envVars,
+		RequireEnvVars: &requireEnvVars,
+		EnvVars:        envVars,
 	}
 	builder := &mocks.Builder{}
 	builder.On("AddEnvVar", val1).Return(builder)
@@ -75,7 +75,6 @@ func TestBuildEnvVars_EnvVarsNotRequired_EnvVarDefinedButCannotResolve_ResolvesE
 
 	BuildEnvVars(commandDef, builder)
 }
-
 
 func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *testing.T) {
 
