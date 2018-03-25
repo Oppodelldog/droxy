@@ -28,6 +28,7 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 
 func getFullFeatureCommandDefinition() CommandDefinition {
 	isTemplate := true
+	requireEnvVars := true
 	template := "some template"
 	entryPoint := "some-entryPoint"
 	command := "some-cmd"
@@ -69,6 +70,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	}
 
 	return CommandDefinition{
+		RequireEnvVars:  &requireEnvVars,
 		IsTemplate:      &isTemplate,
 		Template:        &template,
 		EntryPoint:      &entryPoint,
@@ -95,6 +97,7 @@ func getFullFeatureConfigFixture() []byte {
 	Version="1"	
 
     [[command]]
+      requireEnvVars=true
       name = "some command"  # name of the command
       isTemplate = true       # this command can be used as a template, no command will be created
       addGroups = true        # add current systems groups

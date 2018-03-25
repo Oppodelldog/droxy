@@ -9,7 +9,13 @@ import (
 func BuildEnvVars(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if envVars, ok := commandDef.GetEnvVars(); ok {
 		for _, envVar := range envVars {
-			envVarValue, err := resolveEnvVar(envVar)
+			var envVarValue string
+			var err error
+			if envVarsRequired, ok := commandDef.GetRequireEnvVars(); ok && envVarsRequired {
+				envVarValue, err = resolveEnvVarStrict(envVar)
+			} else {
+				envVarValue, err = resolveEnvVar(envVar)
+			}
 			if err != nil {
 				return err
 			}

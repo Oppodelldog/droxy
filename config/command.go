@@ -2,6 +2,7 @@ package config
 
 // CommandDefinition gives public access to the fields by accessor functions
 type CommandDefinition struct {
+	RequireEnvVars  *bool
 	IsTemplate      *bool
 	Template        *string
 	EntryPoint      *string
@@ -20,6 +21,14 @@ type CommandDefinition struct {
 	RemoveContainer *bool
 	ReplaceArgs     *[][]string
 	AdditionalArgs  *[]string
+}
+
+// GetRequireEnvVars returns value of RequireEnvVars and an boolean indicating if value is set.
+func (c *CommandDefinition) GetRequireEnvVars() (bool, bool) {
+	if c.RequireEnvVars != nil {
+		return *c.RequireEnvVars, true
+	}
+	return false, false
 }
 
 // GetIsTemplate returns value of IsTemplate and an boolean indicating if value is set.
