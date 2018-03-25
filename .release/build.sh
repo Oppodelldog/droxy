@@ -19,7 +19,7 @@ git checkout $tag
 
 target_folder=".release"
 package="github.com/Oppodelldog/droxy"
-ldflags=-ldflags="-X version.Number=${tag}"
+ldflags=-ldflags="-X github.com/Oppodelldog/droxy/version.Number=${tag}"
 
 package_split=(${package//\// })
 package_name=${package_split[-1]}
