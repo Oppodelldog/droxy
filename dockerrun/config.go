@@ -80,6 +80,7 @@ func (cb *commandBuilder) buildArgumentsFromFuncs(commandDef *config.CommandDefi
 		arguments.BuildCommand,
 		arguments.BuildNetwork,
 		arguments.BuildEnvFile,
+		arguments.BuildIp,
 		arguments.BuildInteractiveFlag,
 		arguments.BuildRemoveContainerFlag,
 		arguments.BuildImpersonation,
