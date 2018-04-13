@@ -9,6 +9,7 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.Image = resolvePropertyString(baseCommand.Image, overlayCommand.Image)
 	mergedCommand.WorkDir = resolvePropertyString(baseCommand.WorkDir, overlayCommand.WorkDir)
 	mergedCommand.Network = resolvePropertyString(baseCommand.Network, overlayCommand.Network)
+	mergedCommand.EnvFile = resolvePropertyString(baseCommand.EnvFile, overlayCommand.EnvFile)
 
 	mergedCommand.AddGroups = resolvePropertyBool(baseCommand.AddGroups, overlayCommand.AddGroups)
 	mergedCommand.RemoveContainer = resolvePropertyBool(baseCommand.RemoveContainer, overlayCommand.RemoveContainer)

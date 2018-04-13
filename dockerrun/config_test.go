@@ -17,10 +17,10 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	os.Setenv("ENV_VAR", "envVarStub")
 
 	commandName := "some-command"
-	confgiuration := getFullFeatureConfig(commandName)
+	configuration := getFullFeatureConfig(commandName)
 
 	commandBuilder := NewCommandBuilder()
-	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, confgiuration)
+	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
 	}
@@ -29,8 +29,8 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandString := strings.Join(cmd.Args, " ")
 
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
@@ -44,9 +44,9 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 	commandName := "some-command"
 
 	configuration := &config.Configuration{
-		Command:[]config.CommandDefinition{
+		Command: []config.CommandDefinition{
 			{
-				Name:&commandName,
+				Name: &commandName,
 			},
 		},
 	}
@@ -90,6 +90,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 	name := "some template"
 	image := "some-image:v1.02"
 	network := "some-docker-network"
+	envFile := ".env"
 	isInteractive := true
 	addGroups := false   // disabled because of different values on build than on local...
 	impersonate := false // disabled because of different values on build than on local...
@@ -129,6 +130,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		Name:            &name,
 		Image:           &image,
 		Network:         &network,
+		EnvFile:         &envFile,
 		IsInteractive:   &isInteractive,
 		AddGroups:       &addGroups,
 		Impersonate:     &impersonate,
@@ -149,6 +151,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 	name := commandName
 	image := "some-image:v1.02"
 	network := "some-docker-network"
+	envFile := ".env"
 	isInteractive := true
 	addGroups := false   // disabled because of different values on build than on local...
 	impersonate := false // disabled because of different values on build than on local...
@@ -189,6 +192,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		Name:            &name,
 		Image:           &image,
 		Network:         &network,
+		EnvFile:         &envFile,
 		IsInteractive:   &isInteractive,
 		AddGroups:       &addGroups,
 		Impersonate:     &impersonate,

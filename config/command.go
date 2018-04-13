@@ -11,6 +11,7 @@ type CommandDefinition struct {
 	UniqueNames     *bool
 	Image           *string
 	Network         *string
+	EnvFile			*string
 	IsInteractive   *bool
 	Volumes         *[]string
 	EnvVars         *[]string
@@ -83,6 +84,14 @@ func (c *CommandDefinition) GetImage() (string, bool) {
 func (c *CommandDefinition) GetNetwork() (string, bool) {
 	if c.Network != nil {
 		return *c.Network, true
+	}
+	return "", false
+}
+
+// GetEnvFile returns value of EnvFile and an boolean indicating if value is set.
+func (c *CommandDefinition) GetEnvFile() (string, bool) {
+	if c.EnvFile != nil {
+		return *c.EnvFile, true
 	}
 	return "", false
 }

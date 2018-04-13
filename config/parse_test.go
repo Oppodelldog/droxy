@@ -41,6 +41,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	removeContainer := true
 	uniqueNames := true
 	workDir := "someDir/"
+	envFile := ".env"
 	volumes := []string{
 		"${HOME}:${HOME}",
 		"${SSH_AUTH_SOCK}:/run/ssh.sock",
@@ -80,6 +81,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		Image:           &image,
 		Network:         &network,
 		IsInteractive:   &isInteractive,
+		EnvFile:         &envFile,
 		AddGroups:       &addGroups,
 		Impersonate:     &impersonate,
 		RemoveContainer: &removeContainer,
@@ -111,6 +113,7 @@ func getFullFeatureConfigFixture() []byte {
 	  entryPoint="some-entryPoint"
       command="some-cmd"
       template="some template"
+      envFile=".env"	
 
       # volume mappings
       volumes = [

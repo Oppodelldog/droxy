@@ -203,6 +203,22 @@ func (_m *Builder) SetEntryPoint(entryPoint string) builder.Builder {
 	return r0
 }
 
+// SetEnvFile provides a mock function with given fields: envFile
+func (_m *Builder) SetEnvFile(envFile string) builder.Builder {
+	ret := _m.Called(envFile)
+
+	var r0 builder.Builder
+	if rf, ok := ret.Get(0).(func(string) builder.Builder); ok {
+		r0 = rf(envFile)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(builder.Builder)
+		}
+	}
+
+	return r0
+}
+
 // SetImageName provides a mock function with given fields: imageName
 func (_m *Builder) SetImageName(imageName string) builder.Builder {
 	ret := _m.Called(imageName)
