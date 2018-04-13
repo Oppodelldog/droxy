@@ -11,7 +11,8 @@ type CommandDefinition struct {
 	UniqueNames     *bool
 	Image           *string
 	Network         *string
-	EnvFile			*string
+	EnvFile         *string
+	Ip              *string
 	IsInteractive   *bool
 	Volumes         *[]string
 	EnvVars         *[]string
@@ -95,6 +96,15 @@ func (c *CommandDefinition) GetEnvFile() (string, bool) {
 	}
 	return "", false
 }
+
+// GetIp returns value of Ip and an boolean indicating if value is set.
+func (c *CommandDefinition) GetIp() (string, bool) {
+	if c.Ip != nil {
+		return *c.Ip, true
+	}
+	return "", false
+}
+
 
 // GetIsInteractive returns value of IsInteractive and an boolean indicating if value is set.
 func (c *CommandDefinition) GetIsInteractive() (bool, bool) {

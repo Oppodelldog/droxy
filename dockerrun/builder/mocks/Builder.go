@@ -235,6 +235,22 @@ func (_m *Builder) SetImageName(imageName string) builder.Builder {
 	return r0
 }
 
+// SetIp provides a mock function with given fields: ip
+func (_m *Builder) SetIp(ip string) builder.Builder {
+	ret := _m.Called(ip)
+
+	var r0 builder.Builder
+	if rf, ok := ret.Get(0).(func(string) builder.Builder); ok {
+		r0 = rf(ip)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(builder.Builder)
+		}
+	}
+
+	return r0
+}
+
 // SetNetwork provides a mock function with given fields: network
 func (_m *Builder) SetNetwork(network string) builder.Builder {
 	ret := _m.Called(network)

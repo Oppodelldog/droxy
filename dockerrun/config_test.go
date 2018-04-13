@@ -29,8 +29,8 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandString := strings.Join(cmd.Args, " ")
 
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
@@ -91,6 +91,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 	image := "some-image:v1.02"
 	network := "some-docker-network"
 	envFile := ".env"
+	ip := "127.1.2.3"
 	isInteractive := true
 	addGroups := false   // disabled because of different values on build than on local...
 	impersonate := false // disabled because of different values on build than on local...
@@ -131,6 +132,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		Image:           &image,
 		Network:         &network,
 		EnvFile:         &envFile,
+		Ip:              &ip,
 		IsInteractive:   &isInteractive,
 		AddGroups:       &addGroups,
 		Impersonate:     &impersonate,
@@ -152,6 +154,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 	image := "some-image:v1.02"
 	network := "some-docker-network"
 	envFile := ".env"
+	ip := "127.1.2.3"
 	isInteractive := true
 	addGroups := false   // disabled because of different values on build than on local...
 	impersonate := false // disabled because of different values on build than on local...
@@ -193,6 +196,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		Image:           &image,
 		Network:         &network,
 		EnvFile:         &envFile,
+		Ip:              &ip,
 		IsInteractive:   &isInteractive,
 		AddGroups:       &addGroups,
 		Impersonate:     &impersonate,

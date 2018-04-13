@@ -21,6 +21,7 @@ type Builder interface {
 	SetCommand(command string) Builder
 	SetNetwork(network string) Builder
 	SetEnvFile(envFile string) Builder
+	SetIp(ip string) Builder
 	SetImageName(imageName string) Builder
 	SetWorkingDir(workingDir string) Builder
 	SetContainerName(containerName string) Builder

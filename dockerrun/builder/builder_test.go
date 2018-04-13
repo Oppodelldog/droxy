@@ -39,6 +39,7 @@ func TestBuilder_FullFeature(t *testing.T) {
 	b.SetImageName("imageName")
 	b.SetNetwork("network")
 	b.SetEnvFile(".env")
+	b.SetIp("127.1.2.3")
 	b.SetStdOut(testWriterA)
 	b.SetStdErr(testWriterB)
 	b.SetStdIn(testReader)
@@ -65,6 +66,7 @@ arg2
 -a Stderr
 --network network
 --env-file .env
+-ip 127.1.2.3
 imageName
 command
 cmdArg1

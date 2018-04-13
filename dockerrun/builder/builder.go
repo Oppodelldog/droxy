@@ -17,6 +17,7 @@ type (
 		command          string
 		network          []string
 		envFile          []string
+		ip               []string
 		args             []string
 		portMappings     []string
 		volumeMappings   []string
@@ -136,6 +137,12 @@ func (b *builder) SetEnvFile(envFile string) Builder {
 	return b
 }
 
+// SetIp sets an env-file which is load into the environment of the container
+func (b *builder) SetIp(ip string) Builder {
+	b.ip = []string{"-ip", ip}
+	return b
+}
+
 // SetImageName sets the image on which base the container is created
 func (b *builder) SetImageName(imageName string) Builder {
 	b.imageName = imageName
@@ -178,6 +185,7 @@ func (b *builder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.attachedStreams...)
 	b.buildArgsAppend(b.network...)
 	b.buildArgsAppend(b.envFile...)
+	b.buildArgsAppend(b.ip...)
 	b.buildArgsAppend(b.entryPoint...)
 
 	b.buildArgAppend(b.imageName)
