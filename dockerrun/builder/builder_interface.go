@@ -20,6 +20,7 @@ type Builder interface {
 	SetEntryPoint(entryPoint string) Builder
 	SetCommand(command string) Builder
 	SetNetwork(network string) Builder
+	SetEnvFile(envFile string) Builder
 	SetImageName(imageName string) Builder
 	SetWorkingDir(workingDir string) Builder
 	SetContainerName(containerName string) Builder

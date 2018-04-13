@@ -79,6 +79,7 @@ func (cb *commandBuilder) buildArgumentsFromFuncs(commandDef *config.CommandDefi
 		arguments.BuildEntryPoint,
 		arguments.BuildCommand,
 		arguments.BuildNetwork,
+		arguments.BuildEnvFile,
 		arguments.BuildInteractiveFlag,
 		arguments.BuildRemoveContainerFlag,
 		arguments.BuildImpersonation,
