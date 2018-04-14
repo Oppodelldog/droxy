@@ -31,6 +31,10 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 func resolvePropertyBool(bBase *bool, bOverlay *bool) *bool {
 	var b bool
 
+	if bBase == nil && bOverlay == nil {
+		return nil
+	}
+
 	if bBase != nil {
 		b = *bBase
 	}
@@ -45,10 +49,13 @@ func resolvePropertyBool(bBase *bool, bOverlay *bool) *bool {
 func resolvePropertyString(sBase *string, sOverlay *string) *string {
 	var s string
 
+	if sBase == nil && sOverlay == nil {
+		return nil
+	}
+
 	if sBase != nil {
 		s = *sBase
 	}
-
 	if sOverlay != nil {
 		s = *sOverlay
 	}
@@ -58,6 +65,10 @@ func resolvePropertyString(sBase *string, sOverlay *string) *string {
 
 func resolvePropertyStringArray(sBase *[]string, sOverlay *[]string) *[]string {
 	var s []string
+
+	if sBase == nil && sOverlay == nil {
+		return nil
+	}
 
 	if sBase != nil {
 		s = *sBase
@@ -72,6 +83,10 @@ func resolvePropertyStringArray(sBase *[]string, sOverlay *[]string) *[]string {
 
 func resolvePropertyStringArray2D(sBase *[][]string, sOverlay *[][]string) *[][]string {
 	var s [][]string
+
+	if sBase == nil && sOverlay == nil {
+		return nil
+	}
 
 	if sBase != nil {
 		s = *sBase
