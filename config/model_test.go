@@ -136,6 +136,35 @@ func TestConfiguration_FindCommandByName_TemplateNotFoundError(t *testing.T) {
 	assert.Error(t, err)
 }
 
+func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
+
+	template1Name := "template1"
+	template1EntryPoint := "template1EntryPoint"
+	template2Name := "template2"
+	template2EntryPoint := string(nil)
+	template1 := CommandDefinition{Name: &template1Name, EntryPoint: &template1EntryPoint}
+	template2 := CommandDefinition{Name: &template2Name, EntryPoint: &template2EntryPoint, Template: &template1Name}
+	nameA := "COMMAND-A"
+	commandA := CommandDefinition{Name: &nameA, Template: &template2Name}
+
+	cfg := Configuration{
+		Command: []CommandDefinition{
+			template1,
+			template2,
+			commandA,
+		},
+	}
+
+	cmd, err := cfg.FindCommandByName("COMMAND-A")
+	if err != nil {
+		t.Fatalf("Did not expect error from cfg.FindCommandByName, but got %v", err)
+	}
+
+	expectedEntryPoint := template1EntryPoint
+	cmdEntryPoint, _ := cmd.GetEntryPoint()
+	assert.Equal(t, expectedEntryPoint, cmdEntryPoint)
+}
+
 func TestConfiguration_SetConfigurationFilePath(t *testing.T) {
 	cfg := Configuration{}
 	somePath := "/tmp/configpath"
