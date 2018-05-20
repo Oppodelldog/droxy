@@ -141,9 +141,8 @@ func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
 	template1Name := "template1"
 	template1EntryPoint := "template1EntryPoint"
 	template2Name := "template2"
-	template2EntryPoint := string(nil)
 	template1 := CommandDefinition{Name: &template1Name, EntryPoint: &template1EntryPoint}
-	template2 := CommandDefinition{Name: &template2Name, EntryPoint: &template2EntryPoint, Template: &template1Name}
+	template2 := CommandDefinition{Name: &template2Name, Template: &template1Name}
 	nameA := "COMMAND-A"
 	commandA := CommandDefinition{Name: &nameA, Template: &template2Name}
 
