@@ -26,5 +26,6 @@ type Builder interface {
 	SetWorkingDir(workingDir string) Builder
 	SetContainerName(containerName string) Builder
 	SetContainerUserAndGroup(userID string, groupID string) Builder
+	AddLabel(label string) Builder
 	Build() *exec.Cmd
 }

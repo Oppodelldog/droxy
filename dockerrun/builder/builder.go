@@ -26,6 +26,7 @@ type (
 		workingDir       []string
 		containerName    []string
 		addedGroups      []string
+		labels           []string
 		containerUser    []string
 		cmdArgs          []string
 		stdIn            io.Reader
@@ -71,6 +72,12 @@ func (b *builder) SetStdErr(w io.Writer) Builder {
 // AddPortMapping adds a mapping of ports between the docker container and the host
 func (b *builder) AddPortMapping(portMapping string) Builder {
 	b.portMappings = append(b.portMappings, "-p", portMapping)
+	return b
+}
+
+// AddLabel adds a label to the docker container
+func (b *builder) AddLabel(label string) Builder {
+	b.labels = append(b.labels, "-l", label)
 	return b
 }
 
@@ -180,6 +187,7 @@ func (b *builder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.portMappings...)
 	b.buildArgsAppend(b.volumeMappings...)
 	b.buildArgsAppend(b.envVarMappings...)
+	b.buildArgsAppend(b.labels...)
 	b.buildArgsAppend(b.addedGroups...)
 	b.buildArgsAppend(b.containerUser...)
 	b.buildArgsAppend(b.attachedStreams...)
