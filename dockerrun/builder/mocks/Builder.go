@@ -91,6 +91,22 @@ func (_m *Builder) AddLabel(label string) builder.Builder {
 	return r0
 }
 
+// AddLinkMapping provides a mock function with given fields: linkMapping
+func (_m *Builder) AddLinkMapping(linkMapping string) builder.Builder {
+	ret := _m.Called(linkMapping)
+
+	var r0 builder.Builder
+	if rf, ok := ret.Get(0).(func(string) builder.Builder); ok {
+		r0 = rf(linkMapping)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(builder.Builder)
+		}
+	}
+
+	return r0
+}
+
 // AddPortMapping provides a mock function with given fields: portMapping
 func (_m *Builder) AddPortMapping(portMapping string) builder.Builder {
 	ret := _m.Called(portMapping)

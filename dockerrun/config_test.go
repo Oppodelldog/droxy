@@ -14,6 +14,7 @@ import (
 func TestBuildCommandFromConfig(t *testing.T) {
 
 	os.Setenv("VOLUME_ENV_VAR", "volEnvVarStub")
+	os.Setenv("LINK_ENV_VAR", "linkEnvVarStub")
 	os.Setenv("ENV_VAR", "envVarStub")
 
 	commandName := "some-command"
@@ -29,13 +30,14 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandString := strings.Join(cmd.Args, " ")
 
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
 
 	os.Unsetenv("VOLUME_ENV_VAR")
+	os.Unsetenv("LINK_ENV_VAR")
 	os.Unsetenv("ENV_VAR")
 }
 
@@ -68,6 +70,7 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 	assert.Contains(t, expectedCommandStrings, commandString)
 
 	os.Unsetenv("VOLUME_ENV_VAR")
+	os.Unsetenv("LINK_ENV_VAR")
 	os.Unsetenv("ENV_VAR")
 }
 
@@ -102,6 +105,10 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		"/etc/passwd:/etc/passwd:ro",
 		"/etc/group:/etc/group:ro",
 		"/run/docker.sock:/run/docker.sock",
+	}
+	links := []string{
+		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
+		"containerXY:aliasXY",
 	}
 	envVars := []string{
 		"HOME:${ENV_VAR}",
@@ -139,12 +146,14 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		RemoveContainer: &removeContainer,
 		WorkDir:         &workDir,
 		Volumes:         &volumes,
+		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
 		ReplaceArgs:     &replaceArgs,
 		AdditionalArgs:  &additionalArgs,
 	}
 }
+
 func getFullFeatureDef(commandName string) config.CommandDefinition {
 	isTemplate := true
 	template := "some template"
@@ -165,6 +174,10 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		"/etc/passwd:/etc/passwd:ro",
 		"/etc/group:/etc/group:ro",
 		"/run/docker.sock:/run/docker.sock",
+	}
+	links := []string{
+		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
+		"containerXY:aliasXY",
 	}
 	envVars := []string{
 		"HOME:${ENV_VAR}",
@@ -203,6 +216,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		RemoveContainer: &removeContainer,
 		WorkDir:         &workDir,
 		Volumes:         &volumes,
+		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
 		ReplaceArgs:     &replaceArgs,

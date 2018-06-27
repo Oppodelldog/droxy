@@ -15,6 +15,7 @@ type CommandDefinition struct {
 	Ip              *string
 	IsInteractive   *bool
 	Volumes         *[]string
+	Links           *[]string
 	EnvVars         *[]string
 	Ports           *[]string
 	AddGroups       *bool
@@ -105,7 +106,6 @@ func (c *CommandDefinition) GetIp() (string, bool) {
 	return "", false
 }
 
-
 // GetIsInteractive returns value of IsInteractive and an boolean indicating if value is set.
 func (c *CommandDefinition) GetIsInteractive() (bool, bool) {
 	if c.IsInteractive != nil {
@@ -158,6 +158,14 @@ func (c *CommandDefinition) GetUniqueNames() (bool, bool) {
 func (c *CommandDefinition) GetVolumes() ([]string, bool) {
 	if c.Volumes != nil {
 		return *c.Volumes, true
+	}
+	return []string{}, false
+}
+
+// GetLinks returns value of Links and an boolean indicating if value is set.
+func (c *CommandDefinition) GetLinks() ([]string, bool) {
+	if c.Links != nil {
+		return *c.Links, true
 	}
 	return []string{}, false
 }
