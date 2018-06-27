@@ -50,6 +50,10 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		"/etc/group:/etc/group:ro",
 		"/run/docker.sock:/run/docker.sock",
 	}
+	links := []string{
+		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
+		"containerXY:aliasXY",
+	}
 	envVars := []string{
 		"HOME:${HOME}",
 		"SSH_AUTH_SOCK:/run/ssh.sock",
@@ -89,6 +93,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		RemoveContainer: &removeContainer,
 		WorkDir:         &workDir,
 		Volumes:         &volumes,
+		Links:            &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
 		ReplaceArgs:     &replaceArgs,
@@ -132,6 +137,11 @@ func getFullFeatureConfigFixture() []byte {
           "HOME:${HOME}",
           "SSH_AUTH_SOCK:/run/ssh.sock",
           "DOCKER_HOST=unix:///run/docker.sock"
+      ]
+
+      links = [
+		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
+        "containerXY:aliasXY"
       ]
 
       ports = [

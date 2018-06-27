@@ -53,6 +53,10 @@ The following example contains all possible configuration options, you can leave
           "DOCKER_HOST=unix:///run/docker.sock"
       ]
 
+      links = [
+        "containerXY:aliasXY"
+      ]
+
     [[command]]
         template = "basic command"  # apply settings from template 'basic command' to this command
     	name = "php"                # name of the command which is created by calling 'docker-proxy symlinks'
