@@ -108,7 +108,6 @@ func (b *builder) AddVolumeMapping(volume string) Builder {
 	return b
 }
 
-
 // AddLinkMapping adds a volulme mapping between the docker container and the host
 func (b *builder) AddLinkMapping(link string) Builder {
 

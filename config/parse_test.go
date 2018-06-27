@@ -93,7 +93,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		RemoveContainer: &removeContainer,
 		WorkDir:         &workDir,
 		Volumes:         &volumes,
-		Links:            &links,
+		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
 		ReplaceArgs:     &replaceArgs,
