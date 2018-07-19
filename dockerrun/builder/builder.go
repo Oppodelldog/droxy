@@ -21,6 +21,7 @@ type (
 		args             []string
 		portMappings     []string
 		volumeMappings   []string
+		linkMappings     []string
 		envVarMappings   []string
 		attachedStreams  []string
 		workingDir       []string
@@ -107,6 +108,13 @@ func (b *builder) AddVolumeMapping(volume string) Builder {
 	return b
 }
 
+// AddLinkMapping adds a volulme mapping between the docker container and the host
+func (b *builder) AddLinkMapping(link string) Builder {
+
+	b.linkMappings = append(b.linkMappings, "--link", link)
+	return b
+}
+
 // AddEnvVar adds an environment variable to the docker-container.
 // example: HOME=/home/myuser
 func (b *builder) AddEnvVar(envVarDeclaration string) Builder {
@@ -186,6 +194,7 @@ func (b *builder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.workingDir...)
 	b.buildArgsAppend(b.portMappings...)
 	b.buildArgsAppend(b.volumeMappings...)
+	b.buildArgsAppend(b.linkMappings...)
 	b.buildArgsAppend(b.envVarMappings...)
 	b.buildArgsAppend(b.labels...)
 	b.buildArgsAppend(b.addedGroups...)

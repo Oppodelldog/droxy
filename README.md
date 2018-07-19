@@ -6,12 +6,21 @@
 This tool should help you in creating variants of commands that proxy execution into docker containers.
 
 ## Getting started
+**Downlooad**  
 To get started you either download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).
 If you would like to build the tool from source code, read the contribution part of this document.
+
+**Wiki**  
+Take a look at the wiki examples to learn how to setup up custom commands  
+[https://github.com/Oppodelldog/droxy/wiki](https://github.com/Oppodelldog/droxy/wiki)
+
 
 ## Configuration
 In the config file, you define the commands you want to create.
 The config file must be named ```droxy.toml```.
+
+The following example contains all possible configuration options, you can leave out the most of them.
+
 
 > droxy.toml
 
@@ -42,6 +51,10 @@ The config file must be named ```droxy.toml```.
           "HOME:${HOME}",
           "SSH_AUTH_SOCK:/run/ssh.sock",
           "DOCKER_HOST=unix:///run/docker.sock"
+      ]
+
+      links = [
+        "containerXY:aliasXY"
       ]
 
     [[command]]

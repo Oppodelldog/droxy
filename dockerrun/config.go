@@ -89,6 +89,7 @@ func (cb *commandBuilder) buildArgumentsFromFuncs(commandDef *config.CommandDefi
 		arguments.LabelContainer,
 		arguments.BuildPorts,
 		arguments.BuildVolumes,
+		arguments.BuildLinks,
 		arguments.BuildWorkDir,
 	}
 
