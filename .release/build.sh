@@ -56,9 +56,10 @@ do
 
     # compress binary and remove builds
     currentWd=$(pwd)
+    cp LICENSE ${target_folder}/${tag}/${output_folder}/LICENSE
     cd ${target_folder}/${tag}/${output_folder}
 
-    tar -cvzf ../${output_name}-${output_folder}.tar.gz ${output_name}
+    tar -cvzf ../${output_name}-${output_folder}.tar.gz ${output_name} LICENSE
 
     cd ${currentWd}
     rm -rf ${target_folder}/${tag}/${output_folder}
