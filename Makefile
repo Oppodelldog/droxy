@@ -11,7 +11,8 @@ setup: ## Install all the build and lint dependencies
 	gometalinter --install --update
 
 test: ## Run all the tests
-	gotestcover $(TEST_OPTIONS)  $(SOURCE_FILES) -run $(TEST_PATTERN) -timeout=1m
+	rm -f coverage.tmp && rm -f coverage.txt
+	echo 'mode: atomic' > coverage.txt && go list ./... | xargs -n1 -I{} sh -c 'go test -race -covermode=atomic -coverprofile=coverage.tmp {} && tail -n +2 coverage.tmp >> coverage.txt' && rm coverage.tmp
 
 cover: test ## Run all the tests and opens the coverage report
 	go tool cover -html=coverage.txt
