@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 if [ $1 = "test" ]; then
     tag="v0.0.0"
+    echo "test mode: building current branch as v0.0.0"
 else
     workingBranch=$(git rev-parse --abbrev-ref HEAD)
 
