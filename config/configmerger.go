@@ -30,73 +30,58 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	return mergedCommand
 }
 
-func resolvePropertyBool(bBase *bool, bOverlay *bool) *bool {
-	var b bool
+func resolveProperty(base interface{}, overlay interface{}) interface{} {
 
-	if bBase == nil && bOverlay == nil {
+	if base == nil && overlay == nil {
 		return nil
 	}
 
-	if bBase != nil {
-		b = *bBase
+	if overlay != nil {
+		return overlay
+	}
+	if base == nil {
+		return nil
 	}
 
-	if bOverlay != nil {
-		b = *bOverlay
+	return base
+}
+
+func resolvePropertyBool(bBase *bool, bOverlay *bool) *bool {
+	res := resolveProperty(bBase, bOverlay)
+	if v, ok := res.(*bool); ok && v != nil {
+		c := *v
+		return &c
 	}
 
-	return &b
+	return nil
 }
 
 func resolvePropertyString(sBase *string, sOverlay *string) *string {
-	var s string
-
-	if sBase == nil && sOverlay == nil {
-		return nil
+	res := resolveProperty(sBase, sOverlay)
+	if v, ok := res.(*string); ok && v != nil {
+		c := *v
+		return &c
 	}
 
-	if sBase != nil {
-		s = *sBase
-	}
-	if sOverlay != nil {
-		s = *sOverlay
-	}
-
-	return &s
+	return nil
 }
 
 func resolvePropertyStringArray(sBase *[]string, sOverlay *[]string) *[]string {
-	var s []string
-
-	if sBase == nil && sOverlay == nil {
-		return nil
+	res := resolveProperty(sBase, sOverlay)
+	if v, ok := res.(*[]string); ok && v != nil {
+		c := *v
+		return &c
 	}
 
-	if sBase != nil {
-		s = *sBase
-	}
-
-	if sOverlay != nil {
-		s = *sOverlay
-	}
-
-	return &s
+	return nil
 }
 
 func resolvePropertyStringArray2D(sBase *[][]string, sOverlay *[][]string) *[][]string {
-	var s [][]string
-
-	if sBase == nil && sOverlay == nil {
-		return nil
+	res := resolveProperty(sBase, sOverlay)
+	if v, ok := res.(*[][]string); ok && v != nil {
+		c := *v
+		return &c
 	}
 
-	if sBase != nil {
-		s = *sBase
-	}
-
-	if sOverlay != nil {
-		s = *sOverlay
-	}
-
-	return &s
+	return nil
 }
