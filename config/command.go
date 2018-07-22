@@ -14,6 +14,7 @@ type CommandDefinition struct {
 	EnvFile         *string
 	Ip              *string
 	IsInteractive   *bool
+	IsDaemon        *bool
 	Volumes         *[]string
 	Links           *[]string
 	EnvVars         *[]string
@@ -48,6 +49,14 @@ func (c *CommandDefinition) GetTemplate() (string, bool) {
 		return *c.Template, true
 	}
 	return "", false
+}
+
+// GetIsDaemon returns value of GetIsDaemon and an boolean indicating if value is set.
+func (c *CommandDefinition) GetIsDaemon() (bool, bool) {
+	if c.IsDaemon != nil {
+		return *c.IsDaemon, true
+	}
+	return false, false
 }
 
 // GetEntryPoint returns entrypoint and an boolean indicating if value is set.

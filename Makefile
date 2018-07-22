@@ -39,7 +39,7 @@ lint: ## Run all the linters
 		--enable=interfacer \
 		--enable=goconst \
 		--deadline=10m \
-		./...
+		./... | grep -v "mocks"
 
 ci: lint test ## Run all the tests and code checks
 

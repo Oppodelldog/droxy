@@ -10,7 +10,7 @@ import (
 //ExtCodeError general error occurred when executing cmd
 const ExtCodeError = 993
 
-//ExitError ExitCode of excuted cmd could not be determined
+//ExitCodeExitError of excuted cmd could not be determined
 const ExitCodeExitError = 990
 
 //ExitSuccessError ExitCode of successfully executed cmd could not be determined
@@ -21,7 +21,7 @@ type (
 )
 
 //NewCommandResultHandler handles an executed command and it's error code to get the executed commands exit code.
-func NewCommandResultHandler() *commandResultHandler {
+func NewCommandResultHandler() CommandResultHandler {
 	return &commandResultHandler{}
 }
 

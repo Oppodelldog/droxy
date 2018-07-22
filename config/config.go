@@ -5,12 +5,18 @@ import "github.com/Oppodelldog/filediscovery"
 const configFileName = "droxy.toml"
 const configEnvVarName = "DROXY_CONFIG"
 
-//NewLoader returns a new config loader that is able to locate and load configuration from a config file
-func NewLoader() *configLoader {
+//NewLoader returns a new config loader
+func NewLoader() Loader {
 	return &configLoader{}
 }
 
-type configLoader struct{}
+type (
+	// Loader is able to locate and load configuration from a config file
+	Loader interface {
+		Load() *Configuration
+	}
+	configLoader struct{}
+)
 
 // Load loads the configuration file.
 func (cl *configLoader) Load() *Configuration {

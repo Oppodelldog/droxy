@@ -12,7 +12,7 @@ type commandRunner struct {
 }
 
 //NewCommandRunner returns a new commandRunner which can run a exec.Cmd
-func NewCommandRunner() *commandRunner {
+func NewCommandRunner() CommandRunner {
 	return &commandRunner{}
 }
 

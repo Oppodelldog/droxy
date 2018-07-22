@@ -10,11 +10,16 @@ import (
 )
 
 //NewCommandBuilder returns a new commandBuilder
-func NewCommandBuilder() *commandBuilder {
+func NewCommandBuilder() CommandBuilder {
 	return &commandBuilder{}
 }
 
 type (
+	// CommandBuilder builds a "docker run" command for the given command name and configuration
+	CommandBuilder interface {
+		BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error)
+	}
+
 	commandBuilder struct{}
 
 	argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
@@ -82,6 +87,7 @@ func (cb *commandBuilder) buildArgumentsFromFuncs(commandDef *config.CommandDefi
 		arguments.BuildEnvFile,
 		arguments.BuildIp,
 		arguments.BuildInteractiveFlag,
+		arguments.BuildDaemonFlag,
 		arguments.BuildRemoveContainerFlag,
 		arguments.BuildImpersonation,
 		arguments.BuildImage,

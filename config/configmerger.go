@@ -16,6 +16,7 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.RemoveContainer = resolvePropertyBool(baseCommand.RemoveContainer, overlayCommand.RemoveContainer)
 	mergedCommand.Impersonate = resolvePropertyBool(baseCommand.Impersonate, overlayCommand.Impersonate)
 	mergedCommand.IsInteractive = resolvePropertyBool(baseCommand.IsInteractive, overlayCommand.IsInteractive)
+	mergedCommand.IsDaemon = resolvePropertyBool(baseCommand.IsDaemon, overlayCommand.IsDaemon)
 	mergedCommand.UniqueNames = resolvePropertyBool(baseCommand.UniqueNames, overlayCommand.UniqueNames)
 
 	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
