@@ -130,7 +130,7 @@ func (b *builder) AddGroup(groupName string) Builder {
 
 // SetEntryPoint sets the entryPoint for the docker run command
 func (b *builder) SetEntryPoint(entryPoint string) Builder {
-	b.entryPoint = []string{"--entrypoint", fmt.Sprintf(`%s`, entryPoint)}
+	b.entryPoint = []string{"--entrypoint", entryPoint}
 	return b
 }
 

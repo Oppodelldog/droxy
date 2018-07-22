@@ -13,6 +13,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+//Execute droxy
 func Execute() int {
 	var rootCmd = NewRoot()
 

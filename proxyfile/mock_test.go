@@ -1,5 +1,8 @@
 package proxyfile
 
+// This file does not contain tests.
+// Is shares some mocks used in several test files
+
 type fileCreationFunctionMock struct {
 	returnValue error
 	parmSrc     string

@@ -5,7 +5,7 @@ import "github.com/Oppodelldog/droxy/helper"
 type executableNameParser struct{}
 
 //NewExecutableNameParser returns a new executableNameParser
-func NewExecutableNameParser() *executableNameParser {
+func NewExecutableNameParser() ExecutableNameParser {
 	return &executableNameParser{}
 }
 
