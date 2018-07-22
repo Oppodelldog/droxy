@@ -41,7 +41,12 @@ lint: ## Run all the linters
 		--deadline=10m \
 		./... | grep -v "mocks"
 
-ci: lint test ## Run all the tests and code checks
+ci: ## Run all the tests and code checks
+	dep ensure
+	go get ./...
+	make test
+	goveralls -service drone.io -repotoken Hnq7byXbwVH2lKmNnrV0svSn8P6UOV9vZ
+	go build
 
 build: ## build binary to .build folder
 	go build -o ".build/droxy" main.go

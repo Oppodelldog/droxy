@@ -1,19 +1,10 @@
 workspace:
-  base: /go
-  path: src/github.com/Oppodelldog/droxy
+  base: /go/src/github.com/Oppodelldog/droxy
+  path: /
 
 pipeline:
   build:
-    image: golang:1.9.4
+    image: oppodelldog/droxy:latest
+    pull: true
     commands:
-      - go get -u github.com/golang/dep/cmd/dep
-      - dep ensure
-      - go get ./...
-      - go get github.com/mattn/goveralls
-      - goveralls -service drone.io -repotoken Hnq7byXbwVH2lKmNnrV0svSn8P6UOV9vZ
-      - go build
-
-matrix:
- GO_VERSION:
-   - latest
-   - "1.9"
+      - make ci
