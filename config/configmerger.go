@@ -20,7 +20,6 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.IsInteractive = resolvePropertyBool(baseCommand.IsInteractive, overlayCommand.IsInteractive)
 	mergedCommand.IsDaemon = resolvePropertyBool(baseCommand.IsDaemon, overlayCommand.IsDaemon)
 	mergedCommand.UniqueNames = resolvePropertyBool(baseCommand.UniqueNames, overlayCommand.UniqueNames)
-	mergedCommand.ReuseContainer = resolvePropertyBool(baseCommand.ReuseContainer, overlayCommand.ReuseContainer)
 
 	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
 	mergedCommand.Links = resolvePropertyStringArray(baseCommand.Links, overlayCommand.Links)
