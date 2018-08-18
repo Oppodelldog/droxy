@@ -1,5 +1,7 @@
 package config
 
+import "reflect"
+
 func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinition) *CommandDefinition {
 	mergedCommand := new(CommandDefinition)
 
@@ -18,6 +20,7 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.IsInteractive = resolvePropertyBool(baseCommand.IsInteractive, overlayCommand.IsInteractive)
 	mergedCommand.IsDaemon = resolvePropertyBool(baseCommand.IsDaemon, overlayCommand.IsDaemon)
 	mergedCommand.UniqueNames = resolvePropertyBool(baseCommand.UniqueNames, overlayCommand.UniqueNames)
+	mergedCommand.ReuseContainer = resolvePropertyBool(baseCommand.ReuseContainer, overlayCommand.ReuseContainer)
 
 	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
 	mergedCommand.Links = resolvePropertyStringArray(baseCommand.Links, overlayCommand.Links)
@@ -36,11 +39,8 @@ func resolveProperty(base interface{}, overlay interface{}) interface{} {
 		return nil
 	}
 
-	if overlay != nil {
+	if !reflect.ValueOf(overlay).IsNil(){
 		return overlay
-	}
-	if base == nil {
-		return nil
 	}
 
 	return base
