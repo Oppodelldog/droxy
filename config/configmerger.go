@@ -25,6 +25,7 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.Links = resolvePropertyStringArray(baseCommand.Links, overlayCommand.Links)
 	mergedCommand.EnvVars = resolvePropertyStringArray(baseCommand.EnvVars, overlayCommand.EnvVars)
 	mergedCommand.Ports = resolvePropertyStringArray(baseCommand.Ports, overlayCommand.Ports)
+	mergedCommand.PortsFromParams = resolvePropertyStringArray(baseCommand.PortsFromParams, overlayCommand.PortsFromParams)
 	mergedCommand.AdditionalArgs = resolvePropertyStringArray(baseCommand.AdditionalArgs, overlayCommand.AdditionalArgs)
 
 	mergedCommand.ReplaceArgs = resolvePropertyStringArray2D(baseCommand.ReplaceArgs, overlayCommand.ReplaceArgs)

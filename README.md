@@ -58,6 +58,14 @@ The following example contains all possible configuration options, you can leave
         "containerXY:aliasXY"
       ]
 
+      ports = [
+        "8080:80"
+      ]
+
+      portsFromParams = [
+          "some regex where the group (\\d*) parses the port from",
+      ]
+
     [[command]]
         template = "basic command"  # apply settings from template 'basic command' to this command
     	name = "php"                # name of the command which is created by calling 'docker-proxy symlinks'

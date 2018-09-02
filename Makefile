@@ -52,8 +52,8 @@ ci: ## Run all the tests and code checks
 build: ## build binary to .build folder
 	go build -o ".build/droxy" main.go
 
-install: ## Install to <gopath>/src
-	go install ./...
+install: build ## Install to <gopath>/src
+	cp .build/droxy $$GOPATH/bin/droxy
 
 build-release: ## builds the checked out version into the .release/${tag} folder
 	.release/build.sh

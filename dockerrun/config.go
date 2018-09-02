@@ -94,6 +94,7 @@ func (cb *commandBuilder) buildArgumentsFromFuncs(commandDef *config.CommandDefi
 		arguments.BuildEnvVars,
 		arguments.LabelContainer,
 		arguments.BuildPorts,
+		arguments.BuildPortsFromParams,
 		arguments.BuildVolumes,
 		arguments.BuildLinks,
 		arguments.BuildWorkDir,

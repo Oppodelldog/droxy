@@ -64,6 +64,9 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		"8080:9080",
 		"8081:9081",
 	}
+	portsFromParams := []string{
+		"some regex where the group (\\d*) parses the port from",
+	}
 
 	replaceArgs := [][]string{
 		{
@@ -98,6 +101,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
+		PortsFromParams: &portsFromParams,
 		ReplaceArgs:     &replaceArgs,
 		AdditionalArgs:  &additionalArgs,
 	}
@@ -151,6 +155,10 @@ func getFullFeatureConfigFixture() []byte {
           "8080:9080",
 	      "8081:9081",
       ]
+
+	  portsFromParams = [
+	      "some regex where the group (\\d*) parses the port from",
+	  ]
 
       replaceArgs = [
       	[

@@ -12,6 +12,10 @@ import (
 )
 
 func TestBuildCommandFromConfig(t *testing.T) {
+	originalArgs := os.Args
+	defer func() { os.Args = originalArgs }()
+
+	os.Args = append(os.Args, "--inspect-brk=78129")
 
 	os.Setenv("VOLUME_ENV_VAR", "volEnvVarStub")
 	os.Setenv("LINK_ENV_VAR", "linkEnvVarStub")
@@ -30,8 +34,8 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandString := strings.Join(cmd.Args, " ")
 
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i -d --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i -d --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -i -d --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i -d --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env -ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
@@ -120,6 +124,9 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		"8080:9080",
 		"8081:9081",
 	}
+	portsFromParams := []string{
+		"--inspect-brk=(\\d*)",
+	}
 
 	replaceArgs := [][]string{
 		{
@@ -151,6 +158,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
+		PortsFromParams: &portsFromParams,
 		ReplaceArgs:     &replaceArgs,
 		AdditionalArgs:  &additionalArgs,
 	}
@@ -191,6 +199,9 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		"8080:9080",
 		"8081:9081",
 	}
+	portsFromParams := []string{
+		"--inspect-brk=(\\d*)",
+	}
 
 	replaceArgs := [][]string{
 		{
@@ -223,6 +234,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
+		PortsFromParams: &portsFromParams,
 		ReplaceArgs:     &replaceArgs,
 		AdditionalArgs:  &additionalArgs,
 	}

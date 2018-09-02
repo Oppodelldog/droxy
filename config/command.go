@@ -19,6 +19,7 @@ type CommandDefinition struct {
 	Links           *[]string
 	EnvVars         *[]string
 	Ports           *[]string
+	PortsFromParams *[]string
 	AddGroups       *bool
 	Impersonate     *bool
 	WorkDir         *string
@@ -191,6 +192,14 @@ func (c *CommandDefinition) GetEnvVars() ([]string, bool) {
 func (c *CommandDefinition) GetPorts() ([]string, bool) {
 	if c.Ports != nil {
 		return *c.Ports, true
+	}
+	return []string{}, false
+}
+
+// GetPortsFromParams returns value of Ports and an boolean indicating if value is set.
+func (c *CommandDefinition) GetPortsFromParams() ([]string, bool) {
+	if c.PortsFromParams != nil {
+		return *c.PortsFromParams, true
 	}
 	return []string{}, false
 }
