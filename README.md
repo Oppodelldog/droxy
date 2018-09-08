@@ -49,8 +49,8 @@ The following example contains all possible configuration options, you can leave
 
       # environment variable mappings
       envvars = [
-          "HOME:${HOME}",
-          "SSH_AUTH_SOCK:/run/ssh.sock",
+          "HOME=${HOME}",
+          "SSH_AUTH_SOCK=/run/ssh.sock",
           "DOCKER_HOST=unix:///run/docker.sock"
       ]
 
