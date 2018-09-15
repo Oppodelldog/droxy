@@ -154,7 +154,7 @@ func (b *builder) SetEnvFile(envFile string) Builder {
 
 // SetIp sets an env-file which is load into the environment of the container
 func (b *builder) SetIp(ip string) Builder {
-	b.ip = []string{"-ip", ip}
+	b.ip = []string{"--ip", ip}
 	return b
 }
 

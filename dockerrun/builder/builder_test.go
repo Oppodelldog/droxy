@@ -66,7 +66,7 @@ arg2
 -a Stderr
 --network network
 --env-file .env
--ip 127.1.2.3
+--ip 127.1.2.3
 imageName
 command
 cmdArg1
