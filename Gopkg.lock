@@ -20,13 +20,14 @@
   version = "v1.1.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/drone/envsubst"
   packages = [
     ".",
-    "parse"
+    "parse",
+    "path"
   ]
-  revision = "f4d1a8ef8670afc9eea1fb95ee09a979fd2763a3"
+  revision = "73c8b7a36b56dac63beeadd05206aab260d06d70"
+  source = "https://github.com/Oppodelldog/envsubst.git"
 
 [[projects]]
   name = "github.com/inconshreveable/mousetrap"
@@ -103,6 +104,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "40504f9634c55d9ed701ef41100a1783ced168b1dedbc0f3f528ae17bbc95f07"
+  inputs-digest = "d7e4bc03aaf1ad682a4416345eb5f9e8df9742b10af32ba014f8844d0fbac219"
   solver-name = "gps-cdcl"
   solver-version = 1

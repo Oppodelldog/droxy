@@ -25,8 +25,9 @@
   version = "0.3.0"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/drone/envsubst"
+  source = "https://github.com/Oppodelldog/envsubst.git"
+  revision = "73c8b7a36b56dac63beeadd05206aab260d06d70"
 
 [[constraint]]
   name = "github.com/pkg/errors"
