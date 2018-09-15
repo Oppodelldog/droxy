@@ -49,10 +49,13 @@ ci: ## Run all the tests and code checks
 	goveralls -service drone.io -repotoken Hnq7byXbwVH2lKmNnrV0svSn8P6UOV9vZ
 	go build
 
-build: ## build binary to .build folder
+unsafe-build: ## build binary to .build folder without testing
 	go build -o ".build/droxy" main.go
 
-install: build ## Install to <gopath>/src
+build: test ## build binary to .build folder with testing
+	go build -o ".build/droxy" main.go
+
+install: build ## build with tests, then install to <gopath>/src
 	cp .build/droxy $$GOPATH/bin/droxy
 
 build-release: ## builds the checked out version into the .release/${tag} folder
