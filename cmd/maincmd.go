@@ -7,7 +7,7 @@ import (
 
 	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockerrun"
+	"github.com/Oppodelldog/droxy/dockercommand"
 	"github.com/Oppodelldog/droxy/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -34,7 +34,7 @@ func Execute() int {
 			return 0
 		}
 
-		dockerRunCommandBuilder := dockerrun.NewCommandBuilder()
+		dockerRunCommandBuilder := dockercommand.NewCommandBuilder()
 		configLoader := config.NewLoader()
 		commandresultHandler := proxyexecution.NewCommandResultHandler()
 		commandRunner := proxyexecution.NewCommandRunner()

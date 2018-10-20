@@ -50,7 +50,9 @@ ci: ## Run all the tests and code checks
 	go build
 
 unsafe-build: ## build binary to .build folder without testing
+	rm -f ".build/droxy"
 	go build -o ".build/droxy" main.go
+	cd .build && droxy clones -f
 
 build: test ## build binary to .build folder with testing
 	go build -o ".build/droxy" main.go

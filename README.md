@@ -37,6 +37,7 @@ The following example contains all possible configuration options, you can leave
       isInteractive=true      # enable interaction with the called command
       isDaemon=false          # starts the container in background
       RequireEnvVars=false    # if true, not defined env vars that are configured will lead to an error
+      uniqueNames=true
 
       # volume mappings
       volumes = [
