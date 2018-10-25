@@ -47,7 +47,7 @@ ci: ## Run all the tests and code checks
 	go get ./...
 	make test
 	goveralls -service drone.io -repotoken Hnq7byXbwVH2lKmNnrV0svSn8P6UOV9vZ
-	bash <(curl -s https://codecov.io/bash) -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
+	$(curl -s https://codecov.io/bash) -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
 	go build
 
 unsafe-build: ## build binary to .build folder without testing
