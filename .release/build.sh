@@ -32,14 +32,13 @@ platforms=("linux/amd64" "windows/amd64" "windows/386" "linux/arm/7")
 
 for platform in "${platforms[@]}"
 do
-    platform_split=("${platform//\// }")
+    platform_split=(${platform//\// })
     GOOS="${platform_split[0]}"
     GOARCH="${platform_split[1]}"
     GOARM=""
 
     if [ "${GOARCH}" = "arm" ]; then
         GOARM=${platform_split[2]}
-
     fi
 
     output_folder="${GOOS}-${GOARCH}${GOARM}"
@@ -54,7 +53,6 @@ do
         exit 1
     fi
 
-    # compress binary and remove builds
     currentWd=$(pwd)
     cp LICENSE "${target_folder}/${tag}/${output_folder}/LICENSE"
     cd "${target_folder}/${tag}/${output_folder}" || exit
