@@ -9,26 +9,17 @@ Version="1"
       workDir = "${PWD}"
       removeContainer=true
       isInteractive=true
-      # volume mappings
       volumes = [
-          "${HOME}:${HOME}",
           "${GOPATH}:${GOPATH}",
+          "${HOME}:${HOME}",
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
       ]
 
-      # environment variable mappings
       envvars = [
           "GOPATH=${GOPATH}",
-          "HOME=${HOME}",
       ]
 
-#    [[command]]
-#        template = "basic go command"
-#    	name = "go"
-#    	entryPoint = "go"
-#    	image = "golang:1.10.0"
-#
     [[command]]
         template = "basic go command"
     	name = "make"
