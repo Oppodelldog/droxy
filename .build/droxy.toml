@@ -2,15 +2,16 @@ Version="1"
 
     [[command]]
       name = "basic go command"
+      image = "oppodelldog/droxy:latest"
       isTemplate = true
       addGroups = true
       impersonate = true
       workDir = "${PWD}"
       removeContainer=true
       isInteractive=true
-
       # volume mappings
       volumes = [
+          "${HOME}:${HOME}",
           "${GOPATH}:${GOPATH}",
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
@@ -19,6 +20,7 @@ Version="1"
       # environment variable mappings
       envvars = [
           "GOPATH=${GOPATH}",
+          "HOME=${HOME}",
       ]
 
 #    [[command]]
@@ -31,10 +33,8 @@ Version="1"
         template = "basic go command"
     	name = "make"
     	entryPoint = "make"
-    	image = "golang:1.10.0"
 
     [[command]]
         template = "basic go command"
     	name = "baesch"
     	entryPoint = "bash"
-    	image = "golang:1.10.0"
