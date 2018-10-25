@@ -49,7 +49,7 @@ deps:
 ci: deps test codecov build ## Run all the tests and code checks
 
 codecov:
-	/usr/local/bin/codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
+	codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
 
 unsafe-build: ## build binary to .build folder without testing
 	rm -f ".build/droxy"
