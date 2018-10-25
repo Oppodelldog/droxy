@@ -50,7 +50,6 @@ ci: deps test codecov build ## Run all the tests and code checks
 
 codecov:
 	wget -O codecov https://codecov.io/bash && chmod u+x codecov && ./codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
-	goveralls -service drone.io -repotoken Hnq7byXbwVH2lKmNnrV0svSn8P6UOV9vZ
 
 unsafe-build: ## build binary to .build folder without testing
 	rm -f ".build/droxy"
