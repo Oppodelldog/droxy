@@ -6,18 +6,17 @@ Version="1"
       isTemplate = true
       addGroups = true
       impersonate = true
-      workDir = "${PWD}"
       removeContainer=true
       isInteractive=true
       volumes = [
-          "${GOPATH}:${GOPATH}",
-          "${HOME}:${HOME}",
+          "/tmp:/tmp",
+          "${PWD}:/go/src/github.com/Oppodelldog/droxy",
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
       ]
 
       envvars = [
-          "GOPATH=${GOPATH}",
+          "GOCACHE=/tmp"
       ]
 
     [[command]]

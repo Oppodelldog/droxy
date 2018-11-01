@@ -1,7 +1,7 @@
-.build/*
-!.build/droxy.toml
+.droxy/*
+!.droxy/droxy.toml
 .release/v*
 .idea
 vendor
-coverage.txt
+coverage.*
 .dist

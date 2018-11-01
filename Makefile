@@ -3,12 +3,11 @@ TEST_PATTERN?=.
 TEST_OPTIONS?=-race -covermode=atomic -coverprofile=coverage.txt
 
 setup: ## Install all the build and lint dependencies
-	go get -u gopkg.in/alecthomas/gometalinter.v2
+	wget -O- https://git.io/vp6lP | sh 
 	go get -u github.com/golang/dep/cmd/dep
 	go get -u golang.org/x/tools/cmd/cover
 	go get -u golang.org/x/tools/cmd/goimports
 	dep ensure
-	gometalinter --install --update
 
 test: ## Run all the tests
 	rm -f coverage.tmp && rm -f coverage.txt
