@@ -21,11 +21,11 @@ Version="1"
       ]
 
     [[command]]
-        template = "basic go command"
     	name = "make"
+        template = "basic go command"
     	entryPoint = "make"
 
     [[command]]
+    	name = "debugcontainer"
         template = "basic go command"
-    	name = "baesch"
     	entryPoint = "bash"

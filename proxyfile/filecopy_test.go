@@ -1,4 +1,4 @@
-package helper
+package proxyfile
 
 import (
 	"io/ioutil"
@@ -23,9 +23,9 @@ func TestCopyFile(t *testing.T) {
 
 	dst := path.Join(testFolder, "fileCopied")
 
-	err = CopyFile(src, dst)
+	err = copyFile(src, dst)
 	if err != nil {
-		t.Fatalf("Did not expect CopyFile to return an error, but got: %v", err)
+		t.Fatalf("Did not expect copyFile to return an error, but got: %v", err)
 	}
 
 	dstBytes, err := ioutil.ReadFile(dst)
@@ -45,7 +45,7 @@ func TestCopyFile_srcFileDoesNotExist_expectError(t *testing.T) {
 
 	src := "/tmp/THIS_FILE_DOES_NOT_EXIST"
 	dst := ""
-	err := CopyFile(src, dst)
+	err := copyFile(src, dst)
 
 	assert.Error(t, err)
 }

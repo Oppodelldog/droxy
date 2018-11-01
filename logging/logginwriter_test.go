@@ -1,4 +1,4 @@
-package helper
+package logging
 
 import (
 	"bytes"

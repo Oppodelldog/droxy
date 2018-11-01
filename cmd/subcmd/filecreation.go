@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/helper"
 	"github.com/Oppodelldog/droxy/proxyfile"
 
 	"os"
@@ -49,7 +48,7 @@ func (w *FileCreationSubCommandWrapper) createCommand(commandName string, strate
 
 			logrus.Infof("creating '%s'...", commandName)
 
-			commandFilePath, err := helper.GetExecutableFilePath()
+			commandFilePath, err := proxyfile.GetExecutableFilePath()
 			if err != nil {
 				logrus.Error(err)
 				os.Exit(1)

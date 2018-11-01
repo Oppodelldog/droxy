@@ -1,9 +1,9 @@
 package proxyexecution
 
 import (
+	"github.com/Oppodelldog/droxy/proxyfile"
 	"testing"
 
-	"github.com/Oppodelldog/droxy/helper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,5 +15,5 @@ func TestExecutableNameParser_ParseCommandNameFromCommandLine(t *testing.T) {
 	executableNameParser := NewExecutableNameParser()
 	parsedCommandName := executableNameParser.ParseCommandNameFromCommandLine()
 
-	assert.Equal(t, helper.ParseCommandNameFromCommandLine(), parsedCommandName)
+	assert.Equal(t, proxyfile.ParseCommandNameFromCommandLine(), parsedCommandName)
 }

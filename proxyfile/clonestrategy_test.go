@@ -5,7 +5,6 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Oppodelldog/droxy/helper"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,7 +12,7 @@ func TestNewClonesStrategy_configuresTheAppropriateSystemFunction(t *testing.T) 
 	strategy := NewClonesStrategy()
 
 	strategyFunction := strategy.(*ClonesStrategy).copyFileFunction
-	expectedFunction := helper.CopyFile
+	expectedFunction := copyFile
 
 	if reflect.ValueOf(expectedFunction).Pointer() != reflect.ValueOf(strategyFunction).Pointer() {
 		t.Fail()

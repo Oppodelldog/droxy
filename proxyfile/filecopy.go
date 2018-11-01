@@ -1,4 +1,4 @@
-package helper
+package proxyfile
 
 import (
 	"io"
@@ -7,8 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// CopyFile copies file src to file dst
-func CopyFile(src, dst string) error {
+func copyFile(src, dst string) error {
 
 	sf, err := os.Open(src)
 	if err != nil {

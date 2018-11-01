@@ -2,13 +2,13 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Oppodelldog/droxy/proxyfile"
 	"os"
 	"path/filepath"
 
 	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand"
-	"github.com/Oppodelldog/droxy/helper"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -22,7 +22,7 @@ func Execute() int {
 		if err != nil {
 			logrus.Info(err)
 		}
-	} else if len(os.Args) >= 1 && filepath.Base(os.Args[0]) == helper.GetCommandName() {
+	} else if len(os.Args) >= 1 && filepath.Base(os.Args[0]) == proxyfile.GetCommandName() {
 		err := rootCmd.Help()
 		if err != nil {
 			logrus.Info(err)
@@ -63,5 +63,15 @@ func isSubCommand(s string, commands []*cobra.Command) bool {
 		subCommandNames = append(subCommandNames, subCommand.Name())
 
 	}
-	return helper.StringInSlice(s, subCommandNames)
+	return stringInSlice(s, subCommandNames)
+}
+
+func stringInSlice(s string, slice []string) bool {
+	for _, v := range slice {
+		if v == s {
+			return true
+		}
+	}
+
+	return false
 }

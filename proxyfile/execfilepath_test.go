@@ -1,4 +1,4 @@
-package helper
+package proxyfile
 
 import (
 	"os"
@@ -14,9 +14,9 @@ func TestGetExecutablePath(t *testing.T) {
 		t.Fatalf("Did not expect os.Executable() to return an error, but got: %v", err)
 	}
 
-	executablePath, err := GetExecutablePath()
+	executablePath, err := getExecutablePath()
 	if err != nil {
-		t.Fatalf("Did not expect GetExecutablePath() to return an error, but got: %v", err)
+		t.Fatalf("Did not expect getExecutablePath() to return an error, but got: %v", err)
 	}
 
 	assert.Equal(t, filepath.Dir(ex), executablePath)

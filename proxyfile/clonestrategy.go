@@ -2,14 +2,12 @@ package proxyfile
 
 import (
 	"path/filepath"
-
-	"github.com/Oppodelldog/droxy/helper"
 )
 
 // NewClonesStrategy creates a new FileCreationStrategy that produces clones of droxy command
 func NewClonesStrategy() FileCreationStrategy {
 	return &ClonesStrategy{
-		copyFileFunction: helper.CopyFile,
+		copyFileFunction: copyFile,
 	}
 }
 

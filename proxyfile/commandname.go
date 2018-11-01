@@ -1,3 +1,3 @@
-package helper
+package proxyfile
 
 const commandFileName = "droxy"

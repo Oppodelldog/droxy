@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/helper"
 	"github.com/sirupsen/logrus"
 )
 
@@ -35,7 +34,7 @@ func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration
 
 		if commandName, ok := command.GetName(); ok {
 
-			commandNameFileName := helper.GetCommandNameFilename(commandName)
+			commandNameFileName := GetCommandNameFilename(commandName)
 			if _, err := os.Stat(commandNameFileName); err == nil {
 				if isForced {
 					err := os.Remove(commandNameFileName)

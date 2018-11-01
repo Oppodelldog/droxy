@@ -1,6 +1,8 @@
 package proxyexecution
 
-import "github.com/Oppodelldog/droxy/helper"
+import (
+	"github.com/Oppodelldog/droxy/proxyfile"
+)
 
 type executableNameParser struct{}
 
@@ -11,5 +13,5 @@ func NewExecutableNameParser() ExecutableNameParser {
 
 //ParseCommandNameFromCommandLine parsed the command name of the currently executed binary from cli aruments
 func (p *executableNameParser) ParseCommandNameFromCommandLine() string {
-	return helper.ParseCommandNameFromCommandLine()
+	return proxyfile.ParseCommandNameFromCommandLine()
 }

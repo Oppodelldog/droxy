@@ -1,4 +1,4 @@
-package helper
+package proxyfile
 
 import (
 	"fmt"
@@ -7,18 +7,9 @@ import (
 	"path/filepath"
 )
 
-// GetExecutablePath returns the path of the directory where droxy binary is located
-func GetExecutablePath() (string, error) {
-	ex, err := os.Executable()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Dir(ex), nil
-}
-
 // GetExecutableFilePath returns the file-path of the droxy binary
 func GetExecutableFilePath() (string, error) {
-	executableDir, err := GetExecutablePath()
+	executableDir, err := getExecutablePath()
 	if err != nil {
 		return "", err
 	}
@@ -29,4 +20,12 @@ func GetExecutableFilePath() (string, error) {
 	}
 
 	return commandFilepath, nil
+}
+
+func getExecutablePath() (string, error) {
+	ex, err := os.Executable()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Dir(ex), nil
 }
