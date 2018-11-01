@@ -79,11 +79,11 @@ func Test_newSubCommandAction_isResponsible(t *testing.T) {
 		want bool
 	}{
 		{name: "no arguments", args: []string{}, want: false},
-		{name: "one arguments", args: []string{"droxy"}, want: false},
-		{name: "two arguments, but no subcommand", args: []string{"droxy", "nonexistingsubcommand"}, want: false},
-		{name: "three arguments, but no subcommand", args: []string{"droxy"}, want: false},
-		{name: "two arguments with subcommand", args: []string{"droxy", "clones"}, want: true},
-		{name: "three arguments with subcommand", args: []string{"droxy", "clones"}, want: true},
+		{name: "one arguments", args: []string{testCommandName}, want: false},
+		{name: "two arguments, but no subcommand", args: []string{testCommandName, "nonexistingsubcommand"}, want: false},
+		{name: "three arguments, but no subcommand", args: []string{testCommandName}, want: false},
+		{name: "two arguments with subcommand", args: []string{testCommandName, "clones"}, want: true},
+		{name: "three arguments with subcommand", args: []string{testCommandName, "clones"}, want: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -101,10 +101,10 @@ func Test_newRevealItsDroxyAction_isResponsible(t *testing.T) {
 		want bool
 	}{
 		{name: "no arguments", args: []string{}, want: false},
-		{name: "one arguments", args: []string{"droxy"}, want: false},
-		{name: "two arguments, but no match", args: []string{"droxy", "hello"}, want: false},
-		{name: "three arguments, but no match", args: []string{"droxy"}, want: false},
-		{name: "four arguments with a match", args: []string{"droxy", "--is-it-droxy", "test", "clones"}, want: true},
+		{name: "one arguments", args: []string{testCommandName}, want: false},
+		{name: "two arguments, but no match", args: []string{testCommandName, "hello"}, want: false},
+		{name: "three arguments, but no match", args: []string{testCommandName}, want: false},
+		{name: "four arguments with a match", args: []string{testCommandName, "--is-it-droxy", "test", "clones"}, want: true},
 		{name: "one argument which is a match", args: []string{"--is-it-droxy"}, want: true},
 	}
 	for _, tt := range tests {
@@ -123,9 +123,9 @@ func Test_newHelpDisplayAction_isResponsible(t *testing.T) {
 		want bool
 	}{
 		{name: "no arguments", args: []string{}, want: false},
-		{name: "one argument", args: []string{"droxy"}, want: true},
-		{name: "two arguments, but no match", args: []string{"droxy", "hello"}, want: true},
-		{name: "three arguments, but no match", args: []string{"droxy", "test", "123"}, want: true},
+		{name: "one argument", args: []string{testCommandName}, want: true},
+		{name: "two arguments, but no match", args: []string{testCommandName, "hello"}, want: true},
+		{name: "three arguments, but no match", args: []string{testCommandName, "test", "123"}, want: true},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

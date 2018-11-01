@@ -7,5 +7,5 @@ import (
 )
 
 func TestRun(t *testing.T) {
-	assert.NotPanics(t, func() { Run([]string{"droxy"}) })
+	assert.NotPanics(t, func() { Run([]string{testCommandName}) })
 }

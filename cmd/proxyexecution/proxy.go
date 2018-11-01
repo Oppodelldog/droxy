@@ -1,6 +1,8 @@
 package proxyexecution
 
 import (
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercommand"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -9,8 +11,18 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// ExecuteCommand executes a proxy command
-func ExecuteCommand(args []string, commandBuilder CommandBuilder, configLoader ConfigLoader, commandResultHandler CommandResultHandler, commandRunner CommandRunner, executableNameParser ExecutableNameParser) int {
+func ExecuteDroxyCommand(args []string) int {
+	dockerRunCommandBuilder := dockercommand.NewCommandBuilder()
+	configLoader := config.NewLoader()
+	commandResultHandler := NewCommandResultHandler()
+	commandRunner := NewCommandRunner()
+	executableNameParser := NewExecutableNameParser()
+
+	return executeCommand(args, dockerRunCommandBuilder, configLoader, commandResultHandler, commandRunner, executableNameParser)
+}
+
+// executeCommand executes a proxy command
+func executeCommand(args []string, commandBuilder CommandBuilder, configLoader ConfigLoader, commandResultHandler CommandResultHandler, commandRunner CommandRunner, executableNameParser ExecutableNameParser) int {
 
 	cfg := configLoader.Load()
 	cfg.Logging = true
