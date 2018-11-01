@@ -27,7 +27,7 @@ func (a *action) Execute() int {
 func getActionChain() actionChain {
 	return []actionChainElement{
 		newSubCommandAction(newRoot()),
-		newHelpDisplayAction(),
+		newHelpDisplayAction(newRoot()),
 		newRevealItsDroxyAction(),
 		newDroxyCommandAction(),
 	}
@@ -54,10 +54,10 @@ func newRevealItsDroxyAction() actionChainElement {
 	}
 }
 
-func newHelpDisplayAction() actionChainElement {
+func newHelpDisplayAction(cmd helper) actionChainElement {
 	return &action{
 		isResponsibleFunc: shallDisplayHelp,
-		executeFunc:       func() int { return displayHelp(newRoot()) },
+		executeFunc:       func() int { return displayHelp(cmd) },
 	}
 }
 

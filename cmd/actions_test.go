@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/pkg/errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -52,7 +53,7 @@ func Test_getActionChain(t *testing.T) {
 		{
 			name:  "2nd element is help display action",
 			index: 1,
-			want:  newHelpDisplayAction(),
+			want:  newHelpDisplayAction(nil),
 		},
 		{
 			name:  "3rd element is revealThatItsDroxy action",
@@ -129,7 +130,7 @@ func Test_newHelpDisplayAction_isResponsible(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := newHelpDisplayAction().(*action).isResponsibleFunc(tt.args); got != tt.want {
+			if got := newHelpDisplayAction(nil).(*action).isResponsibleFunc(tt.args); got != tt.want {
 				t.Errorf("newHelpDisplayAction().isResponsibleFunc(%v) = %v, want %v", tt.args, got, tt.want)
 			}
 		})
@@ -148,17 +149,36 @@ func Test_revealTheTruth(t *testing.T) {
 
 type executerMock struct {
 	wasCalled bool
+	result    error
 }
 
 func (e *executerMock) Execute() error {
 	e.wasCalled = true
-	return nil
+	return e.result
 }
 
 func Test_execSubCommand(t *testing.T) {
 
-	mock := &executerMock{}
+	mock := &executerMock{result: errors.New("for code coverage")}
 	newSubCommandAction(mock).Execute()
+
+	assert.True(t, mock.wasCalled)
+}
+
+type helperMock struct {
+	wasCalled bool
+	result    error
+}
+
+func (e *helperMock) Help() error {
+	e.wasCalled = true
+	return e.result
+}
+
+func Test_displayHelp(t *testing.T) {
+
+	mock := &helperMock{result: errors.New("for code coverage")}
+	newHelpDisplayAction(mock).Execute()
 
 	assert.True(t, mock.wasCalled)
 }
