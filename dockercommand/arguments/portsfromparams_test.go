@@ -3,10 +3,11 @@ package arguments
 import (
 	"testing"
 
+	"os"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand/builder/mocks"
 	"github.com/stretchr/testify/assert"
-	"os"
 )
 
 func TestBuildPortsFromParams_portsDefined_matchWithArgs(t *testing.T) {
@@ -35,7 +36,7 @@ func TestBuildPortsFromParams_portsDefined_2matchesWithArgs(t *testing.T) {
 	originalArgs := os.Args
 	defer func() { os.Args = originalArgs }()
 
-	os.Args = []string{"-test1", "--inspect-brk=78129", "-colors=on","--inspect=2938"}
+	os.Args = []string{"-test1", "--inspect-brk=78129", "-colors=on", "--inspect=2938"}
 
 	portsFromParams := []string{
 		"--inspect-brk=(\\d*)",
@@ -72,7 +73,7 @@ func TestBuildPortsFromParams_portsDefined_noMatchWithArgs(t *testing.T) {
 
 	BuildPortsFromParams(commandDef, builder)
 
-	builder.AssertNumberOfCalls(t,"AddPortMapping",0)
+	builder.AssertNumberOfCalls(t, "AddPortMapping", 0)
 }
 
 func TestBuildPortsFromParams_portsNotDefined(t *testing.T) {

@@ -1,9 +1,10 @@
 package proxyexecution
 
 import (
-	"github.com/Oppodelldog/droxy/logging"
 	"os"
 	"os/exec"
+
+	"github.com/Oppodelldog/droxy/logging"
 
 	"github.com/sirupsen/logrus"
 )

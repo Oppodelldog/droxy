@@ -3,12 +3,12 @@
 > create commands that proxy to docker
 
 ## The idea
-This tool should help you in creating variants of commands that proxy execution into docker containers.
+This tool helps you in creating variants of commands that proxy execution into docker containers.
 
 ## Getting started
-**Downlooad**  
-To get started you either download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).
-If you would like to build the tool from source code, read the contribution part of this document.
+**Download**  
+To get started you either download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).  
+If you would like to build the tool from source code, read the contribution part of this document.  
 
 **Wiki**  
 Take a look at the wiki examples to learn how to setup up custom commands  
@@ -16,11 +16,10 @@ Take a look at the wiki examples to learn how to setup up custom commands
 
 
 ## Configuration
-In the config file, you define the commands you want to create.
-The config file must be named ```droxy.toml```.
+In the config file, you define the commands you want to create.  
+The config file must be named ```droxy.toml```.  
 
-The following example contains all possible configuration options, you can leave out the most of them.
-
+The following example contains all possible configuration options, you can leave out the most of them.  
 
 > droxy.toml
 
@@ -92,34 +91,29 @@ The following example contains all possible configuration options, you can leave
 
 ```
 
-
-### create commands
-So the idea is to create "real" commands in form of binaries.
-Why? Well for a bash user also bash files would apply, but when you are trying to trick an IDE to use such a bash
-file as a real executable some may fail. So in general it should be a good idea to create real binaries.
-
-**What are the options?**  
-There are three options to create custom docker-proxy commands into a directory:  
-
-* **symlinks**  
-    this sub-command creates a symlink for every command defined in the config into the current directory
-* **clones**  
-    this sub-command creates copies of docker-proxy in the config into the current directory, renaming to the appropriate command name.
-* **hardlinks**  
-    this sub-command creates a hardlink for every command defined in the config into the current directory
-
+## Create commands
+Once you have setup your config, you want to create commands out of it.
+To generate the command binaries, navigate next to droxy.toml file and execute
 ```bash
-docker-proxy symlinks
-```
-```bash
-docker-proxy hardlinks
-```
-```bash
-docker-proxy clones
+    droxy clones
 ```
 
-use ```-f``` to force file creation. This will delete files with command names before creation.
+By default ```droxy clones``` will not overwrite existing files.  
+If you update droxy and want to update your commands as well, add flag ```-f``` which will overwrite existing files.
 
+### creation options
+There are three ways to create commands, 
+* clones
+* symlinks
+* hardlinks
+
+**Here are their pros and cons**
+
+| subcommand | pro                                                               | con                                                                                                        |
+|------------|-------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| clones     | the command knows its directory, will find config next to command | takes more disk space                                                                                         |
+| symlinks   | takes less disk space                                             | cannot determine the commands directory, you have to provide a config filepath by env var ```$DROXY_CONFIG``` |
+| hardlinks  | takes less disk space and knows directory                         | harder to maintain                                                                                            |   
 
 ## Contribute
 Feature requests and pull requests are welcome.
@@ -128,16 +122,22 @@ Feature requests and pull requests are welcome.
 Clone the repository into your go folder.
 The path should look like this ```.../go/src/github.com/Oppodelldog/droxy.```
 
-There are some make targets that help you with several tasks, first: ```setup```:
+There are some make recipes that help you with several tasks, type ```make``` to get a list of those.
+ 
+first: ```setup```:
 
 ```shell
 make setup
 ```
 This installs necessary go tools to get further jobs done and installs vendors.
 
-Now you are ready to go.
-```make install``` builds and installs the **droxy** command in **.../go/bin**
-so you can directly use or test it.
+Now you are ready to go.  
+```shell
+make install
+```
+builds and installs the **droxy** command in **$GOPATH/bin** so you can directly use or test.
 
-> If you have no make installed, execute the commands of the ```setup``` task manually.
+> If you make is not available, execute the commands of the ```setup``` task manually.  
+> Or do as I do and make use of the droxy.toml in .build and use make from the build container.
 
+Use ```make fmt``` and ```make lint``` to clean your code.

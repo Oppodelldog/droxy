@@ -39,7 +39,7 @@ func resolveProperty(base interface{}, overlay interface{}) interface{} {
 		return nil
 	}
 
-	if !reflect.ValueOf(overlay).IsNil(){
+	if !reflect.ValueOf(overlay).IsNil() {
 		return overlay
 	}
 

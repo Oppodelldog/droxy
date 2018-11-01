@@ -1,8 +1,9 @@
 package proxyexecution
 
 import (
-	"github.com/Oppodelldog/droxy/proxyfile"
 	"testing"
+
+	"github.com/Oppodelldog/droxy/proxyfile"
 
 	"github.com/stretchr/testify/assert"
 )

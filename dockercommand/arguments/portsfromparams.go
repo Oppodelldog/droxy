@@ -1,11 +1,12 @@
 package arguments
 
 import (
+	"fmt"
+	"os"
+	"regexp"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
-	"regexp"
-	"os"
-	"fmt"
 )
 
 // BuildPortsFromParams sets mappings of host ports to container ports

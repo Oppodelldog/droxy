@@ -2,11 +2,12 @@ package dockercommand
 
 import (
 	"context"
+	"os"
+	"os/exec"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/sirupsen/logrus"
-	"os"
-	"os/exec"
 
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand/arguments"
