@@ -13,7 +13,7 @@ func TestGetCommandName(t *testing.T) {
 func TestParseCommandNameFromCommandLine(t *testing.T) {
 	possibleTestRunners := []string{
 		"___TestParseCommandNameFromCommandLine_in_commandname_windows_test_go",
-		"helper.test",
+		"proxyfile.test",
 	}
 
 	assert.Contains(t, possibleTestRunners, ParseCommandNameFromCommandLine())
