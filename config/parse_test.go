@@ -92,7 +92,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 		Network:         &network,
 		IsInteractive:   &isInteractive,
 		EnvFile:         &envFile,
-		Ip:              &ip,
+		IP:              &ip,
 		AddGroups:       &addGroups,
 		Impersonate:     &impersonate,
 		RemoveContainer: &removeContainer,

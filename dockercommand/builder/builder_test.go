@@ -39,7 +39,7 @@ func TestBuilder_FullFeature(t *testing.T) {
 	b.SetImageName("imageName")
 	b.SetNetwork("network")
 	b.SetEnvFile(".env")
-	b.SetIp("127.1.2.3")
+	b.SetIP("127.1.2.3")
 	b.SetStdOut(testWriterA)
 	b.SetStdErr(testWriterB)
 	b.SetStdIn(testReader)

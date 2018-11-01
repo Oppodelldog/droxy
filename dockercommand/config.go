@@ -159,7 +159,7 @@ func (cb *commandBuilder) buildRunArgumentsFromFuncs(commandDef *config.CommandD
 		arguments.BuildCommand,
 		arguments.BuildNetwork,
 		arguments.BuildEnvFile,
-		arguments.BuildIp,
+		arguments.BuildIP,
 		arguments.BuildInteractiveFlag,
 		arguments.BuildDaemonFlag,
 		arguments.BuildRemoveContainerFlag,

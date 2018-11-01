@@ -157,8 +157,8 @@ func (b *builder) SetEnvFile(envFile string) Builder {
 	return b
 }
 
-// SetIp sets an env-file which is load into the environment of the container
-func (b *builder) SetIp(ip string) Builder {
+// SetIP sets an env-file which is load into the environment of the container
+func (b *builder) SetIP(ip string) Builder {
 	b.ip = []string{"--ip", ip}
 	return b
 }

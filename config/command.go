@@ -12,7 +12,7 @@ type CommandDefinition struct {
 	Image           *string
 	Network         *string
 	EnvFile         *string
-	Ip              *string
+	IP              *string
 	IsInteractive   *bool
 	IsDaemon        *bool
 	Volumes         *[]string
@@ -108,10 +108,10 @@ func (c *CommandDefinition) GetEnvFile() (string, bool) {
 	return "", false
 }
 
-// GetIp returns value of Ip and an boolean indicating if value is set.
-func (c *CommandDefinition) GetIp() (string, bool) {
-	if c.Ip != nil {
-		return *c.Ip, true
+// GetIP returns value of Ip and an boolean indicating if value is set.
+func (c *CommandDefinition) GetIP() (string, bool) {
+	if c.IP != nil {
+		return *c.IP, true
 	}
 	return "", false
 }
