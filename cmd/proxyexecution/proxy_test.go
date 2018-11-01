@@ -29,7 +29,8 @@ func TestExecuteCommand_LoadsConfigFromLoader(t *testing.T) {
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
 	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).Return(4711)
 
-	ExecuteCommand(commandBuilderStub, configLoaderMock, commandResultHandlerStub, commandRunnerStub, executableNameParserStub)
+	var args []string
+	ExecuteCommand(args, commandBuilderStub, configLoaderMock, commandResultHandlerStub, commandRunnerStub, executableNameParserStub)
 
 	configLoaderMock.AssertExpectations(t)
 }
@@ -53,7 +54,8 @@ func TestExecuteCommand_ExecutableNameIsParsed(t *testing.T) {
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
 	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).Return(4711)
 
-	ExecuteCommand(commandBuilderStub, configLoaderStub, commandResultHandlerStub, commandRunnerStub, executableNameParserMock)
+	var args []string
+	ExecuteCommand(args, commandBuilderStub, configLoaderStub, commandResultHandlerStub, commandRunnerStub, executableNameParserMock)
 
 	executableNameParserMock.AssertExpectations(t)
 }
@@ -77,7 +79,8 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
 	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).Return(4711)
 
-	ExecuteCommand(commandBuilderMock, configLoaderStub, commandResultHandlerStub, commandRunnerStub, executableNameParserStub)
+	var args []string
+	ExecuteCommand(args, commandBuilderMock, configLoaderStub, commandResultHandlerStub, commandRunnerStub, executableNameParserStub)
 
 	commandBuilderMock.AssertExpectations(t)
 }
@@ -103,7 +106,8 @@ func TestExecuteCommand_CommandIsRun(t *testing.T) {
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
 	commandResultHandlerStub.On("HandleCommandResult", cmdStub, errStub).Return(4711)
 
-	ExecuteCommand(commandBuilderStub, configLoaderStub, commandResultHandlerStub, commandRunnerMock, executableNameParserStub)
+	var args []string
+	ExecuteCommand(args, commandBuilderStub, configLoaderStub, commandResultHandlerStub, commandRunnerMock, executableNameParserStub)
 
 	commandRunnerMock.AssertExpectations(t)
 }
@@ -129,7 +133,8 @@ func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
 	commandResultHandlerMock := &mocks.CommandResultHandler{}
 	commandResultHandlerMock.On("HandleCommandResult", cmdStub, errStub).Return(4711)
 
-	ExecuteCommand(commandBuilderStub, configLoaderStub, commandResultHandlerMock, commandRunnerStub, executableNameParserStub)
+	var args []string
+	ExecuteCommand(args, commandBuilderStub, configLoaderStub, commandResultHandlerMock, commandRunnerStub, executableNameParserStub)
 
 	commandResultHandlerMock.AssertExpectations(t)
 }
@@ -153,7 +158,8 @@ func TestExecuteCommand_ErrorFromCommandBuild_ExitCode900Returned(t *testing.T) 
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
 	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).Return(4711)
 
-	exitCode := ExecuteCommand(commandBuilderStub, configLoaderStub, commandResultHandlerStub, commandRunnerStub, executableNameParserStub)
+	var args []string
+	exitCode := ExecuteCommand(args, commandBuilderStub, configLoaderStub, commandResultHandlerStub, commandRunnerStub, executableNameParserStub)
 
 	assert.Equal(t, 900, exitCode)
 }

@@ -6,12 +6,12 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand"
 )
 
-func executeDroxyCommand() int {
+func executeDroxyCommand(args []string) int {
 	dockerRunCommandBuilder := dockercommand.NewCommandBuilder()
 	configLoader := config.NewLoader()
 	commandResultHandler := proxyexecution.NewCommandResultHandler()
 	commandRunner := proxyexecution.NewCommandRunner()
 	executableNameParser := proxyexecution.NewExecutableNameParser()
 
-	return proxyexecution.ExecuteCommand(dockerRunCommandBuilder, configLoader, commandResultHandler, commandRunner, executableNameParser)
+	return proxyexecution.ExecuteCommand(args, dockerRunCommandBuilder, configLoader, commandResultHandler, commandRunner, executableNameParser)
 }

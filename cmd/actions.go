@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/Oppodelldog/droxy/proxyfile"
@@ -41,7 +42,7 @@ func newSubCommandAction(cmd executer) actionChainElement {
 func newDroxyCommandAction() actionChainElement {
 	return &action{
 		isResponsibleFunc: func([]string) bool { return true },
-		executeFunc:       executeDroxyCommand,
+		executeFunc:       func() int { return executeDroxyCommand(os.Args) },
 	}
 }
 

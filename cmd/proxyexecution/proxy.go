@@ -10,7 +10,7 @@ import (
 )
 
 // ExecuteCommand executes a proxy command
-func ExecuteCommand(commandBuilder CommandBuilder, configLoader ConfigLoader, commandResultHandler CommandResultHandler, commandRunner CommandRunner, executableNameParser ExecutableNameParser) int {
+func ExecuteCommand(args []string, commandBuilder CommandBuilder, configLoader ConfigLoader, commandResultHandler CommandResultHandler, commandRunner CommandRunner, executableNameParser ExecutableNameParser) int {
 
 	cfg := configLoader.Load()
 	cfg.Logging = true
@@ -42,7 +42,7 @@ func ExecuteCommand(commandBuilder CommandBuilder, configLoader ConfigLoader, co
 	logrus.Info("----------------------------------------------------------------------")
 
 	logrus.Infof("origin arguments:")
-	for _, arg := range os.Args {
+	for _, arg := range args {
 		logrus.Info(arg)
 	}
 	logrus.Info("----------------------------------------------------------------------")
