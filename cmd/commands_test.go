@@ -7,20 +7,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewRoot(t *testing.T) {
-	assert.NotNil(t, NewRoot())
-	assert.IsType(t, new(cobra.Command), NewRoot())
+func Test_newRoot(t *testing.T) {
+	assert.NotNil(t, newRoot())
+	assert.IsType(t, new(cobra.Command), newRoot())
 }
 
-func TestNewRootCommands(t *testing.T) {
-	rootCmd := NewRoot()
+func Test_newRoot_Use(t *testing.T) {
+	assert.Equal(t, "droxy", newRoot().Use)
+}
+
+func Test_newRootCommands(t *testing.T) {
+	rootCmd := newRoot()
 	assertCommand(t, "clones", rootCmd)
 	assertCommand(t, "hardlinks", rootCmd)
 	assertCommand(t, "symlinks", rootCmd)
-}
-
-func TestRoot_Use(t *testing.T) {
-	assert.Equal(t, "droxy", NewRoot().Use)
 }
 
 func assertCommand(t *testing.T, commandName string, command *cobra.Command) {

@@ -68,7 +68,7 @@ func (c *CommandDefinition) GetEntryPoint() (string, bool) {
 	return "", false
 }
 
-// GetCommand returns value of Command (CMD) and an boolean indicating if value is set.
+// getCommand returns value of Command (CMD) and an boolean indicating if value is set.
 func (c *CommandDefinition) GetCommand() (string, bool) {
 	if c.Command != nil {
 		return *c.Command, true
