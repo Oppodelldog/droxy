@@ -1,6 +1,7 @@
 package arguments
 
 import (
+	"reflect"
 	"testing"
 
 	"fmt"
@@ -51,4 +52,18 @@ func TestBuildName_NameIsNotSet_AndNotUniqueNames(t *testing.T) {
 	nameBuilder.BuildArgument(commandDef, builder)
 
 	assert.Empty(t, builder.Calls)
+}
+
+func TestBuildName_ArgumentsBuilderNameRandomizerFunc(t *testing.T) {
+	if reflect.ValueOf(NewNameArgumentBuilder().(*nameArgumentBuilder).nameRandomizerFunc).Pointer() != reflect.ValueOf(defaultNameRandomizerFunc).Pointer() {
+		t.Fatalf("nameArgumentBuilder.nameRandomizerFunc is not set to defaultNameRandomizerFunc")
+	}
+}
+
+func Test_defaultNameRandomizerFunc(t *testing.T) {
+	const name = "some-name"
+	randomizedName := defaultNameRandomizerFunc(name)
+
+	assert.Contains(t, randomizedName, name)
+	assert.NotEqual(t, randomizedName, name)
 }
