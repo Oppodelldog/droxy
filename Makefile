@@ -50,7 +50,7 @@ deps:
 
 ci: deps test-with-coverage codecov build ## Run all the tests and code checks
 
-functional-tests: deps build ## Runs functional bats tests on built binary
+functional-tests: setup deps build ## Runs functional bats tests on built binary
 	cp .build/droxy .test/droxy
 	.test/test.sh
 
