@@ -4,15 +4,17 @@ workspace:
 
 pipeline:
   build:
-    group: build
     image: oppodelldog/droxy:latest
     pull: true
+    mount:
+    - .build    
     commands:
       - make ci
       
   functional-tests:
-    group: build
     image: oppodelldog/docker-bats:latest
     pull: true
+    mount:
+      - .build    
     commands:
         - make functional-tests
