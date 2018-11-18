@@ -1,11 +1,10 @@
 package dockercommand
 
 import (
-	"context"
 	"os"
 	"os/exec"
 
-	"github.com/docker/docker/api/types"
+	"github.com/Masterminds/semver"
 	"github.com/docker/docker/client"
 	"github.com/sirupsen/logrus"
 
@@ -15,8 +14,17 @@ import (
 )
 
 //NewCommandBuilder returns a new commandBuilder
-func NewCommandBuilder() CommandBuilder {
-	return &commandBuilder{}
+func NewCommandBuilder() (CommandBuilder, error) {
+
+	clientAdapter, err := newDockerClientAdapter()
+	if err != nil {
+		return nil, err
+	}
+
+	return &commandBuilder{
+		dockerVersionProvider:     clientAdapter,
+		containerExistenceChecker: clientAdapter,
+	}, nil
 }
 
 type (
@@ -25,7 +33,19 @@ type (
 		BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error)
 	}
 
-	commandBuilder struct{}
+	dockerVersionProvider interface {
+		getAPIVersion() (string, error)
+	}
+
+	containerExistenceChecker interface {
+		exists(containerName string) bool
+	}
+
+	commandBuilder struct {
+		dockerClient              *client.Client
+		dockerVersionProvider     dockerVersionProvider
+		containerExistenceChecker containerExistenceChecker
+	}
 
 	argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
 )
@@ -43,7 +63,7 @@ func (cb *commandBuilder) BuildCommandFromConfig(commandName string, cfg *config
 	}
 
 	if containerName, ok := commandDef.GetName(); ok {
-		if containerExists(containerName) {
+		if cb.containerExistenceChecker.exists(containerName) {
 			cmd, err = cb.buildExecCommand(commandDef)
 			if err != nil {
 				return nil, err
@@ -120,37 +140,6 @@ func (cb *commandBuilder) buildRunArgumentsFromBuilders(commandDef *config.Comma
 	return nil
 }
 
-func containerExists(containerName string) bool {
-	dockerClient, err := client.NewEnvClient()
-	if err != nil {
-		logrus.Errorf("error building name argument, opening docker client failed: %v", err)
-
-		return false
-	}
-
-	ctx := context.Background()
-	options := types.ContainerListOptions{
-		All: true,
-	}
-
-	containers, err := dockerClient.ContainerList(ctx, options)
-	if err != nil {
-		logrus.Errorf("error loading container list: %v", err)
-
-		return false
-	}
-
-	for _, container := range containers {
-		for _, name := range container.Names {
-			if name == "/"+containerName {
-				return true
-			}
-		}
-	}
-
-	return false
-}
-
 func (cb *commandBuilder) buildRunArgumentsFromFuncs(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	argumentBuilderFuncs := []argumentBuilderDef{
 		arguments.AttachStreams,
@@ -189,9 +178,9 @@ func (cb *commandBuilder) buildExecArgumentsFromFuncs(commandDef *config.Command
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
 		arguments.BuildDaemonFlag,
-		arguments.BuildEnvVars,
+		cb.withVersionConstraint(arguments.BuildEnvVars, ">= 1.25"),
 		arguments.BuildEnvFile,
-		arguments.BuildWorkDir,
+		cb.withVersionConstraint(arguments.BuildWorkDir, ">= 1.35"),
 		arguments.BuildImpersonation,
 		arguments.BuildCommand,
 	}
@@ -204,4 +193,38 @@ func (cb *commandBuilder) buildExecArgumentsFromFuncs(commandDef *config.Command
 	}
 
 	return nil
+}
+
+func (cb *commandBuilder) withVersionConstraint(argumentBuilderFunc argumentBuilderDef, versionConstraint string) argumentBuilderDef {
+	return func(commandDef *config.CommandDefinition, builder builder.Builder) error {
+		if cb.isVersionSupported(versionConstraint) {
+			return argumentBuilderFunc(commandDef, builder)
+		}
+		return nil
+	}
+}
+
+func (cb *commandBuilder) isVersionSupported(versionConstraint string) bool {
+	constraints, err := semver.NewConstraint(versionConstraint)
+	if err != nil {
+		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
+
+		return false
+	}
+
+	dockerVersion, err := cb.dockerVersionProvider.getAPIVersion()
+	if err != nil {
+		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
+
+		return false
+	}
+
+	dockerSemVer, err := semver.NewVersion(dockerVersion)
+	if err != nil {
+		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
+
+		return false
+	}
+
+	return constraints.Check(dockerSemVer)
 }

@@ -24,7 +24,10 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandName := "some-command"
 	configuration := getFullFeatureConfig(commandName)
 
-	commandBuilder := NewCommandBuilder()
+	commandBuilder, err := NewCommandBuilder()
+	if err != nil {
+		t.Fatalf("Did not expect NewCommandBuilder to return an error, but got: %v", err)
+	}
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
@@ -57,7 +60,10 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 		},
 	}
 
-	commandBuilder := NewCommandBuilder()
+	commandBuilder, err := NewCommandBuilder()
+	if err != nil {
+		t.Fatalf("Did not expect NewCommandBuilder to return an error, but got: %v", err)
+	}
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
@@ -76,6 +82,46 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 	os.Unsetenv("VOLUME_ENV_VAR")
 	os.Unsetenv("LINK_ENV_VAR")
 	os.Unsetenv("ENV_VAR")
+}
+
+func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *testing.T) {
+
+	testDataSet := map[string]struct {
+		containerExists       bool
+		expectedDockerCommand string
+	}{
+		"if container does not exists, expect 'docker run' command": {
+			containerExists:       false,
+			expectedDockerCommand: "docker run",
+		},
+		"if container already exists, expect 'docker exec' command": {
+			containerExists:       true,
+			expectedDockerCommand: "docker exec",
+		},
+	}
+
+	for testCaseName, testData := range testDataSet {
+		t.Run(testCaseName, func(t *testing.T) {
+
+			commandName := "some-command"
+			configuration := getFullFeatureConfig(commandName)
+
+			cb := &commandBuilder{
+				dockerVersionProvider:     newDockerAPIVersionStub("1.25"),
+				containerExistenceChecker: newContainerExistenceChecker(testData.containerExists),
+			}
+
+			cmd, err := cb.BuildCommandFromConfig(commandName, configuration)
+			if err != nil {
+				t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
+			}
+
+			commandString := strings.Join(cmd.Args, " ")
+
+			assert.Contains(t, commandString, testData.expectedDockerCommand)
+
+		})
+	}
 }
 
 func getFullFeatureConfig(commandName string) *config.Configuration {
@@ -237,5 +283,83 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		PortsFromParams: &portsFromParams,
 		ReplaceArgs:     &replaceArgs,
 		AdditionalArgs:  &additionalArgs,
+	}
+}
+
+type containerExistenceCheckerStub struct {
+	containerExists bool
+}
+
+func (c *containerExistenceCheckerStub) exists(containerName string) bool {
+	return c.containerExists
+}
+
+func newContainerExistenceChecker(containerExists bool) *containerExistenceCheckerStub {
+	return &containerExistenceCheckerStub{containerExists}
+}
+
+type dockerAPIVersionStub struct {
+	dockerAPIVersion string
+}
+
+func (s *dockerAPIVersionStub) getAPIVersion() (string, error) {
+	return s.dockerAPIVersion, nil
+}
+
+func newDockerAPIVersionStub(apiVersion string) *dockerAPIVersionStub {
+	return &dockerAPIVersionStub{apiVersion}
+}
+
+func TestBuildCommandFromConfig_singleArgumentTest(t *testing.T) {
+	testDataSet := map[string]struct {
+		dockerAPIVersion         string
+		expectedCommandArgString string
+		expectCommandContainsArg bool
+	}{
+		"workdir is not added for versions below 1.35": {
+			dockerAPIVersion:         "1.34",
+			expectedCommandArgString: "-w",
+			expectCommandContainsArg: false,
+		},
+		"workdir is added for versions from 1.35": {
+			dockerAPIVersion:         "1.35",
+			expectedCommandArgString: "-w",
+			expectCommandContainsArg: true,
+		},
+		"envvars are not added for versions below 1.25": {
+			dockerAPIVersion:         "1.24",
+			expectedCommandArgString: "-e",
+			expectCommandContainsArg: false,
+		},
+		"envvars are added for versions from 1.25": {
+			dockerAPIVersion:         "1.25",
+			expectedCommandArgString: "-e",
+			expectCommandContainsArg: true,
+		},
+	}
+
+	for testCaseName, testData := range testDataSet {
+		t.Run(testCaseName, func(t *testing.T) {
+			cb := commandBuilder{
+				dockerVersionProvider: newDockerAPIVersionStub(testData.dockerAPIVersion),
+			}
+
+			workDir := "someWorkDir"
+			envVars := []string{"SOME_ENV_VAR"}
+			commandDef := &config.CommandDefinition{
+				WorkDir: &workDir,
+				EnvVars: &envVars,
+			}
+			cmd, err := cb.buildExecCommand(commandDef)
+			if err != nil {
+				t.Fatalf("did not expect buildExecCommand to return an error, but got: %v", err)
+			}
+
+			if testData.expectCommandContainsArg {
+				assert.Contains(t, cmd.Args, testData.expectedCommandArgString)
+			} else {
+				assert.NotContains(t, cmd.Args, testData.expectedCommandArgString)
+			}
+		})
 	}
 }
