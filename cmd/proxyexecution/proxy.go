@@ -1,18 +1,27 @@
 package proxyexecution
 
 import (
-	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockercommand"
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercommand"
 
 	"github.com/Oppodelldog/droxy/logging"
 	"github.com/sirupsen/logrus"
 )
 
+const errorPreparingDockerCall = 900
+
 func ExecuteDroxyCommand(args []string) int {
-	dockerRunCommandBuilder := dockercommand.NewCommandBuilder()
+	dockerRunCommandBuilder, err := dockercommand.NewCommandBuilder()
+	if err != nil {
+		logrus.Errorf("error preparing docker call: %v", err)
+
+		return errorPreparingDockerCall
+	}
+
 	configLoader := config.NewLoader()
 	commandResultHandler := NewCommandResultHandler()
 	commandRunner := NewCommandRunner()
@@ -63,7 +72,8 @@ func executeCommand(args []string, commandBuilder CommandBuilder, configLoader C
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, cfg)
 	if err != nil {
 		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)
-		return 900
+
+		return errorPreparingDockerCall
 	}
 	logrus.Infof("calling docker ro tun '%s'", commandName)
 	logrus.Infof(strings.Join(cmd.Args, " "))

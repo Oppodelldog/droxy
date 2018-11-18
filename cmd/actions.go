@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
 	"os"
 	"path/filepath"
+
+	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
 
 	"github.com/Oppodelldog/droxy/proxyfile"
 	"github.com/sirupsen/logrus"
