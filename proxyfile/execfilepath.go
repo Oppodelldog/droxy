@@ -7,8 +7,7 @@ import (
 	"path/filepath"
 )
 
-// GetExecutableFilePath returns the file-path of the droxy binary
-func GetExecutableFilePath() (string, error) {
+func getExecutableFilePath() (string, error) {
 	executableDir, err := getExecutablePath()
 	if err != nil {
 		return "", err

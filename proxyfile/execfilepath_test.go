@@ -23,5 +23,5 @@ func TestGetExecutablePath(t *testing.T) {
 }
 
 func TestGetExecutableFilePath_smoketest(t *testing.T) {
-	GetExecutableFilePath()
+	getExecutableFilePath()
 }

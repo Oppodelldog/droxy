@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/pkg/errors"
@@ -140,6 +141,13 @@ func Test_newHelpDisplayAction_isResponsible(t *testing.T) {
 
 func Test_newDroxyCommandAction(t *testing.T) {
 	assert.True(t, newDroxyCommandAction().(*action).isResponsibleFunc(nil))
+}
+
+func Test_newDroxyCommandAction_defaultExecuiteFunc(t *testing.T) {
+
+	if reflect.ValueOf(newDroxyCommandAction().(*action).executeFunc).Pointer() != reflect.ValueOf(defaultExecuteFunc).Pointer() {
+		t.Fatal("expected newDroxyCommand to be configured with 'defaultExecuteFunc', but was not")
+	}
 }
 
 func Test_revealTheTruth(t *testing.T) {

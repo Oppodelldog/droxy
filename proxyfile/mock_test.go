@@ -1,5 +1,7 @@
 package proxyfile
 
+import "github.com/Oppodelldog/droxy/config"
+
 // This file does not contain tests.
 // Is shares some mocks used in several test files
 
@@ -31,4 +33,15 @@ func (m *mockFileCreationStrategy) CreateProxyFile(commandBinaryFilePath string,
 	m.calls++
 
 	return m.returnValue
+}
+
+type configLoaderMock struct {
+	wasLoadCalled bool
+	stubbedConfig *config.Configuration
+}
+
+func (m *configLoaderMock) Load() *config.Configuration {
+	m.wasLoadCalled = true
+
+	return m.stubbedConfig
 }

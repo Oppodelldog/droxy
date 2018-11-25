@@ -8,20 +8,34 @@ import (
 )
 
 // New creates a new proxy file creator
-func New(creationStrategy FileCreationStrategy) *Creator {
+func New(creationStrategy FileCreationStrategy, configLoader config.Loader) *Creator {
 	return &Creator{
-		creationStrategy: creationStrategy,
+		creationStrategy:          creationStrategy,
+		configLoader:              configLoader,
+		getExecutableFilePathFunc: getExecutableFilePath,
 	}
 }
 
 // Creator creates commands
 type Creator struct {
-	creationStrategy FileCreationStrategy
+	creationStrategy          FileCreationStrategy
+	configLoader              config.Loader
+	getExecutableFilePathFunc getExecutableFilePathFuncDef
 }
 
+type getExecutableFilePathFuncDef func() (string, error)
+
 // CreateProxyFiles creates droxy commands
-func (pfc *Creator) CreateProxyFiles(commandBinaryFilePath string, configuration *config.Configuration, isForced bool) error {
-	for _, command := range configuration.Command {
+func (pfc *Creator) CreateProxyFiles(isForced bool) error {
+	cfg := pfc.configLoader.Load()
+
+	commandBinaryFilePath, err := pfc.getExecutableFilePathFunc()
+	if err != nil {
+		logrus.Error(err)
+		os.Exit(1)
+	}
+
+	for _, command := range cfg.Command {
 
 		if !command.HasName() {
 			logrus.Warnf("skipped command because name is missing!")

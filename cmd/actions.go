@@ -44,9 +44,11 @@ func newSubCommandAction(cmd executer) actionChainElement {
 func newDroxyCommandAction() actionChainElement {
 	return &action{
 		isResponsibleFunc: func([]string) bool { return true },
-		executeFunc:       func() int { return proxyexecution.ExecuteDroxyCommand(os.Args) },
+		executeFunc:       defaultExecuteFunc,
 	}
 }
+
+func defaultExecuteFunc() int { return proxyexecution.ExecuteDroxyCommand(os.Args) }
 
 func newRevealItsDroxyAction() actionChainElement {
 	return &action{
