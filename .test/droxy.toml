@@ -2,7 +2,7 @@ Version="1"
 Logging=true
     [[command]]
       name = "build-container"
-      image = "docker-bats"
+      image = "oppodelldog/docker-bats:latest"
       isTemplate = true
       removeContainer=true
 
