@@ -8,3 +8,11 @@ pipeline:
     pull: true
     commands:
       - make ci
+      
+  functional-tests:
+    image: oppodelldog/docker-bats:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    pull: true   
+    commands:
+        - .test/run-tests.sh

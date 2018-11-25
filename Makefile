@@ -9,9 +9,12 @@ setup: ## Install all the build and lint dependencies
 	go get -u golang.org/x/tools/cmd/goimports
 	dep ensure
 
-test: ## Run all the tests
+test-with-coverage: ## Run all the tests
 	rm -f coverage.tmp && rm -f coverage.txt
 	echo 'mode: atomic' > coverage.txt && go list ./... | xargs -n1 -I{} sh -c 'go test -race -covermode=atomic -coverprofile=coverage.tmp {} && tail -n +2 coverage.tmp >> coverage.txt' && rm coverage.tmp
+
+test: ## Run all the tests
+	go list ./... | xargs -n1 -I{} sh -c 'go test -race {}'
 
 cover: test ## Run all the tests and opens the coverage report
 	go tool cover -html=coverage.txt
@@ -45,7 +48,11 @@ deps:
 	dep ensure
 	go get ./...
 
-ci: deps test codecov build ## Run all the tests and code checks
+ci: deps test-with-coverage codecov build ## Run all the tests and code checks
+
+functional-tests: ## Runs functional bats tests on built binary
+	cp .build/droxy .test/droxy
+	.test/test.sh
 
 codecov:
 	codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89

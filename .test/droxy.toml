@@ -1,0 +1,14 @@
+Version="1"
+Logging=true
+    [[command]]
+      name = "build-container"
+      image = "oppodelldog/docker-bats:latest"
+      isTemplate = true
+      removeContainer=true
+
+    # test simple output
+    [[command]]
+    	name = "outputs_test123"
+        template = "build-container"
+    	entryPoint = "echo"
+    	command="test123"
