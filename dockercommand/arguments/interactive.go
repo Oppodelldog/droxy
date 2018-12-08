@@ -5,10 +5,10 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//BuildDaemonFlag sets the daemon flag, which starts the container in background
-func BuildDaemonFlag(commandDef *config.CommandDefinition, builder builder.Builder) error {
-	if isDaemon, ok := commandDef.GetIsDaemon(); isDaemon && ok {
-		builder.AddArgument("-d")
+//BuildInteractiveFlag sets the interactive flag, which enables user interaction
+func BuildInteractiveFlag(commandDef *config.CommandDefinition, builder builder.Builder) error {
+	if isInteractive, ok := commandDef.GetIsInteractive(); isInteractive && ok {
+		builder.AddArgument("-i")
 	}
 
 	return nil
