@@ -37,8 +37,8 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandString := strings.Join(cmd.Args, " ")
 
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i -d --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i -d --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
@@ -138,7 +138,7 @@ func getFullFeatureConfig(commandName string) *config.Configuration {
 
 func getFullFeatureTemplateDef() config.CommandDefinition {
 	isTemplate := true
-	isDaemon := true
+	isDetached := false
 	entryPoint := "some-entrypoint"
 	command := "some-cmd"
 	name := "some template"
@@ -187,7 +187,8 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 
 	return config.CommandDefinition{
 		IsTemplate:      &isTemplate,
-		IsDaemon:        &isDaemon,
+		IsDetached:      &isDetached,
+		IsDaemon:        &isDetached,
 		EntryPoint:      &entryPoint,
 		Command:         &command,
 		Name:            &name,
@@ -212,7 +213,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 
 func getFullFeatureDef(commandName string) config.CommandDefinition {
 	isTemplate := true
-	isDaemon := true
+	isDetached := false
 	template := "some template"
 	entryPoint := "some-entrypoint"
 	command := "some-cmd"
@@ -262,7 +263,8 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 
 	return config.CommandDefinition{
 		IsTemplate:      &isTemplate,
-		IsDaemon:        &isDaemon,
+		IsDetached:      &isDetached,
+		IsDaemon:        &isDetached,
 		Template:        &template,
 		EntryPoint:      &entryPoint,
 		Command:         &command,

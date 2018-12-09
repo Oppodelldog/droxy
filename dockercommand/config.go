@@ -150,7 +150,7 @@ func (cb *commandBuilder) buildRunArgumentsFromFuncs(commandDef *config.CommandD
 		arguments.BuildEnvFile,
 		arguments.BuildIP,
 		arguments.BuildInteractiveFlag,
-		arguments.BuildDaemonFlag,
+		arguments.BuildDetachedFlag,
 		arguments.BuildRemoveContainerFlag,
 		arguments.BuildImpersonation,
 		arguments.BuildImage,
@@ -177,7 +177,7 @@ func (cb *commandBuilder) buildExecArgumentsFromFuncs(commandDef *config.Command
 	argumentBuilderFuncs := []argumentBuilderDef{
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
-		arguments.BuildDaemonFlag,
+		arguments.BuildDetachedFlag,
 		cb.withVersionConstraint(arguments.BuildEnvVars, ">= 1.25"),
 		arguments.BuildEnvFile,
 		cb.withVersionConstraint(arguments.BuildWorkDir, ">= 1.35"),

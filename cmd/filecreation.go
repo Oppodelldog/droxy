@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Oppodelldog/droxy/config"
 	"os"
+
+	"github.com/Oppodelldog/droxy/config"
 
 	"github.com/Oppodelldog/droxy/proxyfile"
 	"github.com/sirupsen/logrus"
@@ -11,15 +12,21 @@ import (
 )
 
 func newCloneCommandWrapper() *fileCreationSubCommandWrapper {
-	return newFileCreationSubCommand("clones", proxyfile.NewClonesStrategy(), config.NewLoader())
+	proxyFilesCreator := newProxyFilesCreator(proxyfile.NewClonesStrategy(), config.NewLoader())
+
+	return newFileCreationSubCommand("clones", proxyFilesCreator)
 }
 
 func newHardlinkCommandWrapper() *fileCreationSubCommandWrapper {
-	return newFileCreationSubCommand("hardlinks", proxyfile.NewHardlinkStrategy(), config.NewLoader())
+	proxyFilesCreator := newProxyFilesCreator(proxyfile.NewHardlinkStrategy(), config.NewLoader())
+
+	return newFileCreationSubCommand("hardlinks", proxyFilesCreator)
 }
 
 func newSymlinkCommandWrapper() *fileCreationSubCommandWrapper {
-	return newFileCreationSubCommand("symlinks", proxyfile.NewSymlinkStrategy(), config.NewLoader())
+	proxyFilesCreator := newProxyFilesCreator(proxyfile.NewSymlinkStrategy(), config.NewLoader())
+
+	return newFileCreationSubCommand("symlinks", proxyFilesCreator)
 }
 
 type fileCreationSubCommandWrapper struct {
@@ -31,7 +38,7 @@ func (w *fileCreationSubCommandWrapper) getCommand() *cobra.Command {
 	return w.cobraCommand
 }
 
-func (w *fileCreationSubCommandWrapper) createCommand(commandName string, strategy proxyfile.FileCreationStrategy, configLoader config.Loader) *cobra.Command {
+func (w *fileCreationSubCommandWrapper) createCommand(commandName string, proxyFilesCreator ProxyFilesCreator) *cobra.Command {
 	w.cobraCommand = &cobra.Command{
 		Use:   commandName,
 		Short: fmt.Sprintf("creates command %s", commandName),
@@ -39,9 +46,7 @@ func (w *fileCreationSubCommandWrapper) createCommand(commandName string, strate
 		Run: func(cmd *cobra.Command, args []string) {
 			logrus.Infof("creating '%s'...", commandName)
 
-			profileFileCreator := proxyfile.New(strategy, configLoader)
-
-			err := profileFileCreator.CreateProxyFiles(w.isForced)
+			err := proxyFilesCreator.CreateProxyFiles(w.isForced)
 			if err != nil {
 				logrus.Error(err)
 				os.Exit(1)
@@ -54,10 +59,18 @@ func (w *fileCreationSubCommandWrapper) createCommand(commandName string, strate
 	return w.cobraCommand
 }
 
-func newFileCreationSubCommand(commandName string, strategy proxyfile.FileCreationStrategy, configLoader config.Loader) *fileCreationSubCommandWrapper {
+func newFileCreationSubCommand(commandName string, proxyFilesCreator ProxyFilesCreator) *fileCreationSubCommandWrapper {
 
 	commandWrapper := new(fileCreationSubCommandWrapper)
-	commandWrapper.createCommand(commandName, strategy, configLoader)
+	commandWrapper.createCommand(commandName, proxyFilesCreator)
 
 	return commandWrapper
+}
+
+type ProxyFilesCreator interface {
+	CreateProxyFiles(isForced bool) error
+}
+
+func newProxyFilesCreator(strategy proxyfile.FileCreationStrategy, configLoader config.Loader) ProxyFilesCreator {
+	return proxyfile.New(strategy, configLoader)
 }

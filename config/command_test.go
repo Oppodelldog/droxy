@@ -8,6 +8,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type searchableStringSlice []string
+
+var deprecatedFieldNames = searchableStringSlice{"IsDaemon"}
+
+func (sss searchableStringSlice) Contain(needle string) bool {
+	for _, v := range sss {
+		if v == needle {
+			return true
+		}
+	}
+
+	return false
+}
+
 func TestProperty_Unset(t *testing.T) {
 	command := CommandDefinition{}
 	checkCommandDefinitionGettersUnset(t, command)
@@ -17,6 +31,10 @@ func checkCommandDefinitionGettersUnset(t *testing.T, command CommandDefinition)
 	val := reflect.ValueOf(command)
 	for i := 0; i < val.NumField(); i++ {
 		typeField := val.Type().Field(i)
+
+		if deprecatedFieldNames.Contain(typeField.Name) {
+			return
+		}
 
 		getterName := fmt.Sprintf("Get%s", typeField.Name)
 		method := reflect.ValueOf(&command).MethodByName(getterName)
@@ -44,6 +62,10 @@ func checkCommandDefinitionGetters(t *testing.T, command CommandDefinition) {
 	val := reflect.ValueOf(command)
 	for i := 0; i < val.NumField(); i++ {
 		typeField := val.Type().Field(i)
+
+		if deprecatedFieldNames.Contain(typeField.Name) {
+			return
+		}
 
 		getterName := fmt.Sprintf("Get%s", typeField.Name)
 		method := reflect.ValueOf(&command).MethodByName(getterName)

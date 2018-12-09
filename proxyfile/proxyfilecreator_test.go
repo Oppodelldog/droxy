@@ -1,11 +1,12 @@
 package proxyfile
 
 import (
-	"github.com/Oppodelldog/droxy/config"
 	"io/ioutil"
 	"os"
 	"reflect"
 	"testing"
+
+	"github.com/Oppodelldog/droxy/config"
 
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"

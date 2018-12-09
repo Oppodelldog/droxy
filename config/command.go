@@ -14,7 +14,8 @@ type CommandDefinition struct {
 	EnvFile         *string
 	IP              *string
 	IsInteractive   *bool
-	IsDaemon        *bool
+	IsDetached      *bool
+	IsDaemon        *bool // deprecated
 	Volumes         *[]string
 	Links           *[]string
 	EnvVars         *[]string
@@ -52,8 +53,11 @@ func (c *CommandDefinition) GetTemplate() (string, bool) {
 	return "", false
 }
 
-// GetIsDaemon returns value of GetIsDaemon and an boolean indicating if value is set.
-func (c *CommandDefinition) GetIsDaemon() (bool, bool) {
+// GetIsDetached returns value of GetIsDetached and an boolean indicating if value is set.
+func (c *CommandDefinition) GetIsDetached() (bool, bool) {
+	if c.IsDetached != nil {
+		return *c.IsDetached, true
+	}
 	if c.IsDaemon != nil {
 		return *c.IsDaemon, true
 	}

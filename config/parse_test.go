@@ -28,7 +28,7 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 
 func getFullFeatureCommandDefinition() CommandDefinition {
 	isTemplate := true
-	isDaemon := true
+	isDetached := true
 	requireEnvVars := true
 	template := "some template"
 	entryPoint := "some-entryPoint"
@@ -82,7 +82,8 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	return CommandDefinition{
 		RequireEnvVars:  &requireEnvVars,
 		IsTemplate:      &isTemplate,
-		IsDaemon:        &isDaemon,
+		IsDetached:      &isDetached,
+		IsDaemon:        &isDetached,
 		Template:        &template,
 		EntryPoint:      &entryPoint,
 		Command:         &command,
@@ -120,7 +121,8 @@ func getFullFeatureConfigFixture() []byte {
       workDir = "someDir/"        # define working directory
       removeContainer=true    # remove container after command has finished
       isInteractive=true      # enable interaction with the called command
-      isDaemon=true
+	  isDetached=true
+      isDaemon=true			  # deprecated
       uniqueNames=true
       network="some-docker-network"
       image="some-image:v1.02"
