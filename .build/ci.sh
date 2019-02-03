@@ -10,7 +10,7 @@ testImage="oppodelldog/droxy:latest"
 containerName="droxy-ci-${RANDOM}"
 containerDir="/go/src/github.com/Oppodelldog/droxy"
 
-#docker run --rm  --name ${containerName} -v"${APP_ROOT}":${containerDir} -w${containerDir} ${testImage} make test
+docker run --rm  --name ${containerName} -v"${APP_ROOT}":${containerDir} -w${containerDir} ${testImage} make test
 
 testImage="oppodelldog/docker-bats:latest"
 containerName="droxy-ci-functional-${RANDOM}"
