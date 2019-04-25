@@ -37,7 +37,7 @@ func (cl *configLoader) Load() *Configuration {
 	return cfg
 }
 
-func (cl *configLoader) createFileDiscovery() filediscovery.FileDiscovery {
+func (cl *configLoader) createFileDiscovery() filediscovery.FileDiscoverer {
 	return filediscovery.New(
 		[]filediscovery.FileLocationProvider{
 			filediscovery.WorkingDirProvider(),
