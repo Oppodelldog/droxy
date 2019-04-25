@@ -5,7 +5,8 @@ clone_folder: c:\gopath\src\github.com\Oppodelldog\droxy
 environment:
   GOPATH: c:\gopath
   DEPTESTBYPASS501: 1
-  GOVERSION: 1.11
+  GOVERSION: 1.12.4
+  GO111MODULE: on
 
 init:
   - git config --global core.autocrlf input
