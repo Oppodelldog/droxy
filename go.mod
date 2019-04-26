@@ -6,7 +6,7 @@ require (
 	github.com/BurntSushi/toml v0.3.0
 	github.com/Masterminds/semver v1.4.2
 	github.com/Microsoft/go-winio v0.4.11 // indirect
-	github.com/Oppodelldog/filediscovery v0.0.0-20180705182803-4da0ea434b80
+	github.com/Oppodelldog/filediscovery v0.3.0
 	github.com/davecgh/go-spew v1.1.0 // indirect
 	github.com/docker/distribution v2.6.2+incompatible // indirect
 	github.com/docker/docker v1.13.1

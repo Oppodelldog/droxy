@@ -6,8 +6,8 @@ github.com/Microsoft/go-winio v0.4.11 h1:zoIOcVf0xPN1tnMVbTtEdI+P8OofVk3NObnwOQ6
 github.com/Microsoft/go-winio v0.4.11/go.mod h1:VhR8bwka0BXejwEJY73c50VrPtXAaKcyvVC4A4RozmA=
 github.com/Oppodelldog/envsubst v0.0.0-20180915092829-73c8b7a36b56 h1:dYFMLe9QEAy9X0APltD5Cf42ix/qTiJbe1chhqy60tY=
 github.com/Oppodelldog/envsubst v0.0.0-20180915092829-73c8b7a36b56/go.mod h1:bkZbnc/2vh1M12Ecn7EYScpI4YGYU0etwLJICOWi8Z0=
-github.com/Oppodelldog/filediscovery v0.0.0-20180705182803-4da0ea434b80 h1:JSArwgcT32SKL+o9bR/i87FxYC8A2NTDBMeNwhkPiHo=
-github.com/Oppodelldog/filediscovery v0.0.0-20180705182803-4da0ea434b80/go.mod h1:TJAgt07YKW5dFKA7+tP+TouJbCwvwyLdVMXPrxS0VnE=
+github.com/Oppodelldog/filediscovery v0.3.0 h1:oYbASl7s5M5PauThblMgZpB/FVNJb85Z6megMDmWpOE=
+github.com/Oppodelldog/filediscovery v0.3.0/go.mod h1:W/ChJxck0x9Nj4RbASyM5my8dZXZNRtsHlC8cnssLH4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/docker/distribution v2.6.2+incompatible h1:4FI6af79dfCS/CYb+RRtkSHw3q1L/bnDjG1PcPZtQhM=
