@@ -2,10 +2,10 @@ package logging
 
 import (
 	"bytes"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"testing"
 
-	"github.com/magiconair/properties/assert"
 	"github.com/sirupsen/logrus"
 )
 
@@ -23,7 +23,7 @@ func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 		panic(err)
 	}
 
-	assert.Equal(t, string(bufferContent), "HELLO WORLD")
+	assert.Equal(t, "HELLO WORLD", string(bufferContent))
 }
 
 func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
@@ -43,7 +43,7 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 		panic(err)
 	}
 
-	assert.Equal(t, string(bufferContent), "logPrefix:HELLO WORLD")
+	assert.Equal(t, "logPrefix:HELLO WORLD", string(bufferContent))
 }
 
 func getLoggetStub() *logrus.Logger {
