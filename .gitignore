@@ -6,6 +6,6 @@ vendor
 coverage.*
 .dist
 
-.venom-tests/droxy
-.venom-tests/droxy.log
-.venom-tests/outputs_test123
+.test/droxy
+.test/droxy.log
+.test/outputs_test123
