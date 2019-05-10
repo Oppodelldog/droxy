@@ -13,7 +13,7 @@ testcases:
       - script: droxy clones
         type: exec
         assertions:
-          - result.code ShouldEqual 01
+          - result.code ShouldEqual 0
       - script: ./outputs_test123
         type: exec
         assertions:
