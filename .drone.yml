@@ -10,7 +10,7 @@ pipeline:
       - make ci
       
   functional-tests:
-    image: oppodelldog/droxy:latest
+    image: oppodelldog/droxy:functional-tests
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     pull: true   
