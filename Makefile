@@ -1,4 +1,6 @@
 export GO111MODULE=on
+BINARY_NAME=droxy
+BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 
 setup: ## Install all the build and lint dependencies
 	wget -O- https://git.io/vp6lP | sh 
@@ -41,26 +43,25 @@ lint: ## Run all the linters
 		--deadline=10m \
 		./... | grep -v "mocks"
 
-
 ci: test-with-coverage codecov build ## Run all the tests and code checks
 
-functional-tests: ## Runs functional bats tests on built binary
-	cp .build/droxy .test/droxy
-	.test/test.sh
+functional-tests: build ## Runs functional bats tests on built binary
+	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
+	cd .test && ./run.sh
 
 codecov:
 	codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
 
 unsafe-build: ## build binary to .build folder without testing
-	rm -f ".build/droxy"
-	go build -o ".build/droxy" main.go
-	cd .droxy && ../.build/droxy clones -f
+	rm -f $(BINARY_FILE_PATH)
+	go build -o $(BINARY_FILE_PATH) main.go
+	cd .droxy && ../$(BINARY_FILE_PATH) clones -f
 
-build: test ## build binary to .build folder with testing
-	go build -o ".build/droxy" main.go
+build: ## build binary to .build folder 
+	go build -o $(BINARY_FILE_PATH) main.go
 
 install: build ## build with tests, then install to <gopath>/src
-	cp .build/droxy $$GOPATH/bin/droxy
+	cp $(BINARY_FILE_PATH) $$GOPATH/bin/$(BINARY_NAME)
 
 build-release: ## builds the checked out version into the .release/${tag} folder
 	.release/build.sh

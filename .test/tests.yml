@@ -1,0 +1,46 @@
+name: droxy functional tests
+testcases:
+  - name: executing command has exit code is 0
+    steps:
+      - script: droxy 
+        type: exec
+        assertions:
+          - result.code ShouldEqual 0
+
+  - name: subcommand clones creates a binary which outputs test123
+    steps:
+      - script: rm -f outputs_test123
+      - script: droxy clones
+        type: exec
+        assertions:
+          - result.code ShouldEqual 0
+      - script: ./outputs_test123
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual test123
+
+  - name: subcommand clones does not overwrite existing binaries
+    steps:
+      - script: rm -f outputs_test123
+      - script: touch outputs_test123
+      - script: droxy clones
+        type: exec
+        assertions:
+          - result.code ShouldEqual 0 
+      - type: readfile
+        path: outputs_test123
+        assertions:
+          - result.size.outputs_test123 ShouldEqual 0
+
+  - name: subcommand clones -f overwrites existing binaries
+    steps:
+      - script: rm -f outputs_test123
+      - script: touch outputs_test123
+      - script: droxy clones -f
+        type: exec
+        assertions:
+          - result.code ShouldEqual 0
+      - type: readfile
+        path: outputs_test123
+        assertions:
+          - result.size.outputs_test123 ShouldEqual {{.DROXY_FILE_SIZE}}                 

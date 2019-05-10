@@ -9,6 +9,7 @@ RUN go get -u github.com/golang/dep/cmd/dep && \
 RUN cd $GOPATH && wget -O- https://git.io/vp6lP | sh
 
 RUN wget -O codecov https://codecov.io/bash && chmod ugo+x codecov && cp codecov $GOPATH/bin/.
+RUN wget https://github.com/ovh/venom/releases/download/v0.25.0/venom.linux-amd64 && mv venom.linux-amd64 venom && chmod u+x venom && cp venom /usr/local/bin/venom
     
 RUN chmod -R a+rw $GOPATH/src
     
