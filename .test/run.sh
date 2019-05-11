@@ -2,7 +2,7 @@
 
 set -euxo pipefail
 
-export DROXY_FILE_SIZE=$( stat --printf="%s" droxy)
+export DROXY_FILE_SIZE=$(stat -c "%s" droxy)
 
 docker version
 env
