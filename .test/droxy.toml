@@ -2,7 +2,7 @@ Version="1"
 Logging=true
     [[command]]
       name = "build-container"
-      image = "oppodelldog/docker-bats:latest"
+      image = "oppodelldog/droxy:functional-tests"
       isTemplate = true
       removeContainer=true
 
@@ -12,3 +12,15 @@ Logging=true
         template = "build-container"
     	entryPoint = "echo"
     	command="test123"
+    	
+    # test impersonation
+    [[command]]
+    	name = "full-feature"
+        template = "build-container"
+    	entryPoint = "sh"
+    	
+        impersonate=true
+        isinteractive=true
+        volumes = ["${PWD}:/test-dir"]
+        workDir = "/test-dir"
+        envvars = ["TESTVAR=${DROXY_TEST_VAR}"]

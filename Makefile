@@ -45,7 +45,7 @@ lint: ## Run all the linters
 
 ci: test-with-coverage codecov build ## Run all the tests and code checks
 
-functional-tests: build ## Runs functional bats tests on built binary
+functional-tests: build ## Runs functional tests on built binary
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
 	cd .test && ./run.sh
 
@@ -58,7 +58,7 @@ unsafe-build: ## build binary to .build folder without testing
 	cd .droxy && ../$(BINARY_FILE_PATH) clones -f
 
 build: ## build binary to .build folder 
-	go build -o $(BINARY_FILE_PATH) main.go
+	CGO_ENABLED=0 go build -o $(BINARY_FILE_PATH) main.go
 
 install: build ## build with tests, then install to <gopath>/src
 	cp $(BINARY_FILE_PATH) $$GOPATH/bin/$(BINARY_NAME)

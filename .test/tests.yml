@@ -2,7 +2,7 @@ name: droxy functional tests
 testcases:
   - name: executing command has exit code is 0
     steps:
-      - script: ./droxy 
+      - script: ./droxy
         type: exec
         assertions:
           - result.code ShouldEqual 0
@@ -26,7 +26,7 @@ testcases:
       - script: ./droxy clones
         type: exec
         assertions:
-          - result.code ShouldEqual 0 
+          - result.code ShouldEqual 0
       - type: readfile
         path: outputs_test123
         assertions:
@@ -43,4 +43,37 @@ testcases:
       - type: readfile
         path: outputs_test123
         assertions:
-          - result.size.outputs_test123 ShouldEqual {{.DROXY_FILE_SIZE}}                 
+          - result.size.outputs_test123 ShouldEqual {{.DROXY_FILE_SIZE}}
+
+  - name: full feature test
+    steps:
+      # test impersonate = true
+      - script: ./full-feature -c "id -u"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual {{.DROXY_UID}}
+      - script: ./full-feature -c "id -g"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual {{.DROXY_GID}}
+          
+      # test workdir = "/test-dir"
+      - script: ./full-feature -c "pwd"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual "/test-dir"
+
+      # test volumes = ["${PWD}:/test-dir"]           
+      - script: ./full-feature -c "ls tests.yml | wc -l"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual 1
+
+      # envvars = ["TESTVAR=${DROXY_TEST_VAR}"]
+      - script: ./full-feature -c "env | grep TESTVAR | cut -c 9-"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual "{{.DROXY_TEST_VAR}}"
+            
+
+          
