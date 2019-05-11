@@ -4,9 +4,9 @@
 docker run \
     --rm \
     -it \
-    -e "DROXY_MOUNT_DIR=${PWD}/.test" \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v "${PWD}":/go/src/github.com/Oppodelldog/droxy \
-    -w /go/src/github.com/Oppodelldog/droxy/.test \
-    --entrypoint ./run.sh \
-    oppodelldog/droxy:functional-tests 
+    -w /go/src/github.com/Oppodelldog/droxy \
+    --entrypoint make \
+    oppodelldog/droxy:functional-tests \
+    functional-tests 

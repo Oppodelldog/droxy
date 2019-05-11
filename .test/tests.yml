@@ -63,8 +63,9 @@ testcases:
         assertions:
           - result.systemout ShouldEqual "/test-dir"
 
-      # test volumes = ["${PWD}:/test-dir"]           
-      - script: ./full-feature -c "ls tests.yml | wc -l"
+      # test volumes = ["${PWD}:/test-dir"]
+      - script: touch /tmp/some-file
+      - script: ./full-feature -c "ls some-file | wc -l"
         type: exec
         assertions:
           - result.systemout ShouldEqual 1
