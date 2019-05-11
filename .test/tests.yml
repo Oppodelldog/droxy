@@ -2,7 +2,7 @@ name: droxy functional tests
 testcases:
   - name: executing command has exit code is 0
     steps:
-      - script: droxy 
+      - script: ./droxy 
         type: exec
         assertions:
           - result.code ShouldEqual 0
@@ -10,7 +10,7 @@ testcases:
   - name: subcommand clones creates a binary which outputs test123
     steps:
       - script: rm -f outputs_test123
-      - script: droxy clones
+      - script: ./droxy clones
         type: exec
         assertions:
           - result.code ShouldEqual 0
@@ -23,7 +23,7 @@ testcases:
     steps:
       - script: rm -f outputs_test123
       - script: touch outputs_test123
-      - script: droxy clones
+      - script: ./droxy clones
         type: exec
         assertions:
           - result.code ShouldEqual 0 
@@ -36,7 +36,7 @@ testcases:
     steps:
       - script: rm -f outputs_test123
       - script: touch outputs_test123
-      - script: droxy clones -f
+      - script: ./droxy clones -f
         type: exec
         assertions:
           - result.code ShouldEqual 0
