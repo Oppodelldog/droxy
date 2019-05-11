@@ -47,7 +47,7 @@ ci: test-with-coverage codecov build ## Run all the tests and code checks
 
 functional-tests: build ## Runs functional tests on built binary
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
-	cd .test && ./run.sh
+	cd .test && DROXY_MOUNT_DIR=${PWD}/.test ./run.sh
 
 codecov:
 	codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89

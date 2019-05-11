@@ -21,6 +21,6 @@ Logging=true
     	
         impersonate=true
         isinteractive=true
-        volumes = ["${PWD}:/test-dir"]
+        volumes = ["${DROXY_MOUNT_DIR}:/test-dir"]
         workDir = "/test-dir"
         envvars = ["TESTVAR=${DROXY_TEST_VAR}"]
