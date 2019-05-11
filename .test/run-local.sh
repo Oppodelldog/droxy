@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-# run functional tests locally
-docker run \
-    --rm \
-    -it \
-    -v /var/run/docker.sock:/var/run/docker.sock \
-    -v "${PWD}":/go/src/github.com/Oppodelldog/droxy \
-    -w /go/src/github.com/Oppodelldog/droxy \
-    --entrypoint make \
-    oppodelldog/droxy:functional-tests \
-    functional-tests 
+set -euxo pipefail
+
+export DROXY_UID=$(id -u)
+export DROXY_GID=$(id -g)
+export DROXY_TEST_VAR="this tests variable substitution in config plus passing variables to the container"
+export DROXY_MOUNT_DIR="/tmp"
+
+docker version
+
+venom run tests.local.yml --env true --strict

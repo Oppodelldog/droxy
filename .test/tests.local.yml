@@ -1,0 +1,35 @@
+# these tests do not work well from unprepared containers, so currently only for local execution
+name: droxy functional tests for local execution 
+testcases:
+  - name: test impersonate = true
+    steps:
+      - script: ./full-feature -c "id -u"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual {{.DROXY_UID}}
+      - script: ./full-feature -c "id -g"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual {{.DROXY_GID}}
+
+  - name: test workdir = "/test-dir"
+    steps:  
+      - script: ./full-feature -c "pwd"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual "/test-dir"
+
+  - name: test volumes = ["${PWD}:/test-dir"]
+    steps:
+      - script: touch /tmp/some-file
+      - script: ./full-feature -c "ls some-file | wc -l"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual 1
+
+  - name: test envvars = ["TESTVAR=${DROXY_TEST_VAR}"]
+    steps:
+      - script: ./full-feature -c "env | grep TESTVAR | cut -c 9-"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual "{{.DROXY_TEST_VAR}}"

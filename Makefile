@@ -49,6 +49,13 @@ functional-tests: build ## Runs functional tests on built binary
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
 	cd .test && ./run.sh
 
+local-functional-tests:  ## Runs functional tests, that does not run on drone.io
+	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
+	cd .test && ./run-local.sh
+		
+all-functional-tests: functional-tests local-functional-tests ## Runs all functional tests
+	cd .test && ./run-local.sh
+	
 codecov:
 	codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
 
