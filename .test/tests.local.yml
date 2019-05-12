@@ -1,5 +1,5 @@
 # these tests do not work well from unprepared containers, so currently only for local execution
-name: droxy functional tests for local execution 
+name: droxy functional tests for local execution
 testcases:
   - name: test impersonate = true
     steps:
@@ -12,17 +12,26 @@ testcases:
         assertions:
           - result.systemout ShouldEqual {{.DROXY_GID}}
 
-  - name: test workdir = "/test-dir"
-    steps:  
+  - name: test workdir = "/tmp/droy-functional-tests/test-dir-host"
+    steps:
       - script: ./full-feature -c "pwd"
         type: exec
         assertions:
-          - result.systemout ShouldEqual "/test-dir"
+          - result.systemout ShouldEqual {{.DROXY_HOST_TEST_DIR}}
 
+  - name: test automatically mounting workdir = "/tmp/droxy-functional-tests/test-dir-host"
+    steps:
+      - script: mkdir -p {{.DROXY_HOST_TEST_DIR}}
+      - script: touch {{.DROXY_HOST_TEST_DIR}}/testfile
+      - script: DROXY_HOST_TEST_DIR={{.DROXY_HOST_TEST_DIR}} ./full-feature -c "ls testfile | wc -l"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual 1
+          
   - name: test volumes = ["${PWD}:/test-dir"]
     steps:
       - script: touch /tmp/some-file
-      - script: ./full-feature -c "ls some-file | wc -l"
+      - script: ./full-feature -c "ls /test-dir/some-file | wc -l"
         type: exec
         assertions:
           - result.systemout ShouldEqual 1
@@ -33,3 +42,5 @@ testcases:
         type: exec
         assertions:
           - result.systemout ShouldEqual "{{.DROXY_TEST_VAR}}"
+            
+                    

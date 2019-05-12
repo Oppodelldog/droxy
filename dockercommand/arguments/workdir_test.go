@@ -1,6 +1,7 @@
 package arguments
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -54,4 +55,48 @@ func TestBuildWorkDir_WorkDirIsNotSet(t *testing.T) {
 	BuildWorkDir(commandDef, builder)
 
 	assert.Empty(t, builder.Calls)
+}
+
+func TestBuildWorkDir_AutoMountIsTrue_AutomaticallyMountsVolumeIfHostDir(t *testing.T) {
+	hostDir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Did not expect os.Getwd() to return an error, but got: %v", err)
+	}
+
+	autoMountIsOn := true
+	commandDef := &config.CommandDefinition{
+		WorkDir:          &hostDir,
+		AutoMountWorkDir: &autoMountIsOn,
+	}
+
+	builder := &mocks.Builder{}
+
+	builder.On("SetWorkingDir", hostDir).Return(builder)
+	builder.On("AddVolumeMapping", fmt.Sprintf("%s:%s", hostDir, hostDir)).Return(builder)
+
+	BuildWorkDir(commandDef, builder)
+
+	builder.AssertExpectations(t)
+}
+
+func TestBuildWorkDir_AutoMountIsFalse_DoesNotMountWorkDir(t *testing.T) {
+	hostDir, err := os.Getwd()
+	if err != nil {
+		t.Fatalf("Did not expect os.Getwd() to return an error, but got: %v", err)
+	}
+
+	autoMountIsOff := false
+	commandDef := &config.CommandDefinition{
+		WorkDir:          &hostDir,
+		AutoMountWorkDir: &autoMountIsOff,
+	}
+
+	builder := &mocks.Builder{}
+
+	builder.On("SetWorkingDir", hostDir).Return(builder)
+	builder.AssertNotCalled(t, "AddVolumeMapping")
+
+	BuildWorkDir(commandDef, builder)
+
+	builder.AssertExpectations(t)
 }

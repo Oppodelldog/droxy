@@ -32,6 +32,7 @@ The following example contains all possible configuration options, you can leave
       addGroups = true        # add current systems groups  (linux only)
       impersonate = true      # use executing user and group for execution in the container (linux only)
       workDir = "/app"        # define working directory
+      autoMountWorkDir=true   # if true and workDir exists on host it will be added to volume mounts
       removeContainer=true    # remove container after command has finished
       isInteractive=true      # enable interaction with the called command
       isDetached=false        # starts the container in background

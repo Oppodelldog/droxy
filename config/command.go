@@ -2,31 +2,32 @@ package config
 
 // CommandDefinition gives public access to the fields by accessor functions
 type CommandDefinition struct {
-	RequireEnvVars  *bool
-	IsTemplate      *bool
-	Template        *string
-	EntryPoint      *string
-	Command         *string
-	Name            *string
-	UniqueNames     *bool
-	Image           *string
-	Network         *string
-	EnvFile         *string
-	IP              *string
-	IsInteractive   *bool
-	IsDetached      *bool
-	IsDaemon        *bool // deprecated
-	Volumes         *[]string
-	Links           *[]string
-	EnvVars         *[]string
-	Ports           *[]string
-	PortsFromParams *[]string
-	AddGroups       *bool
-	Impersonate     *bool
-	WorkDir         *string
-	RemoveContainer *bool
-	ReplaceArgs     *[][]string
-	AdditionalArgs  *[]string
+	RequireEnvVars   *bool
+	IsTemplate       *bool
+	Template         *string
+	EntryPoint       *string
+	Command          *string
+	Name             *string
+	UniqueNames      *bool
+	Image            *string
+	Network          *string
+	EnvFile          *string
+	IP               *string
+	IsInteractive    *bool
+	IsDetached       *bool
+	IsDaemon         *bool // deprecated
+	Volumes          *[]string
+	Links            *[]string
+	EnvVars          *[]string
+	Ports            *[]string
+	PortsFromParams  *[]string
+	AddGroups        *bool
+	Impersonate      *bool
+	WorkDir          *string
+	AutoMountWorkDir *bool
+	RemoveContainer  *bool
+	ReplaceArgs      *[][]string
+	AdditionalArgs   *[]string
 }
 
 // GetRequireEnvVars returns value of RequireEnvVars and an boolean indicating if value is set.
@@ -150,6 +151,14 @@ func (c *CommandDefinition) GetWorkDir() (string, bool) {
 		return *c.WorkDir, true
 	}
 	return "", false
+}
+
+// GetAutoMountWorkDir returns value of AutoMountWorkDir and an boolean indicating if value is set.
+func (c *CommandDefinition) GetAutoMountWorkDir() (bool, bool) {
+	if c.AutoMountWorkDir != nil {
+		return *c.AutoMountWorkDir, true
+	}
+	return false, false
 }
 
 // GetRemoveContainer returns value of RemoveContainer and an boolean indicating if value is set.
