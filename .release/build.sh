@@ -22,11 +22,9 @@ else
 fi
 
 target_folder=".release"
-package="github.com/Oppodelldog/droxy"
+binary_name="droxy"
+package="github.com/Oppodelldog/${binary_name}"
 ldflags=-ldflags="-X github.com/Oppodelldog/droxy/version.Number=${tag}"
-
-package_split=("${package//\// }")
-package_name="${package_split[-1]}"
 
 platforms=("linux/amd64" "windows/amd64" "windows/386" "linux/arm/7")
 
@@ -42,7 +40,7 @@ do
     fi
 
     output_folder="${GOOS}-${GOARCH}${GOARM}"
-    output_name=${package_name}
+    output_name=${binary_name}
     if [ "${GOOS}" = "windows" ]; then
         output_name+='.exe'
     fi
