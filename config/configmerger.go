@@ -23,12 +23,12 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.IsDaemon = resolvePropertyBool(baseCommand.IsDaemon, overlayCommand.IsDaemon)
 	mergedCommand.UniqueNames = resolvePropertyBool(baseCommand.UniqueNames, overlayCommand.UniqueNames)
 
-	mergedCommand.Volumes = resolvePropertyStringArray(baseCommand.Volumes, overlayCommand.Volumes)
-	mergedCommand.Links = resolvePropertyStringArray(baseCommand.Links, overlayCommand.Links)
-	mergedCommand.EnvVars = resolvePropertyStringArray(baseCommand.EnvVars, overlayCommand.EnvVars)
-	mergedCommand.Ports = resolvePropertyStringArray(baseCommand.Ports, overlayCommand.Ports)
-	mergedCommand.PortsFromParams = resolvePropertyStringArray(baseCommand.PortsFromParams, overlayCommand.PortsFromParams)
-	mergedCommand.AdditionalArgs = resolvePropertyStringArray(baseCommand.AdditionalArgs, overlayCommand.AdditionalArgs)
+	mergedCommand.Volumes = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("Volumes"), baseCommand.Volumes, overlayCommand.Volumes)
+	mergedCommand.Links = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("Links"), baseCommand.Links, overlayCommand.Links)
+	mergedCommand.EnvVars = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("EnvVars"), baseCommand.EnvVars, overlayCommand.EnvVars)
+	mergedCommand.Ports = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("Ports"), baseCommand.Ports, overlayCommand.Ports)
+	mergedCommand.PortsFromParams = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("PortsFromParams"), baseCommand.PortsFromParams, overlayCommand.PortsFromParams)
+	mergedCommand.AdditionalArgs = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("AdditionalArgs"), baseCommand.AdditionalArgs, overlayCommand.AdditionalArgs)
 
 	mergedCommand.ReplaceArgs = resolvePropertyStringArray2D(baseCommand.ReplaceArgs, overlayCommand.ReplaceArgs)
 
@@ -68,7 +68,14 @@ func resolvePropertyString(sBase *string, sOverlay *string) *string {
 	return nil
 }
 
-func resolvePropertyStringArray(sBase *[]string, sOverlay *[]string) *[]string {
+func resolvePropertyStringArray(isMerged bool, sBase *[]string, sOverlay *[]string) *[]string {
+	if isMerged {
+		if sBase != nil && sOverlay != nil {
+			mergedArray := append(*sBase, *sOverlay...)
+			return &mergedArray
+		}
+	}
+
 	res := resolveProperty(sBase, sOverlay)
 	if v, ok := res.(*[]string); ok && v != nil {
 		c := *v

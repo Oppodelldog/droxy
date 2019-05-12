@@ -1,33 +1,36 @@
 package config
 
+import "strings"
+
 // CommandDefinition gives public access to the fields by accessor functions
 type CommandDefinition struct {
-	RequireEnvVars   *bool
-	IsTemplate       *bool
-	Template         *string
-	EntryPoint       *string
-	Command          *string
-	Name             *string
-	UniqueNames      *bool
-	Image            *string
-	Network          *string
-	EnvFile          *string
-	IP               *string
-	IsInteractive    *bool
-	IsDetached       *bool
-	IsDaemon         *bool // deprecated
-	Volumes          *[]string
-	Links            *[]string
-	EnvVars          *[]string
-	Ports            *[]string
-	PortsFromParams  *[]string
-	AddGroups        *bool
-	Impersonate      *bool
-	WorkDir          *string
-	AutoMountWorkDir *bool
-	RemoveContainer  *bool
-	ReplaceArgs      *[][]string
-	AdditionalArgs   *[]string
+	RequireEnvVars      *bool
+	IsTemplate          *bool
+	Template            *string
+	EntryPoint          *string
+	Command             *string
+	Name                *string
+	UniqueNames         *bool
+	Image               *string
+	Network             *string
+	EnvFile             *string
+	IP                  *string
+	IsInteractive       *bool
+	IsDetached          *bool
+	IsDaemon            *bool // deprecated
+	Volumes             *[]string
+	Links               *[]string
+	EnvVars             *[]string
+	Ports               *[]string
+	PortsFromParams     *[]string
+	MergeTemplateArrays *[]string
+	AddGroups           *bool
+	Impersonate         *bool
+	WorkDir             *string
+	AutoMountWorkDir    *bool
+	RemoveContainer     *bool
+	ReplaceArgs         *[][]string
+	AdditionalArgs      *[]string
 }
 
 // GetRequireEnvVars returns value of RequireEnvVars and an boolean indicating if value is set.
@@ -217,6 +220,14 @@ func (c *CommandDefinition) GetPortsFromParams() ([]string, bool) {
 	return []string{}, false
 }
 
+// GetMergeTemplateArrays returns value of MergeTemplateArrays and an boolean indicating if value is set.
+func (c *CommandDefinition) GetMergeTemplateArrays() ([]string, bool) {
+	if c.MergeTemplateArrays != nil {
+		return *c.MergeTemplateArrays, true
+	}
+	return []string{}, false
+}
+
 // GetReplaceArgs returns value of ReplaceArgs and an boolean indicating if value is set.
 func (c *CommandDefinition) GetReplaceArgs() ([][]string, bool) {
 	if c.ReplaceArgs != nil {
@@ -238,3 +249,15 @@ func (c *CommandDefinition) HasTemplate() bool { return c.Template != nil && *c.
 
 // HasName indicates if the command definition has Name
 func (c *CommandDefinition) HasName() bool { return c.Name != nil && *c.Name != "" }
+
+// IsTemplateArrayMerged returns true if the given identifier is part of MergeTemplateArrays.
+func (c *CommandDefinition) IsTemplateArrayMerged(arrayKeyName string) bool {
+	if identifiers, ok := c.GetMergeTemplateArrays(); ok {
+		for _, identifier := range identifiers {
+			if strings.ToLower(identifier) == strings.ToLower(arrayKeyName) {
+				return true
+			}
+		}
+	}
+	return false
+}

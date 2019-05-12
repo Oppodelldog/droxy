@@ -88,6 +88,17 @@ func checkCommandDefinitionGetters(t *testing.T, command CommandDefinition) {
 	}
 }
 
+func TestIsTemplateArrayMerged_configNotSet(t *testing.T) {
+	commandDef := CommandDefinition{}
+	assert.False(t, commandDef.IsTemplateArrayMerged("volumes"))
+}
+
+func TestIsTemplateArrayMerged_configIsSetSet(t *testing.T) {
+	arrayKeysToBeMerged := []string{"Volumes"}
+	commandDef := CommandDefinition{MergeTemplateArrays: &arrayKeysToBeMerged}
+	assert.True(t, commandDef.IsTemplateArrayMerged("volumes"))
+}
+
 func TestHasTemplate_configNotSet(t *testing.T) {
 	commandDef := CommandDefinition{}
 	assert.False(t, commandDef.HasTemplate())

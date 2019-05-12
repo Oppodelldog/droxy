@@ -35,6 +35,14 @@ testcases:
         type: exec
         assertions:
           - result.systemout ShouldEqual 1
+  
+  - name: test volumes = ["${PWD}:/test-dir-from-template"]
+    steps:
+      - script: touch /tmp/some-file
+      - script: ./full-feature -c "ls /test-dir-from-template/some-file | wc -l"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual 1            
 
   - name: test envvars = ["TESTVAR=${DROXY_TEST_VAR}"]
     steps:
