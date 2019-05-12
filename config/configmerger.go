@@ -23,12 +23,13 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.IsDaemon = resolvePropertyBool(baseCommand.IsDaemon, overlayCommand.IsDaemon)
 	mergedCommand.UniqueNames = resolvePropertyBool(baseCommand.UniqueNames, overlayCommand.UniqueNames)
 
-	mergedCommand.Volumes = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("Volumes"), baseCommand.Volumes, overlayCommand.Volumes)
-	mergedCommand.Links = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("Links"), baseCommand.Links, overlayCommand.Links)
-	mergedCommand.EnvVars = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("EnvVars"), baseCommand.EnvVars, overlayCommand.EnvVars)
-	mergedCommand.Ports = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("Ports"), baseCommand.Ports, overlayCommand.Ports)
-	mergedCommand.PortsFromParams = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("PortsFromParams"), baseCommand.PortsFromParams, overlayCommand.PortsFromParams)
-	mergedCommand.AdditionalArgs = resolvePropertyStringArray(overlayCommand.IsTemplateArrayMerged("AdditionalArgs"), baseCommand.AdditionalArgs, overlayCommand.AdditionalArgs)
+	mergedCommand.MergeTemplateArrays = resolvePropertyStringArray(false, baseCommand.MergeTemplateArrays, overlayCommand.MergeTemplateArrays)
+	mergedCommand.Volumes = resolvePropertyStringArray(mergedCommand.IsTemplateArrayMerged("Volumes"), baseCommand.Volumes, overlayCommand.Volumes)
+	mergedCommand.Links = resolvePropertyStringArray(mergedCommand.IsTemplateArrayMerged("Links"), baseCommand.Links, overlayCommand.Links)
+	mergedCommand.EnvVars = resolvePropertyStringArray(mergedCommand.IsTemplateArrayMerged("EnvVars"), baseCommand.EnvVars, overlayCommand.EnvVars)
+	mergedCommand.Ports = resolvePropertyStringArray(mergedCommand.IsTemplateArrayMerged("Ports"), baseCommand.Ports, overlayCommand.Ports)
+	mergedCommand.PortsFromParams = resolvePropertyStringArray(mergedCommand.IsTemplateArrayMerged("PortsFromParams"), baseCommand.PortsFromParams, overlayCommand.PortsFromParams)
+	mergedCommand.AdditionalArgs = resolvePropertyStringArray(mergedCommand.IsTemplateArrayMerged("AdditionalArgs"), baseCommand.AdditionalArgs, overlayCommand.AdditionalArgs)
 
 	mergedCommand.ReplaceArgs = resolvePropertyStringArray2D(baseCommand.ReplaceArgs, overlayCommand.ReplaceArgs)
 

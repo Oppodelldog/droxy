@@ -69,6 +69,7 @@ build: ## build binary to .build folder
 	go build -o $(BINARY_FILE_PATH) main.go
 
 install: build ## build with tests, then install to <gopath>/src
+	rm -f $$GOPATH/bin/$(BINARY_NAME)
 	cp $(BINARY_FILE_PATH) $$GOPATH/bin/$(BINARY_NAME)
 
 build-release: ## builds the checked out version into the .release/${tag} folder

@@ -38,7 +38,7 @@ The following example contains all possible configuration options, you can leave
       isDetached=false        # starts the container in background
       RequireEnvVars=false    # if true, not defined env vars that are configured will lead to an error
       uniqueNames=true
-
+      mergeTemplateArrays = ["Volumes"] # in command config this will merge Volumes instead of overwriting them
       # volume mappings
       volumes = [
           "${HOME}:${HOME}",
