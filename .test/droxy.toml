@@ -5,6 +5,7 @@ Logging=true
       image = "oppodelldog/droxy:functional-tests"
       isTemplate = true
       removeContainer=true
+      volumes = ["${DROXY_MOUNT_DIR}:/test-dir-from-template"]
 
     # test simple output
     [[command]]
@@ -22,6 +23,7 @@ Logging=true
         impersonate=true
         isinteractive=true
         volumes = ["${DROXY_MOUNT_DIR}:/test-dir"]
+        mergeTemplateArrays=["volumes"]
         workDir = "${DROXY_HOST_TEST_DIR}"
         AutoMountWorkDir=true
         envvars = ["TESTVAR=${DROXY_TEST_VAR}"]

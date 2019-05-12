@@ -65,32 +65,61 @@ func TestResolvePropertyBool_allParamsDefined_outputLatestParamValue(t *testing.
 }
 
 func TestResolvePropertyStringArray_nilInputs_nilOutput(t *testing.T) {
-	assert.Nil(t, resolvePropertyStringArray(nil, nil))
+	assert.Nil(t, resolvePropertyStringArray(false, nil, nil))
 }
 
 func TestResolvePropertyStringArray_parm1Defined_outputAddressIsDifferentToInput(t *testing.T) {
-	arr := []string{}
+	var arr []string
 	arrAddr := &arr
-	res := resolvePropertyStringArray(&arr, nil)
+	res := resolvePropertyStringArray(false, &arr, nil)
 
 	assert.True(t, arrAddr != res)
 }
 
 func TestResolvePropertyStringArray_parm2Defined_outputAddressIsDifferentToInput(t *testing.T) {
-	arr := []string{}
+	var arr []string
 	arrAddr := &arr
-	res := resolvePropertyStringArray(nil, &arr)
+	res := resolvePropertyStringArray(false, nil, &arr)
 
 	assert.True(t, arrAddr != res)
 }
 
 func TestResolvePropertyStringArray_allParamsDefined_outputLatestParamValue(t *testing.T) {
-	arr1 := []string{}
-	arr2 := []string{}
+	var arr1 []string
+	var arr2 []string
 
-	res := resolvePropertyStringArray(&arr1, &arr2)
+	res := resolvePropertyStringArray(false, &arr1, &arr2)
 
 	assert.Equal(t, arr2, *res)
+}
+
+func TestResolvePropertyStringArray_mergeIsTrue_nilInputs_nilOutput(t *testing.T) {
+	assert.Nil(t, resolvePropertyStringArray(true, nil, nil))
+}
+
+func TestResolvePropertyStringArray_mergeIsTrue_parm1Defined_outputAddressIsDifferentToInput(t *testing.T) {
+	var arr []string
+	arrAddr := &arr
+	res := resolvePropertyStringArray(true, &arr, nil)
+
+	assert.True(t, arrAddr != res)
+}
+
+func TestResolvePropertyStringArray_mergeIsTrue_parm2Defined_outputAddressIsDifferentToInput(t *testing.T) {
+	var arr []string
+	arrAddr := &arr
+	res := resolvePropertyStringArray(true, nil, &arr)
+
+	assert.True(t, arrAddr != res)
+}
+
+func TestResolvePropertyStringArray_mergeIsTrue_allParamsDefined_outputLatestParamValue(t *testing.T) {
+	arr1 := []string{"A"}
+	arr2 := []string{"B"}
+
+	res := resolvePropertyStringArray(true, &arr1, &arr2)
+
+	assert.Equal(t, append(arr1, arr2...), *res)
 }
 
 func TestResolvePropertyStringArray2D_nilInputs_nilOutput(t *testing.T) {
@@ -98,7 +127,7 @@ func TestResolvePropertyStringArray2D_nilInputs_nilOutput(t *testing.T) {
 }
 
 func TestResolvePropertyStringArray2D_parm1Defined_outputAddressIsDifferentToInput(t *testing.T) {
-	arr := [][]string{}
+	var arr [][]string
 	arrAddr := &arr
 	res := resolvePropertyStringArray2D(&arr, nil)
 
@@ -106,7 +135,7 @@ func TestResolvePropertyStringArray2D_parm1Defined_outputAddressIsDifferentToInp
 }
 
 func TestResolvePropertyStringArray2D_parm2Defined_outputAddressIsDifferentToInput(t *testing.T) {
-	arr := [][]string{}
+	var arr [][]string
 	arrAddr := &arr
 	res := resolvePropertyStringArray2D(nil, &arr)
 
@@ -114,8 +143,8 @@ func TestResolvePropertyStringArray2D_parm2Defined_outputAddressIsDifferentToInp
 }
 
 func TestResolvePropertyStringArray2D_allParamsDefined_outputLatestParamValue(t *testing.T) {
-	arr1 := [][]string{}
-	arr2 := [][]string{}
+	var arr1 [][]string
+	var arr2 [][]string
 
 	res := resolvePropertyStringArray2D(&arr1, &arr2)
 
