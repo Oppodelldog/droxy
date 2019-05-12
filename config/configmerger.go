@@ -10,6 +10,7 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 	mergedCommand.Command = resolvePropertyString(baseCommand.Command, overlayCommand.Command)
 	mergedCommand.Image = resolvePropertyString(baseCommand.Image, overlayCommand.Image)
 	mergedCommand.WorkDir = resolvePropertyString(baseCommand.WorkDir, overlayCommand.WorkDir)
+	mergedCommand.AutoMountWorkDir = resolvePropertyBool(baseCommand.AutoMountWorkDir, overlayCommand.AutoMountWorkDir)
 	mergedCommand.Network = resolvePropertyString(baseCommand.Network, overlayCommand.Network)
 	mergedCommand.EnvFile = resolvePropertyString(baseCommand.EnvFile, overlayCommand.EnvFile)
 	mergedCommand.IP = resolvePropertyString(baseCommand.IP, overlayCommand.IP)

@@ -49,7 +49,7 @@ functional-tests: build ## Runs functional tests on built binary
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
 	cd .test && ./run.sh
 
-local-functional-tests:  ## Runs functional tests, that does not run on drone.io
+local-functional-tests: build ## Runs functional tests, that does not run on drone.io
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
 	cd .test && ./run-local.sh
 		
@@ -64,8 +64,9 @@ unsafe-build: ## build binary to .build folder without testing
 	go build -o $(BINARY_FILE_PATH) main.go
 	cd .droxy && ../$(BINARY_FILE_PATH) clones -f
 
-build: ## build binary to .build folder 
-	CGO_ENABLED=0 go build -o $(BINARY_FILE_PATH) main.go
+build: ## build binary to .build folder
+	rm -f $(BINARY_FILE_PATH) 
+	go build -o $(BINARY_FILE_PATH) main.go
 
 install: build ## build with tests, then install to <gopath>/src
 	cp $(BINARY_FILE_PATH) $$GOPATH/bin/$(BINARY_NAME)

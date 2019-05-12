@@ -1,6 +1,8 @@
 package dockercommand
 
 import (
+	"fmt"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -36,9 +38,11 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	expectedArgsFromTestCall := strings.Join(os.Args[1:], " ")
 	commandString := strings.Join(cmd.Args, " ")
 
+	expectedHostDirMount := fmt.Sprintf("%s:%s", getTestHostDir(), getTestHostDir())
+
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w someDir/ -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w " + getTestHostDir() + " -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -v " + expectedHostDirMount + " --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w " + getTestHostDir() + " -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -v " + expectedHostDirMount + " --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
@@ -150,7 +154,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 	addGroups := false   // disabled because of different values on build than on local...
 	impersonate := false // disabled because of different values on build than on local...
 	removeContainer := true
-	workDir := "someDir/"
+	workDir := getTestHostDir()
 	volumes := []string{
 		"${VOLUME_ENV_VAR}:${VOLUME_ENV_VAR}",
 		"/etc/passwd:/etc/passwd:ro",
@@ -211,6 +215,18 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 	}
 }
 
+func getTestHostDir() string {
+	hostDir, err := os.Getwd()
+	if err != nil {
+		panic(fmt.Sprintf("Did not expect os.Getwd() to return an error, but got: %v", err))
+	}
+	absoluteHostPath, err := filepath.Abs(hostDir)
+	if err != nil {
+		panic(fmt.Sprintf("could not get absolute path of the tests working dir: %v", err))
+	}
+	return absoluteHostPath
+}
+
 func getFullFeatureDef(commandName string) config.CommandDefinition {
 	isTemplate := true
 	isDetached := false
@@ -226,7 +242,8 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 	addGroups := false   // disabled because of different values on build than on local...
 	impersonate := false // disabled because of different values on build than on local...
 	removeContainer := true
-	workDir := "someDir/"
+	workDir := getTestHostDir()
+	autoMountWorkDir := true
 	volumes := []string{
 		"${VOLUME_ENV_VAR}:${VOLUME_ENV_VAR}",
 		"/etc/passwd:/etc/passwd:ro",
@@ -262,29 +279,30 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 	}
 
 	return config.CommandDefinition{
-		IsTemplate:      &isTemplate,
-		IsDetached:      &isDetached,
-		IsDaemon:        &isDetached,
-		Template:        &template,
-		EntryPoint:      &entryPoint,
-		Command:         &command,
-		Name:            &name,
-		Image:           &image,
-		Network:         &network,
-		EnvFile:         &envFile,
-		IP:              &ip,
-		IsInteractive:   &isInteractive,
-		AddGroups:       &addGroups,
-		Impersonate:     &impersonate,
-		RemoveContainer: &removeContainer,
-		WorkDir:         &workDir,
-		Volumes:         &volumes,
-		Links:           &links,
-		EnvVars:         &envVars,
-		Ports:           &ports,
-		PortsFromParams: &portsFromParams,
-		ReplaceArgs:     &replaceArgs,
-		AdditionalArgs:  &additionalArgs,
+		IsTemplate:       &isTemplate,
+		IsDetached:       &isDetached,
+		IsDaemon:         &isDetached,
+		Template:         &template,
+		EntryPoint:       &entryPoint,
+		Command:          &command,
+		Name:             &name,
+		Image:            &image,
+		Network:          &network,
+		EnvFile:          &envFile,
+		IP:               &ip,
+		IsInteractive:    &isInteractive,
+		AddGroups:        &addGroups,
+		Impersonate:      &impersonate,
+		RemoveContainer:  &removeContainer,
+		WorkDir:          &workDir,
+		AutoMountWorkDir: &autoMountWorkDir,
+		Volumes:          &volumes,
+		Links:            &links,
+		EnvVars:          &envVars,
+		Ports:            &ports,
+		PortsFromParams:  &portsFromParams,
+		ReplaceArgs:      &replaceArgs,
+		AdditionalArgs:   &additionalArgs,
 	}
 }
 
