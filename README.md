@@ -6,9 +6,11 @@
 ![DROXY](droxy.png)
 
 ## Getting started
-**Download**  
-To get started you either download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).  
-If you would like to build the tool from source code, read the contribution part of this document.  
+If you have go installed on your machine simply get it.
+**go get**
+```go get github.com/Oppodelldog/droxy```
+
+Otherwise download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).  
 
 **Wiki**  
 Take a look at the wiki examples to learn how to setup up custom commands  
