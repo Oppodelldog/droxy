@@ -9,3 +9,6 @@ coverage.*
 .test/droxy
 .test/droxy.log
 .test/outputs_test123
+.build
+.test
+droxy.log
