@@ -1,4 +1,8 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/droxy)](https://goreportcard.com/report/github.com/Oppodelldog/droxy) [![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/droxy/master/LICENSE) [![Linux build](http://nulldog.de:12080/api/badges/Oppodelldog/droxy/status.svg)](http://nulldog.de:12080/Oppodelldog/droxy) [![Windows build](https://ci.appveyor.com/api/projects/status/qpe2889fbk1bw7lf/branch/master?svg=true)](https://ci.appveyor.com/project/Oppodelldog/droxy/branch/master) [![codecov](https://codecov.io/gh/Oppodelldog/droxy/branch/master/graph/badge.svg)](https://codecov.io/gh/Oppodelldog/droxy)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/droxy)](https://goreportcard.com/report/github.com/Oppodelldog/droxy)
+[![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/droxy/master/LICENSE)
+[![Linux Build](http://nulldog.de:12080/api/badges/Oppodelldog/droxy/status.svg)](http://nulldog.de:12080/Oppodelldog/droxy)
+[![Windows build](https://ci.appveyor.com/api/projects/status/qpe2889fbk1bw7lf/branch/master?svg=true)](https://ci.appveyor.com/project/Oppodelldog/droxy/branch/master)
+[![codecov](https://codecov.io/gh/Oppodelldog/droxy/branch/master/graph/badge.svg)](https://codecov.io/gh/Oppodelldog/droxy)
 # Droxy
 > create commands that proxy to docker
   
