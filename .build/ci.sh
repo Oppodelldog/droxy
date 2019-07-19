@@ -14,5 +14,5 @@ docker run --rm  --name ${containerName} -v"${APP_ROOT}":${containerDir} -w${con
 
 testImage="oppodelldog/docker-bats:latest"
 containerName="droxy-ci-functional-${RANDOM}"
-docker run --rm  --name ${containerName} -v"/var/run/docker.sock:/var/run/docker.sock" -v"${APP_ROOT}:${containerDir}" -w${containerDir} ${testImage} .test/run-tests.sh
+docker run --rm  --name ${containerName} -v"/var/run/docker.sock:/var/run/docker.sock" -v"${APP_ROOT}:${containerDir}" -w${containerDir} ${testImage} make functional-tests
 
