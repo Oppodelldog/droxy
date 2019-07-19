@@ -2,13 +2,8 @@ FROM golang:1.12.4
 
 WORKDIR /go/src/github.com/Oppodelldog/droxy
 
-RUN go get -u github.com/golang/dep/cmd/dep && \
-	go get -u golang.org/x/tools/cmd/goimports
-
-# gometalinter
-RUN cd $GOPATH && wget -O- https://git.io/vp6lP | sh
-
+RUN curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s -- -b $GOPATH/bin v1.17.1
 RUN wget -O codecov https://codecov.io/bash && chmod ugo+x codecov && cp codecov $GOPATH/bin/.
-    
+
 RUN chmod -R a+rw $GOPATH/src
     
