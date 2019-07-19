@@ -2,9 +2,10 @@ package arguments
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
-	"os"
 )
 
 // BuildWorkDir sets the working directory inside the container

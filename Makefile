@@ -2,10 +2,14 @@ export GO111MODULE=on
 BINARY_NAME=droxy
 BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 
-setup: ## Install all the build and lint dependencies
-	wget -O- https://git.io/vp6lP | sh 
-	go get -u golang.org/x/tools/cmd/goimports
+setup: ## Install tools
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s v1.17.1
+	mkdir .bin && mv bin/golangci-lint .bin/golangci-lint && rm -rf bin
 
+lint: ## Run all the linters
+	golangci-lint help linters
+	golangci-lint run --enable=goimports --enable=gofmt --enable=gocyclo --enable=nakedret --enable=scopelint --enable=stylecheck
+	
 test-with-coverage: ## Run all the tests
 	rm -f coverage.tmp && rm -f coverage.txt
 	echo 'mode: atomic' > coverage.txt && go list ./... | xargs -n1 -I{} sh -c 'go test -race -covermode=atomic -coverprofile=coverage.tmp {} && tail -n +2 coverage.tmp >> coverage.txt' && rm coverage.tmp
@@ -20,28 +24,6 @@ cover: test ## Run all the tests and opens the coverage report
 
 fmt: ## gofmt and goimports all go files
 	find . -name '*.go' -not -wholename './vendor/*' | while read -r file; do gofmt -w -s "$$file"; goimports -w "$$file"; done
-
-lint: ## Run all the linters
-	gometalinter --vendor --disable-all \
-		--enable=deadcode \
-		--enable=gocyclo \
-		--enable=ineffassign \
-		--enable=gosimple \
-		--enable=staticcheck \
-		--enable=gofmt \
-		--enable=golint \
-		--enable=goimports \
-		--enable=dupl \
-		--enable=misspell \
-		--enable=errcheck \
-		--enable=vet \
-		--enable=vetshadow \
-		--enable=varcheck \
-		--enable=structcheck \
-		--enable=interfacer \
-		--enable=goconst \
-		--deadline=10m \
-		./... | grep -v "mocks"
 
 ci: test-with-coverage codecov build ## Run all the tests and code checks
 

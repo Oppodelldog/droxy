@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"testing"
+
 	"github.com/Oppodelldog/droxy/cmd/mocks"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 func Test_fileCreationSubCommandWrapper_createCommand(t *testing.T) {

@@ -2,9 +2,10 @@ package logging
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"github.com/sirupsen/logrus"
 )

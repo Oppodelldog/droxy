@@ -10,5 +10,6 @@ coverage.*
 .test/droxy.log
 .test/outputs_test123
 .build
+.bin
 .test
 droxy.log
