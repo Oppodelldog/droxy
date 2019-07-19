@@ -12,15 +12,12 @@ require (
 	github.com/docker/go-connections v0.4.0 // indirect
 	github.com/docker/go-units v0.3.3 // indirect
 	github.com/drone/envsubst v0.0.0-20180915092829-73c8b7a36b56
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/pkg/errors v0.8.0
-	github.com/sirupsen/logrus v1.4.1
-	github.com/spf13/cobra v0.0.2
-	github.com/spf13/pflag v1.0.0 // indirect
+	github.com/pkg/errors v0.8.1
+	github.com/sirupsen/logrus v1.4.2
+	github.com/spf13/cobra v0.0.5
 	github.com/stevvooe/resumable v0.0.0-20180830230917-22b14a53ba50 // indirect
 	github.com/stretchr/testify v1.3.0
 	golang.org/x/net v0.0.0-20181005035420-146acd28ed58 // indirect
-	golang.org/x/sys v0.0.0-20180909124046-d0be0721c37e // indirect
 )
 
 replace github.com/drone/envsubst => github.com/Oppodelldog/envsubst v0.0.0-20180915092829-73c8b7a36b56
