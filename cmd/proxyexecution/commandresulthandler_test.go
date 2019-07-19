@@ -28,7 +28,7 @@ func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.
 	logrus.SetOutput(ioutil.Discard)
 	commandResultHandler := NewCommandResultHandler()
 
-	cmd := exec.Command("ping", "blackhole")
+	cmd := exec.Command("ping", "blackHole")
 	err := cmd.Run()
 
 	exitCode := commandResultHandler.HandleCommandResult(cmd, err)
@@ -40,7 +40,7 @@ func TestCommandResultHandler_HandleCommandResult_ExtCodeError(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
 	commandResultHandler := NewCommandResultHandler()
 
-	cmd := exec.Command("horstname")
+	cmd := exec.Command("horstName")
 	err := cmd.Run()
 
 	exitCode := commandResultHandler.HandleCommandResult(cmd, err)

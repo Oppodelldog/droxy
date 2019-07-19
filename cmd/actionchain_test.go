@@ -108,7 +108,7 @@ func Test_actionChain_execute(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			noArgs := []string{}
+			var noArgs []string
 			if got := tt.chain.execute(noArgs); got != tt.want {
 				t.Errorf("actionChain.execute() = %v, want %v", got, tt.want)
 			}

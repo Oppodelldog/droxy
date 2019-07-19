@@ -17,7 +17,10 @@ func TestBuildImage_ImageDefined(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("SetImageName", imageName).Return(builder)
 
-	BuildImage(commandDef, builder)
+	err := BuildImage(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildImage to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -26,7 +29,10 @@ func TestBuildImage_NoImageNameDefined(t *testing.T) {
 	commandDef := &config.CommandDefinition{Image: nil}
 	builder := &mocks.Builder{}
 
-	BuildImage(commandDef, builder)
+	err := BuildImage(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildImage to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

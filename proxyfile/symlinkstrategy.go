@@ -11,7 +11,7 @@ func NewSymlinkStrategy() FileCreationStrategy {
 	}
 }
 
-//SymlinkStrategy contains the implementation of creating a symlink to droxy execuable
+//SymlinkStrategy contains the implementation of creating a symlink to droxy executable
 type SymlinkStrategy struct {
 	symlinkFunction symlinkFunctionDef
 }

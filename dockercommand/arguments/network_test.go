@@ -17,7 +17,10 @@ func TestBuildNetwork_NetworkIsTrue(t *testing.T) {
 
 	builder.On("SetNetwork", network).Return(builder)
 
-	BuildNetwork(commandDef, builder)
+	err := BuildNetwork(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildNetwork to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -26,7 +29,10 @@ func TestBuildNetwork_NetworkIsFalse(t *testing.T) {
 	commandDef := &config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
-	BuildNetwork(commandDef, builder)
+	err := BuildNetwork(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildNetwork to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

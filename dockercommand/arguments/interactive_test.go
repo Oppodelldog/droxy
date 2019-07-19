@@ -18,7 +18,10 @@ func TestBuildInteractiveFlag_InteractiveIsTrue(t *testing.T) {
 
 	builder.On("AddArgument", "-i").Return(builder)
 
-	BuildInteractiveFlag(commandDef, builder)
+	err := BuildInteractiveFlag(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildInteractiveFlag to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -30,7 +33,10 @@ func TestBuildInteractiveFlag_InteractiveIsFalse(t *testing.T) {
 	}
 	builder := &mocks.Builder{}
 
-	BuildInteractiveFlag(commandDef, builder)
+	err := BuildInteractiveFlag(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildInteractiveFlag to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

@@ -21,7 +21,3 @@ func TestGetExecutablePath(t *testing.T) {
 
 	assert.Equal(t, filepath.Dir(ex), executablePath)
 }
-
-func TestGetExecutableFilePath_smoketest(t *testing.T) {
-	getExecutableFilePath()
-}

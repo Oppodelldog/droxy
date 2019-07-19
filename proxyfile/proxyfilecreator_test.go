@@ -54,7 +54,10 @@ func TestCreator_CreateProxyFiles(t *testing.T) {
 		getExecutableFilePathFunc: func() (string, error) { return commandBinaryFilePathStub, nil },
 	}
 
-	creator.CreateProxyFiles(false)
+	err := creator.CreateProxyFiles(false)
+	if err != nil {
+		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
+	}
 
 	expectedCommandFilename := *configLoaderMock.stubbedConfig.Command[0].Name
 
@@ -74,7 +77,10 @@ func TestCreator_CreateProxyFiles_commandHasNoName_noFileWillBeCreated(t *testin
 		getExecutableFilePathFunc: func() (string, error) { return "", nil },
 	}
 
-	creator.CreateProxyFiles(false)
+	err := creator.CreateProxyFiles(false)
+	if err != nil {
+		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
+	}
 
 	assert.Equal(t, 0, fileCreatorMock.calls)
 }
@@ -93,7 +99,10 @@ func TestCreator_CreateProxyFiles_commandIsTemplate_noFileWillBeCreated(t *testi
 		getExecutableFilePathFunc: func() (string, error) { return "", nil },
 	}
 
-	creator.CreateProxyFiles(false)
+	err := creator.CreateProxyFiles(false)
+	if err != nil {
+		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
+	}
 
 	assert.Equal(t, 0, fileCreatorMock.calls)
 }
@@ -118,12 +127,18 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
 	}
 
-	creator.CreateProxyFiles(false)
+	err = creator.CreateProxyFiles(false)
+	if err != nil {
+		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
+	}
 
 	_, err = os.Stat(fileThatShouldNotBeDeleted)
 	assert.Nil(t, err, "Expect no error, since file should not have been deleted")
 
-	os.Remove(fileThatShouldNotBeDeleted)
+	err = os.Remove(fileThatShouldNotBeDeleted)
+	if err != nil {
+		t.Fatalf("Did not expect os.Remove to return an error, but got: %v", err)
+	}
 }
 
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingFileWillBeReplaced(t *testing.T) {
@@ -146,7 +161,10 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingF
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
 	}
 
-	creator.CreateProxyFiles(true)
+	err = creator.CreateProxyFiles(true)
+	if err != nil {
+		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
+	}
 
 	_, err = os.Stat(fileThatShouldBeDeleted)
 	assert.Error(t, err, "Expect error, since file should be deleted")

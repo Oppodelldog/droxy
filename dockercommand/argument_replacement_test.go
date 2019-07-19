@@ -45,9 +45,9 @@ func TestPrepareArguments_WithInvalidArgumentLength_ExpectWarning(t *testing.T) 
 	arguments := []string{"arg2"}
 	prepareCommandLineArguments(commandDef, arguments)
 
-	recordedLogEntires, err := ioutil.ReadAll(logRecorderBuffer)
+	recordedLogEntries, err := ioutil.ReadAll(logRecorderBuffer)
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.ReadAll to return an error, but got: %v", err)
 	}
-	assert.Contains(t, string(recordedLogEntires), "invalid argument replacement mapping '[arg2]'. Replacement mapping must consist of 2 array entries.")
+	assert.Contains(t, string(recordedLogEntries), "invalid argument replacement mapping '[arg2]'. Replacement mapping must consist of 2 array entries.")
 }

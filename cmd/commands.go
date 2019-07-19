@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// newRoot returns a new cobra command, which contains help display and subcommands
+// newRoot returns a new cobra command, which contains help display and sub-commands
 func newRoot() *cobra.Command {
 
 	rootCmd := &cobra.Command{

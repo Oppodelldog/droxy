@@ -19,7 +19,10 @@ func TestBuildPorts_portsDefined(t *testing.T) {
 
 	builder.On("AddPortMapping", ports[0]).Return(builder)
 
-	BuildPorts(commandDef, builder)
+	err := BuildPorts(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPorts to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -31,14 +34,23 @@ func TestBuildPorts_portsNotDefined(t *testing.T) {
 
 	builder := &mocks.Builder{}
 
-	BuildPorts(commandDef, builder)
+	err := BuildPorts(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPorts to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }
 
 func TestBuildPorts_portsWithEnvVarsDefined_ExpectEnvVarsTobeResolved(t *testing.T) {
-	os.Setenv("HOST_PORT", "0815")
-	os.Setenv("CONTAINER_PORT", "4711")
+	err := os.Setenv("HOST_PORT", "0815")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
+	err = os.Setenv("CONTAINER_PORT", "4711")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
 
 	ports := []string{"${HOST_PORT}:${CONTAINER_PORT}"}
 	commandDef := &config.CommandDefinition{
@@ -48,10 +60,19 @@ func TestBuildPorts_portsWithEnvVarsDefined_ExpectEnvVarsTobeResolved(t *testing
 	builder := &mocks.Builder{}
 	builder.On("AddPortMapping", "0815:4711").Return(builder)
 
-	BuildPorts(commandDef, builder)
+	err = BuildPorts(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPorts to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 
-	os.Unsetenv("HOST_PORT")
-	os.Unsetenv("CONTAINER_PORT")
+	err = os.Unsetenv("HOST_PORT")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
+	err = os.Unsetenv("CONTAINER_PORT")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
 }

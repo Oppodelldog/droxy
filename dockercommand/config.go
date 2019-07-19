@@ -83,7 +83,7 @@ func (cb *commandBuilder) buildRunCommand(commandDef *config.CommandDefinition) 
 
 	commandBuilder.AddCmdArguments(args)
 
-	err := cb.buildRunArgumentsFromFuncs(commandDef, commandBuilder)
+	err := cb.buildRunArgumentsFromFunctions(commandDef, commandBuilder)
 	if err != nil {
 		return nil, err
 	}
@@ -105,7 +105,7 @@ func (cb *commandBuilder) buildExecCommand(commandDef *config.CommandDefinition)
 
 	commandBuilder.AddCmdArguments(args)
 
-	err := cb.buildExecArgumentsFromFuncs(commandDef, commandBuilder)
+	err := cb.buildExecArgumentsFromFunctions(commandDef, commandBuilder)
 	if err != nil {
 		return nil, err
 	}
@@ -140,8 +140,8 @@ func (cb *commandBuilder) buildRunArgumentsFromBuilders(commandDef *config.Comma
 	return nil
 }
 
-func (cb *commandBuilder) buildRunArgumentsFromFuncs(commandDef *config.CommandDefinition, builder builder.Builder) error {
-	argumentBuilderFuncs := []argumentBuilderDef{
+func (cb *commandBuilder) buildRunArgumentsFromFunctions(commandDef *config.CommandDefinition, builder builder.Builder) error {
+	argumentBuilderFunctions := []argumentBuilderDef{
 		arguments.AttachStreams,
 		arguments.BuildTerminalContext,
 		arguments.BuildEntryPoint,
@@ -163,7 +163,7 @@ func (cb *commandBuilder) buildRunArgumentsFromFuncs(commandDef *config.CommandD
 		arguments.BuildWorkDir,
 	}
 
-	for _, argumentBuilderFunc := range argumentBuilderFuncs {
+	for _, argumentBuilderFunc := range argumentBuilderFunctions {
 		err := argumentBuilderFunc(commandDef, builder)
 		if err != nil {
 			return err
@@ -173,8 +173,8 @@ func (cb *commandBuilder) buildRunArgumentsFromFuncs(commandDef *config.CommandD
 	return nil
 }
 
-func (cb *commandBuilder) buildExecArgumentsFromFuncs(commandDef *config.CommandDefinition, builder builder.Builder) error {
-	argumentBuilderFuncs := []argumentBuilderDef{
+func (cb *commandBuilder) buildExecArgumentsFromFunctions(commandDef *config.CommandDefinition, builder builder.Builder) error {
+	argumentBuilderFunctions := []argumentBuilderDef{
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
 		arguments.BuildDetachedFlag,
@@ -185,7 +185,7 @@ func (cb *commandBuilder) buildExecArgumentsFromFuncs(commandDef *config.Command
 		arguments.BuildCommand,
 	}
 
-	for _, argumentBuilderFunc := range argumentBuilderFuncs {
+	for _, argumentBuilderFunc := range argumentBuilderFunctions {
 		err := argumentBuilderFunc(commandDef, builder)
 		if err != nil {
 			return err

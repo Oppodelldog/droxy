@@ -18,7 +18,10 @@ func TestBuildIsDaemonFlag_InteractiveIsTrue(t *testing.T) {
 
 	builder.On("AddArgument", "-d").Return(builder)
 
-	BuildDetachedFlag(commandDef, builder)
+	err := BuildDetachedFlag(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildDetachedFlag to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -30,7 +33,10 @@ func TestBuildIsDaemonFlag_InteractiveIsFalse(t *testing.T) {
 	}
 	builder := &mocks.Builder{}
 
-	BuildDetachedFlag(commandDef, builder)
+	err := BuildDetachedFlag(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildDetachedFlag to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }
@@ -46,7 +52,10 @@ func TestBuildIsDaemonFlag_InteractiveIsTrue_deprecatedIsDaemon(t *testing.T) {
 
 	builder.On("AddArgument", "-d").Return(builder)
 
-	BuildDetachedFlag(commandDef, builder)
+	err := BuildDetachedFlag(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildDetachedFlag to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -59,7 +68,10 @@ func TestBuildIsDaemonFlag_InteractiveIsFalse_deprecatedIsDaemon(t *testing.T) {
 	}
 	builder := &mocks.Builder{}
 
-	BuildDetachedFlag(commandDef, builder)
+	err := BuildDetachedFlag(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildDetachedFlag to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

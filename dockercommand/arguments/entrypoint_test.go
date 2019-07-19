@@ -18,7 +18,10 @@ func TestBuildEntryPoint_EntryPointDefined(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("SetEntryPoint", entryPoint).Return(builder)
 
-	BuildEntryPoint(commandDef, builder)
+	err := BuildEntryPoint(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildEntryPoint to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -27,7 +30,10 @@ func TestBuildEntryPoint_NoEntryPointDefined(t *testing.T) {
 	commandDef := &config.CommandDefinition{Command: nil}
 	builder := &mocks.Builder{}
 
-	BuildEntryPoint(commandDef, builder)
+	err := BuildEntryPoint(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildEntryPoint to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

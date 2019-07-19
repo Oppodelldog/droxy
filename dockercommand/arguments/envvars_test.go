@@ -13,12 +13,24 @@ import (
 func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.T) {
 	val1 := "VALUE1"
 	val2 := "VALUE2"
-	os.Setenv("ENV_VAR_1", val1)
-	os.Setenv("ENV_VAR_2", val2)
+	err := os.Setenv("ENV_VAR_1", val1)
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
+	err = os.Setenv("ENV_VAR_2", val2)
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
 
 	defer func() {
-		os.Unsetenv("ENV_VAR_1")
-		os.Unsetenv("ENV_VAR_2")
+		err := os.Unsetenv("ENV_VAR_1")
+		if err != nil {
+			t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+		}
+		err = os.Unsetenv("ENV_VAR_2")
+		if err != nil {
+			t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+		}
 	}()
 
 	envVars := &[]string{
@@ -46,7 +58,10 @@ func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.
 				EnvVars:        envVars,
 			}
 
-			BuildEnvVars(commandDef, builder)
+			err := BuildEnvVars(commandDef, builder)
+			if err != nil {
+				t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
+			}
 		})
 	}
 }
@@ -65,7 +80,10 @@ func TestBuildEnvVars_EnvVarsNotRequired_EnvVarDefinedButCannotResolve_ResolvesE
 	emptyString := ""
 	builder.On("AddEnvVar", emptyString).Times(1).Return(builder)
 
-	BuildEnvVars(commandDef, builder)
+	err := BuildEnvVars(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
+	}
 }
 
 func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *testing.T) {
@@ -83,7 +101,10 @@ func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *tes
 		builder := &mocks.Builder{}
 		builder.On("AddEnvVar", val1).Return(builder)
 
-		BuildEnvVars(commandDef, builder)
+		err := BuildEnvVars(commandDef, builder)
+		if err != nil {
+			t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
+		}
 	})
 }
 
@@ -92,14 +113,20 @@ func TestBuildEnvVars_NoEnvVarsDefines(t *testing.T) {
 		EnvVars: nil,
 	}
 	builder := &mocks.Builder{}
-	BuildEnvVars(commandDef, builder)
+	err := BuildEnvVars(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }
 
 func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *testing.T) {
 	val1 := "VALUE1"
-	os.Setenv("ENV_VAR_1", val1)
+	err := os.Setenv("ENV_VAR_1", val1)
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
 
 	envVarsConfig := &[]string{
 		"${ENV_VAR_1",
@@ -116,7 +143,10 @@ func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *test
 
 func TestBuildEnvVars_UnderScoreDashVarName(t *testing.T) {
 	val1 := "true"
-	os.Setenv("_MY_BELOVED_IDE_PARAMETER_MAKING_it-hard", val1)
+	err := os.Setenv("_MY_BELOVED_IDE_PARAMETER_MAKING_it-hard", val1)
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
 
 	envVarsConfig := &[]string{
 		"${_MY_BELOVED_IDE_PARAMETER_MAKING_it-hard}",
@@ -127,7 +157,10 @@ func TestBuildEnvVars_UnderScoreDashVarName(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("AddEnvVar", val1).Return(builder)
 
-	BuildEnvVars(commandDef, builder)
+	err = BuildEnvVars(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }

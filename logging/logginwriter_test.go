@@ -13,11 +13,14 @@ import (
 func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 	loggerStub := getLoggetStub()
 
-	bytesBuffer := []byte{}
+	var bytesBuffer []byte
 	target := bytes.NewBuffer(bytesBuffer)
 	loggingWriter := NewLoggingWriter(target, loggerStub, "logprefix")
 
-	loggingWriter.Write([]byte("HELLO WORLD"))
+	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
+	if err != nil {
+		t.Fatalf("Did not expect loggingWriter.Write to return an error, but got: %v", err)
+	}
 
 	bufferContent, err := ioutil.ReadAll(target)
 	if err != nil {
@@ -30,14 +33,17 @@ func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 	logger := logrus.StandardLogger()
 	logger.Formatter = &testFormatter{}
-	bytesBuffer := []byte{}
+	var bytesBuffer []byte
 	outpoutBuffer := bytes.NewBuffer(bytesBuffer)
 	logger.Out = outpoutBuffer
 
 	targetStub := ioutil.Discard
 	loggingWriter := NewLoggingWriter(targetStub, logger, "logPrefix")
 
-	loggingWriter.Write([]byte("HELLO WORLD"))
+	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
+	if err != nil {
+		t.Fatalf("Did not expect loggingWriter.Write to return an error, but got: %v", err)
+	}
 
 	bufferContent, err := ioutil.ReadAll(outpoutBuffer)
 	if err != nil {

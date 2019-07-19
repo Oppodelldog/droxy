@@ -18,7 +18,10 @@ func TestBuildCommand_CommandDefined(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("SetCommand", command).Return(builder)
 
-	BuildCommand(commandDef, builder)
+	err := BuildCommand(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildCommand to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -27,7 +30,10 @@ func TestBuildCommand_NoCommandDefined(t *testing.T) {
 	commandDef := &config.CommandDefinition{Command: nil}
 	builder := &mocks.Builder{}
 
-	BuildCommand(commandDef, builder)
+	err := BuildCommand(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildCommand to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

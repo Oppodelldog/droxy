@@ -106,14 +106,14 @@ func (b *builder) AttachTo(stream string) Builder {
 	return b
 }
 
-// AddVolumeMapping adds a volulme mapping between the docker container and the host
+// AddVolumeMapping adds a volume mapping between the docker container and the host
 func (b *builder) AddVolumeMapping(volume string) Builder {
 
 	b.volumeMappings = append(b.volumeMappings, "-v", volume)
 	return b
 }
 
-// AddLinkMapping adds a volulme mapping between the docker container and the host
+// AddLinkMapping adds a volume mapping between the docker container and the host
 func (b *builder) AddLinkMapping(link string) Builder {
 
 	b.linkMappings = append(b.linkMappings, "--link", link)
@@ -121,7 +121,7 @@ func (b *builder) AddLinkMapping(link string) Builder {
 }
 
 // AddEnvVar adds an environment variable to the docker-container.
-// example: HOME=/home/myuser
+// example: HOME=/home/myUser
 func (b *builder) AddEnvVar(envVarDeclaration string) Builder {
 	b.envVarMappings = append(b.envVarMappings, "-e", envVarDeclaration)
 	return b

@@ -38,7 +38,10 @@ func TestBuildName_NameIsSet_AndNotUnique_ExpectAppropriateBuilderCall(t *testin
 		builder.On("SetContainerName", testCase.expectedContainerName).Return(builder)
 
 		nameBuilder := nameArgumentBuilder{nameRandomizerFunc: func(containerName string) string { return fmt.Sprintf("%s%v", containerName, randomNamePartStub) }}
-		nameBuilder.BuildArgument(commandDef, builder)
+		err := nameBuilder.BuildArgument(commandDef, builder)
+		if err != nil {
+			t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)
+		}
 
 		builder.AssertExpectations(t)
 	}
@@ -49,7 +52,10 @@ func TestBuildName_NameIsNotSet_AndNotUniqueNames(t *testing.T) {
 	builder := &mocks.Builder{}
 
 	nameBuilder := NewNameArgumentBuilder()
-	nameBuilder.BuildArgument(commandDef, builder)
+	err := nameBuilder.BuildArgument(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

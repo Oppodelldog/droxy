@@ -83,7 +83,7 @@ func Test_newSubCommandAction_isResponsible(t *testing.T) {
 	}{
 		{name: "no arguments", args: []string{}, want: false},
 		{name: "one arguments", args: []string{testCommandName}, want: false},
-		{name: "two arguments, but no subcommand", args: []string{testCommandName, "nonexistingsubcommand"}, want: false},
+		{name: "two arguments, but no subcommand", args: []string{testCommandName, "nonexistent"}, want: false},
 		{name: "three arguments, but no subcommand", args: []string{testCommandName}, want: false},
 		{name: "two arguments with subcommand", args: []string{testCommandName, "clones"}, want: true},
 		{name: "three arguments with subcommand", args: []string{testCommandName, "clones"}, want: true},
@@ -143,7 +143,7 @@ func Test_newDroxyCommandAction(t *testing.T) {
 	assert.True(t, newDroxyCommandAction().(*action).isResponsibleFunc(nil))
 }
 
-func Test_newDroxyCommandAction_defaultExecuiteFunc(t *testing.T) {
+func Test_newDroxyCommandAction_defaultExecuteFunc(t *testing.T) {
 
 	if reflect.ValueOf(newDroxyCommandAction().(*action).executeFunc).Pointer() != reflect.ValueOf(defaultExecuteFunc).Pointer() {
 		t.Fatal("expected newDroxyCommand to be configured with 'defaultExecuteFunc', but was not")

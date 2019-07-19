@@ -22,7 +22,10 @@ func TestBuildImpersonation_enabledByConfig_builderIsCalled(t *testing.T) {
 
 	builder.On("SetContainerUserAndGroup", usr.Uid, usr.Gid).Return(builder)
 
-	BuildImpersonation(commandDef, builder)
+	err = BuildImpersonation(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildImpersonation to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -37,7 +40,10 @@ func TestBuildImpersonation_disabledByConfig_builderIsNotCalled(t *testing.T) {
 		t.Fatalf("Did not expect to return an error, but got: %v", err)
 	}
 
-	BuildImpersonation(commandDef, builder)
+	err = BuildImpersonation(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildImpersonation to return an error, but got: %v", err)
+	}
 
 	builder.AssertNotCalled(t, "SetContainerUserAndGroup", mock.Anything, mock.Anything)
 }

@@ -39,7 +39,10 @@ func TestAddGroups_AddGroupsTrue_ExpectAllUsersGroupsAddedToBuilder(t *testing.T
 
 	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{userGroupIDs, nil}}
 
-	argumentBuilder.BuildArgument(commandDef, builder)
+	err := argumentBuilder.BuildArgument(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -65,7 +68,10 @@ func TestAddGroups_AddGroupsFalse_ExpectBuilderNotCalled(t *testing.T) {
 	builder := &mocks.Builder{}
 
 	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{}}
-	argumentBuilder.BuildArgument(commandDef, builder)
+	err := argumentBuilder.BuildArgument(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

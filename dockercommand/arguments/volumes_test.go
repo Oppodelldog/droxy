@@ -19,7 +19,10 @@ func TestBuildVolumes_VolumesAreSet(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("AddVolumeMapping", volumes[0]).Return(builder)
 
-	BuildVolumes(commandDef, builder)
+	err := BuildVolumes(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildVolumes to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -31,13 +34,20 @@ func TestBuildVolumes_VolumesAreNotSet(t *testing.T) {
 
 	builder := &mocks.Builder{}
 
-	BuildVolumes(commandDef, builder)
+	err := BuildVolumes(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildVolumes to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }
 
 func TestBuildVolumes_VolumesEnvVarsAreResolves(t *testing.T) {
-	os.Setenv("WHERE_THE_HECK_AM_I", "NO_CLUE")
+	err := os.Setenv("WHERE_THE_HECK_AM_I", "NO_CLUE")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
+
 	volumes := []string{"${WHERE_THE_HECK_AM_I}"}
 
 	commandDef := &config.CommandDefinition{
@@ -47,7 +57,10 @@ func TestBuildVolumes_VolumesEnvVarsAreResolves(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("AddVolumeMapping", "NO_CLUE").Return(builder)
 
-	BuildVolumes(commandDef, builder)
+	err = BuildVolumes(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildVolumes to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }

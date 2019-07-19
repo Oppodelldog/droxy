@@ -29,7 +29,12 @@ func TestFileCreation_AllStrategies(t *testing.T) {
 			if err != nil {
 				t.Fatalf("did not expect os.MkdirAll to return an error, but got: %v", err)
 			}
-			defer os.RemoveAll(testFolderPath)
+			defer func() {
+				err := os.RemoveAll(testFolderPath)
+				if err != nil {
+					t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
+				}
+			}()
 
 			src := path.Join(testFolderPath, "testFileSrc")
 

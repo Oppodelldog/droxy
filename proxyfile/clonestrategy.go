@@ -11,7 +11,7 @@ func NewClonesStrategy() FileCreationStrategy {
 	}
 }
 
-//ClonesStrategy contains the implementation of creating clones of droxy execuable
+//ClonesStrategy contains the implementation of creating clones of droxy executable
 type ClonesStrategy struct {
 	copyFileFunction copyFileFunctionDef
 }

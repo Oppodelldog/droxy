@@ -27,7 +27,10 @@ func TestBuildPortsFromParams_portsDefined_matchWithArgs(t *testing.T) {
 
 	builder.On("AddPortMapping", "78129:78129").Return(builder)
 
-	BuildPortsFromParams(commandDef, builder)
+	err := BuildPortsFromParams(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPortsFromParams to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -51,7 +54,10 @@ func TestBuildPortsFromParams_portsDefined_2matchesWithArgs(t *testing.T) {
 	builder.On("AddPortMapping", "78129:78129").Return(builder)
 	builder.On("AddPortMapping", "2938:2938").Return(builder)
 
-	BuildPortsFromParams(commandDef, builder)
+	err := BuildPortsFromParams(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPortsFromParams to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -71,7 +77,10 @@ func TestBuildPortsFromParams_portsDefined_noMatchWithArgs(t *testing.T) {
 
 	builder := &mocks.Builder{}
 
-	BuildPortsFromParams(commandDef, builder)
+	err := BuildPortsFromParams(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPortsFromParams to return an error, but got: %v", err)
+	}
 
 	builder.AssertNumberOfCalls(t, "AddPortMapping", 0)
 }
@@ -83,7 +92,10 @@ func TestBuildPortsFromParams_portsNotDefined(t *testing.T) {
 
 	builder := &mocks.Builder{}
 
-	BuildPortsFromParams(commandDef, builder)
+	err := BuildPortsFromParams(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildPortsFromParams to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

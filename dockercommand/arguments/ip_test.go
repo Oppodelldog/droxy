@@ -17,7 +17,10 @@ func TestBuildIpIp_IpIsSet(t *testing.T) {
 
 	builder.On("SetIP", Ip).Return(builder)
 
-	BuildIP(commandDef, builder)
+	err := BuildIP(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildIP to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -26,7 +29,10 @@ func TestBuildNetwork_IpIsNotSet(t *testing.T) {
 	commandDef := &config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
-	BuildIP(commandDef, builder)
+	err := BuildIP(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildIP to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }

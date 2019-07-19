@@ -14,7 +14,7 @@ const testFolder = "/tmp/droxy-tests"
 
 func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 
-	prepareTestFolder()
+	prepareTestFolder(t)
 	configFilePath := path.Join(testFolder, "droxy.toml")
 
 	cfg := &config.Configuration{}
@@ -30,7 +30,7 @@ func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 
 func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 
-	prepareTestFolder()
+	prepareTestFolder(t)
 	configFilePath := path.Join(testFolder, "droxy.toml")
 
 	cfg := &config.Configuration{}
@@ -65,8 +65,15 @@ func assertLogfile(t *testing.T, logfilePath string) {
 	assert.True(t, fileFound)
 }
 
-func prepareTestFolder() {
+func prepareTestFolder(t *testing.T) {
 
-	os.RemoveAll(testFolder)
-	os.MkdirAll(testFolder, 0755)
+	err := os.RemoveAll(testFolder)
+	if err != nil {
+		t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
+	}
+
+	err = os.MkdirAll(testFolder, 0755)
+	if err != nil {
+		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
+	}
 }

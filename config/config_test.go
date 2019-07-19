@@ -18,14 +18,20 @@ func TestNewLoader(t *testing.T) {
 func TestConfigLoader_Load(t *testing.T) {
 	testFilePath := createTestFile(t)
 
-	os.Setenv("DROXY_CONFIG", testFilePath)
+	err := os.Setenv("DROXY_CONFIG", testFilePath)
+	if err != nil {
+		t.Fatalf("Did not expect Setenv to return an error, but got: %v", err)
+	}
 
 	loader := NewLoader()
 	cfg := loader.Load()
 
 	assert.Equal(t, "0815", cfg.Version)
 
-	os.Unsetenv("DROXY_CONFIG")
+	err = os.Unsetenv("DROXY_CONFIG")
+	if err != nil {
+		t.Fatalf("Did not expect Unsetenv to return an error, but got: %v", err)
+	}
 
 	cleanupTestFile(t)
 }
@@ -56,7 +62,12 @@ func createTestFile(t *testing.T) string {
 	if err != nil {
 		t.Fatalf("Did not expect os.OpenFile to return an error, but got: %v", err)
 	}
-	defer tempFile.Close()
+	defer func() {
+		err := tempFile.Close()
+		if err != nil {
+			t.Fatalf("Did not expect  tempFile.Close() to return an error, but got: %v", err)
+		}
+	}()
 
 	cfg := Configuration{Version: "0815"}
 	tomlEncoder := toml.NewEncoder(tempFile)

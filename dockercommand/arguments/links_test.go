@@ -19,7 +19,10 @@ func TestBuildLinks_LinksAreSet(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("AddLinkMapping", Links[0]).Return(builder)
 
-	BuildLinks(commandDef, builder)
+	err := BuildLinks(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildLinks to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }
@@ -31,13 +34,19 @@ func TestBuildLinks_LinksAreNotSet(t *testing.T) {
 
 	builder := &mocks.Builder{}
 
-	BuildLinks(commandDef, builder)
+	err := BuildLinks(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildLinks to return an error, but got: %v", err)
+	}
 
 	assert.Empty(t, builder.Calls)
 }
 
 func TestBuildLinks_LinksEnvVarsAreResolves(t *testing.T) {
-	os.Setenv("WHERE_THE_HECK_AM_I", "NO_CLUE")
+	err := os.Setenv("WHERE_THE_HECK_AM_I", "NO_CLUE")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
 	Links := []string{"${WHERE_THE_HECK_AM_I}"}
 
 	commandDef := &config.CommandDefinition{
@@ -47,7 +56,10 @@ func TestBuildLinks_LinksEnvVarsAreResolves(t *testing.T) {
 	builder := &mocks.Builder{}
 	builder.On("AddLinkMapping", "NO_CLUE").Return(builder)
 
-	BuildLinks(commandDef, builder)
+	err = BuildLinks(commandDef, builder)
+	if err != nil {
+		t.Fatalf("Did not expect BuildLinks to return an error, but got: %v", err)
+	}
 
 	builder.AssertExpectations(t)
 }

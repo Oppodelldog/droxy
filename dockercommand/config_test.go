@@ -19,9 +19,18 @@ func TestBuildCommandFromConfig(t *testing.T) {
 
 	os.Args = append(os.Args, "--inspect-brk=78129")
 
-	os.Setenv("VOLUME_ENV_VAR", "volEnvVarStub")
-	os.Setenv("LINK_ENV_VAR", "linkEnvVarStub")
-	os.Setenv("ENV_VAR", "envVarStub")
+	err := os.Setenv("VOLUME_ENV_VAR", "volEnvVarStub")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
+	err = os.Setenv("LINK_ENV_VAR", "linkEnvVarStub")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
+	err = os.Setenv("ENV_VAR", "envVarStub")
+	if err != nil {
+		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
+	}
 
 	commandName := "some-command"
 	configuration := getFullFeatureConfig(commandName)
@@ -47,9 +56,18 @@ func TestBuildCommandFromConfig(t *testing.T) {
 
 	assert.Contains(t, expectedCommandStrings, commandString)
 
-	os.Unsetenv("VOLUME_ENV_VAR")
-	os.Unsetenv("LINK_ENV_VAR")
-	os.Unsetenv("ENV_VAR")
+	err = os.Unsetenv("VOLUME_ENV_VAR")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
+	err = os.Unsetenv("LINK_ENV_VAR")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
+	err = os.Unsetenv("ENV_VAR")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
 }
 
 func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *testing.T) {
@@ -83,9 +101,18 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 
 	assert.Contains(t, expectedCommandStrings, commandString)
 
-	os.Unsetenv("VOLUME_ENV_VAR")
-	os.Unsetenv("LINK_ENV_VAR")
-	os.Unsetenv("ENV_VAR")
+	err = os.Unsetenv("VOLUME_ENV_VAR")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
+	err = os.Unsetenv("LINK_ENV_VAR")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
+	err = os.Unsetenv("ENV_VAR")
+	if err != nil {
+		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
+	}
 }
 
 func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *testing.T) {

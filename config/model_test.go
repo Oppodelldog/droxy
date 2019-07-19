@@ -98,7 +98,7 @@ func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
 
 	templateName := "TEMPLATE-A"
 	isTemplate := true
-	templateNetwork := "templateNetwork-by-templte"
+	templateNetwork := "templateNetwork-by-template"
 	templateCommand := CommandDefinition{Name: &templateName, IsTemplate: &isTemplate, Network: &templateNetwork}
 
 	nameA := "COMMAND-A"
@@ -166,7 +166,7 @@ func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
 
 func TestConfiguration_SetConfigurationFilePath(t *testing.T) {
 	cfg := Configuration{}
-	somePath := "/tmp/configpath"
+	somePath := "/tmp/configPath"
 	cfg.SetConfigurationFilePath(somePath)
 
 	assert.Equal(t, somePath, cfg.configFilePath)
@@ -174,7 +174,7 @@ func TestConfiguration_SetConfigurationFilePath(t *testing.T) {
 
 func TestConfiguration_GetConfigurationFilePath(t *testing.T) {
 	cfg := Configuration{}
-	somePath := "/tmp/configpath"
+	somePath := "/tmp/configPath"
 	cfg.configFilePath = somePath
 	configPath := cfg.GetConfigurationFilePath()
 

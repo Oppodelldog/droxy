@@ -3,6 +3,7 @@ Version="1"
     [[command]]
       name = "build-container"
       image = "oppodelldog/droxy:latest"
+      #image = "droxytest"
       isTemplate = true
       addGroups = true
       impersonate = true
