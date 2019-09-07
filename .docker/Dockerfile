@@ -1,4 +1,4 @@
-FROM golang:1.12.4
+FROM golang:1.13.0
 
 WORKDIR /go/src/github.com/Oppodelldog/droxy
 
