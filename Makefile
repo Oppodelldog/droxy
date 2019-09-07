@@ -1,4 +1,3 @@
-export GO111MODULE=on
 BINARY_NAME=droxy
 BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 
