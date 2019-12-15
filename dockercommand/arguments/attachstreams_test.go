@@ -1,6 +1,7 @@
 package arguments
 
 import (
+	"github.com/stretchr/testify/mock"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/config"
@@ -39,11 +40,29 @@ func TestAttachStreams_inDetachedMode_notAttached(t *testing.T) {
 	err := AttachStreams(commandDef, builder)
 
 	assert.Nil(t, err)
-	builder.AssertNotCalled(t, "AttachTo")
+	builder.AssertNotCalled(t, "AttachTo", mock.Anything)
 }
 
-func TestAttachStreams_isInteractiveIsSetToFalse_notAttached(t *testing.T) {
+func TestAttachStreams_isInteractiveIsSetToFalse_attached(t *testing.T) {
 	isInteractive := true
+	builder := &mocks.Builder{}
+	commandDef := &config.CommandDefinition{
+		IsInteractive: &isInteractive,
+	}
+
+	builder.
+		On("AttachTo", "STDIN").Once().Return(builder).
+		On("AttachTo", "STDOUT").Once().Return(builder).
+		On("AttachTo", "STDERR").Once().Return(builder)
+
+	err := AttachStreams(commandDef, builder)
+
+	assert.Nil(t, err)
+	builder.AssertExpectations(t)
+}
+
+func TestAttachStreams_isNotInteractiveIsSetToFalse_notAttached(t *testing.T) {
+	isInteractive := false
 	builder := &mocks.Builder{}
 	commandDef := &config.CommandDefinition{
 		IsInteractive: &isInteractive,
@@ -57,5 +76,5 @@ func TestAttachStreams_isInteractiveIsSetToFalse_notAttached(t *testing.T) {
 	err := AttachStreams(commandDef, builder)
 
 	assert.Nil(t, err)
-	builder.AssertNotCalled(t, "AttachTo")
+	builder.AssertNotCalled(t, "AttachTo", mock.Anything)
 }
