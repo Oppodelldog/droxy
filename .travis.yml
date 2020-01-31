@@ -5,8 +5,6 @@ go:
 
 os:
   - linux
-  - windows
-  - osx
 
 env:
   global:
