@@ -2,13 +2,24 @@ language: go
 
 go:
   - 1.x
+  - master
 
 os:
   - linux
   - windows
   - osx
+
+env:
+  global:
+    - GO111MODULE=on
+    - GOFLAGS="-mod=readonly"
+
+cache:
+  directories:
+    - $HOME/.cache/go-build
+    - $HOME/gopath/pkg/mod  
     
 go_import_path: github.com/Oppodelldog/droxy
 
 script:
-  - make test-with-coverage 
+  - go test -race -covermode=atomic ./... 
