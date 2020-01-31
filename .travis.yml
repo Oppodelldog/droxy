@@ -2,7 +2,6 @@ language: go
 
 go:
   - 1.x
-  - master
 
 os:
   - linux
@@ -13,11 +12,6 @@ env:
   global:
     - GO111MODULE=on
     - GOFLAGS="-mod=readonly"
-
-cache:
-  directories:
-    - $HOME/.cache/go-build
-    - $HOME/gopath/pkg/mod  
     
 go_import_path: github.com/Oppodelldog/droxy
 
