@@ -5,6 +5,8 @@ go:
 
 os:
   - linux
+  - windows
+  - osx
     
 go_import_path: github.com/Oppodelldog/droxy
 
