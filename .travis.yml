@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - 1.x
+
+os:
+  - linux
+    
+go_import_path: github.com/Oppodelldog/droxy
+
+script:
+  - make test-with-coverage 
