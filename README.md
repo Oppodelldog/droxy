@@ -21,13 +21,11 @@ Take a look at the wiki examples to learn how to setup up custom commands
 
 
 ## Configuration
-In the config file, you define the commands you want to create.  
-The config file must be named ```droxy.toml```.  
+In ```droxy.toml``` you define the commands you want to create.   
 
-The following example contains all possible configuration options, you can leave out the most of them.  
+The following example contains all possible configuration options.
 
-> droxy.toml
-
+**droxy.toml:**  
 ```TOML
     Version="1"
 
@@ -107,9 +105,8 @@ To generate the command binaries, navigate next to droxy.toml file and execute
 By default ```droxy clones``` will not overwrite existing files.  
 If you update droxy and want to update your commands as well, add flag ```-f``` which will overwrite existing files.
 
-### creation options
-There are three ways to create commands, 
-* clones
+### creation alternatives
+Beside creating clones of droxy there are two other options the droxy-files can be created:
 * symlinks
 * hardlinks
 
@@ -124,7 +121,3 @@ There are three ways to create commands,
 ## Contribute
 Feature requests and pull requests are welcome.
 
-### How to
-
-Ensure your environment sets ```export GO111MODULE=on``` since this uses go modules.  
-On Linux or MacOS you might be interested in using **direnv**.
