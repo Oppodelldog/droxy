@@ -49,7 +49,11 @@ func (pfc *Creator) CreateProxyFiles(isForced bool) error {
 		if commandName, ok := command.GetName(); ok {
 
 			commandNameFileName := GetCommandNameFilename(commandName)
-			if _, err := os.Stat(commandNameFileName); err == nil {
+			if fileInfo, err := os.Stat(commandNameFileName); err == nil {
+				if fileInfo.IsDir() {
+					logrus.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
+					return nil
+				}
 				if isForced {
 					err := os.Remove(commandNameFileName)
 					if err != nil {

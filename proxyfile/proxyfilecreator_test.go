@@ -141,6 +141,35 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 	}
 }
 
+func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForced_folderWillNotBeDeleted(t *testing.T) {
+	prepareTest(t)
+
+	logrus.SetOutput(ioutil.Discard)
+
+	fileCreatorMock := &mockFileCreationStrategy{}
+	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
+	creator := &Creator{
+		creationStrategy:          fileCreatorMock,
+		configLoader:              configLoaderMock,
+		getExecutableFilePathFunc: func() (string, error) { return "", nil },
+	}
+
+	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
+	folderThatShalNotBeDeleted := commandNameStub
+	err := os.MkdirAll(folderThatShalNotBeDeleted, 0666)
+	if err != nil {
+		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
+	}
+
+	err = creator.CreateProxyFiles(true)
+	if err != nil {
+		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
+	}
+
+	_, err = os.Stat(folderThatShalNotBeDeleted)
+	assert.NoError(t, err, "Expect no error, since folder should not be deleted, but got: %v", err)
+}
+
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingFileWillBeReplaced(t *testing.T) {
 	prepareTest(t)
 
@@ -181,5 +210,10 @@ func prepareTest(t *testing.T) {
 	err = os.MkdirAll(testFolder, 0776)
 	if err != nil {
 		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
+	}
+
+	err = os.Chdir(testFolder)
+	if err != nil {
+		t.Fatalf("Did not expect os.Chdir to return an error, but got: %v", err)
 	}
 }
