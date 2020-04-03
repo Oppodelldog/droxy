@@ -24,6 +24,10 @@ func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect GetLogWriter to return an error, but got: %v", err)
 	}
+	err = writer.Close()
+	if err != nil {
+		t.Fatalf("Did not expect writer.Close() to return an error, but got: %v", err)
+	}
 
 	assert.Implements(t, new(io.WriteCloser), writer)
 }
@@ -36,9 +40,13 @@ func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 	cfg := &config.Configuration{}
 	cfg.SetConfigurationFilePath(configFilePath)
 
-	_, err := GetLogWriter(cfg)
+	writer, err := GetLogWriter(cfg)
 	if err != nil {
 		t.Fatalf("Did not expect GetLogWriter to return an error, but got: %v", err)
+	}
+	err = writer.Close()
+	if err != nil {
+		t.Fatalf("Did not expect writer.Close() to return an error, but got: %v", err)
 	}
 
 	assertLogfile(t, path.Join(testFolder, "droxy.log"))

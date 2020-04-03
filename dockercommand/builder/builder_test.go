@@ -79,3 +79,13 @@ cmdArg2`,
 	assert.Equal(t, cmd.Stdin, testReader)
 
 }
+
+func TestBuilder_DefaultOutput(t *testing.T) {
+	b := New()
+	cmd := b.Build()
+
+	commandString := strings.Join(cmd.Args, " ")
+	expectedCommandString := `docker run`
+
+	assert.Equal(t, expectedCommandString, commandString)
+}
