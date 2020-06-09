@@ -22,6 +22,10 @@ func TestLinkStrategies_configuresTheAppropriateSystemFunction(t *testing.T) {
 			linkCreator:      NewSymlinkStrategy(),
 			expectedFunction: os.Symlink,
 		},
+		"clones": {
+			linkCreator:      NewClonesStrategy().FsLinkCreator,
+			expectedFunction: copyFile,
+		},
 	}
 
 	for testName, testCase := range testCases {
@@ -68,36 +72,9 @@ func TestFsLinkCreator_returnsErrorIfSystemFunctionReturnsError(t *testing.T) {
 	assert.Equal(t, expectedError, err)
 }
 
-type linkMock struct {
-	arg1  string
-	arg2  string
-	calls int
-	err   error
-}
-
-func (m *linkMock) Call(p1, p2 string) error {
-	m.arg1 = p1
-	m.arg2 = p2
-	m.calls++
-
-	return m.err
-}
-
-func TestNewClonesStrategy_configuresTheAppropriateSystemFunction(t *testing.T) {
-	strategy := NewClonesStrategy()
-
-	strategyFunction := strategy.copyFileFunction
-	expectedFunction := copyFile
-
-	if reflect.ValueOf(expectedFunction).Pointer() != reflect.ValueOf(strategyFunction).Pointer() {
-		t.Fail()
-	}
-}
-
 func TestNewClonesStrategy_callsConfiguredSystemFunction(t *testing.T) {
 	mock := fileCreationFunctionMock{}
-	strategy := NewClonesStrategy()
-	strategy.copyFileFunction = mock.FileCreationFunc
+	strategy := ClonesStrategy{FsLinkCreator{strategy: mock.FileCreationFunc}}
 
 	expectedSrc := "A"
 	expectedDst := "B"
@@ -116,8 +93,7 @@ func TestNewClonesStrategy_returnsErrorIfSystemFunctionReturnsError(t *testing.T
 	expectedError := errors.New("error from configured system function")
 
 	mock := fileCreationFunctionMock{returnValue: expectedError}
-	strategy := NewClonesStrategy()
-	strategy.copyFileFunction = mock.FileCreationFunc
+	strategy := ClonesStrategy{FsLinkCreator{strategy: mock.FileCreationFunc}}
 
 	err := strategy.CreateProxyFile("A", "B")
 
@@ -129,4 +105,19 @@ func TestNewClonesStrategy_returnsNilIfFilePathsAreSame(t *testing.T) {
 	err := strategy.CreateProxyFile("A", "A")
 
 	assert.Nil(t, err)
+}
+
+type linkMock struct {
+	arg1  string
+	arg2  string
+	calls int
+	err   error
+}
+
+func (m *linkMock) Call(p1, p2 string) error {
+	m.arg1 = p1
+	m.arg2 = p2
+	m.calls++
+
+	return m.err
 }

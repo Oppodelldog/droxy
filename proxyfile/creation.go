@@ -30,16 +30,14 @@ func (c FsLinkCreator) CreateProxyFile(commandBinaryFilePath, commandNameFilePat
 // NewClonesStrategy creates a new FileCreationStrategy that produces clones of droxy command.
 func NewClonesStrategy() ClonesStrategy {
 	return ClonesStrategy{
-		copyFileFunction: copyFile,
+		FsLinkCreator: FsLinkCreator{strategy: copyFile},
 	}
 }
 
 //ClonesStrategy contains the implementation of creating clones of droxy executable.
 type ClonesStrategy struct {
-	copyFileFunction copyFileFunctionDef
+	FsLinkCreator
 }
-
-type copyFileFunctionDef func(string, string) error
 
 //CreateProxyFile creates a clone of the given commandBinaryFilePath to commandNameFilePath.
 func (s ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFilePath string) error {
@@ -50,5 +48,5 @@ func (s ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFilePa
 		return nil
 	}
 
-	return s.copyFileFunction(cleanSrc, cleanDst)
+	return s.strategy(cleanSrc, cleanDst)
 }
