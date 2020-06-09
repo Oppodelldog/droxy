@@ -2,13 +2,12 @@ BINARY_NAME=droxy
 BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 
 setup: ## Install tools
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s v1.17.1
-	mkdir .bin && mv bin/golangci-lint .bin/golangci-lint && rm -rf bin
+	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s v1.27.0
+	mkdir .bin || mv bin/golangci-lint .bin/golangci-lint && rm -rf bin
 
-lint: ## Run all the linters
-	golangci-lint help linters
-	golangci-lint run --enable=goimports --enable=gofmt --enable=gocyclo --enable=nakedret --enable=scopelint --enable=stylecheck
-	
+lint: ## Run the linters
+	golangci-lint run
+
 test-with-coverage: ## Run all the tests
 	rm -f coverage.tmp && rm -f coverage.txt
 	echo 'mode: atomic' > coverage.txt && go list ./... | xargs -n1 -I{} sh -c 'go test -race -covermode=atomic -coverprofile=coverage.tmp {} && tail -n +2 coverage.tmp >> coverage.txt' && rm coverage.tmp
