@@ -8,22 +8,15 @@ setup: ## Install tools
 lint: ## Run the linters
 	golangci-lint run
 
-test-with-coverage: ## Run all the tests
-	rm -f coverage.tmp && rm -f coverage.txt
-	echo 'mode: atomic' > coverage.txt && go list ./... | xargs -n1 -I{} sh -c 'go test -race -covermode=atomic -coverprofile=coverage.tmp {} && tail -n +2 coverage.tmp >> coverage.txt' && rm coverage.tmp
-
 test: ## Run all the tests
 	go version
 	go env
 	go list ./... | xargs -n1 -I{} sh -c 'go test -race {}'
 
-cover: test ## Run all the tests and opens the coverage report
-	go tool cover -html=coverage.txt
-
 fmt: ## gofmt and goimports all go files
 	find . -name '*.go' -not -wholename './vendor/*' | while read -r file; do gofmt -w -s "$$file"; goimports -w "$$file"; done
 
-ci: test-with-coverage codecov build lint ## Run all the tests and code checks
+ci: test build lint ## Run all the tests and code checks
 
 functional-tests: build ## Runs functional tests on built binary
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"
@@ -35,9 +28,6 @@ local-functional-tests: build ## Runs functional tests, that does not run on dro
 		
 all-functional-tests: functional-tests local-functional-tests ## Runs all functional tests
 	cd .test && ./run-local.sh
-	
-codecov:
-	codecov -t f064b312-d8a2-4f05-b5cd-f4df37dcfc89
 
 unsafe-build: ## build binary to .build folder without testing
 	rm -f $(BINARY_FILE_PATH)
