@@ -1,6 +1,7 @@
 package config
 
 import (
+	"io/ioutil"
 	"testing"
 
 	"os"
@@ -11,7 +12,7 @@ import (
 )
 
 func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
-	configBytes := getFullFeatureConfigFixture()
+	configBytes := getFullFeatureConfigFixture(t)
 
 	configuration, err := parseFromBytes(configBytes)
 	if err != nil {
@@ -26,6 +27,7 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 	assert.Equal(t, &expectedConfiguration, configuration)
 }
 
+//nolint:funlen
 func getFullFeatureCommandDefinition() CommandDefinition {
 	isTemplate := true
 	isDetached := true
@@ -108,69 +110,15 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	}
 }
 
-func getFullFeatureConfigFixture() []byte {
-	return []byte(`
-	Version="1"	
+func getFullFeatureConfigFixture(t *testing.T) []byte {
+	fullFeatureConfig := path.Join(getProjectDir(), "config/test/fullFeature.toml")
 
-    [[command]]
-      requireEnvVars=true
-      name = "some command"  # name of the command
-      isTemplate = true       # this command can be used as a template, no command will be created
-      addGroups = true        # add current systems groups
-      impersonate = true      # use executing user and group for execution in the container
-      workDir = "someDir/"        # define working directory
-      removeContainer=true    # remove container after command has finished
-      isInteractive=true      # enable interaction with the called command
-	  isDetached=true
-      isDaemon=true			  # deprecated
-      uniqueNames=true
-      network="some-docker-network"
-      image="some-image:v1.02"
-	  entryPoint="some-entryPoint"
-      command="some-cmd"
-      template="some template"
-      envFile=".env"	
-      ip="127.1.2.3"
+	b, err := ioutil.ReadFile(fullFeatureConfig)
+	if err != nil {
+		t.Fatalf("did not expect ReadFile to return an error, but got: %v", err)
+	}
 
-      # volume mappings
-      volumes = [
-          "${HOME}:${HOME}",
-          "${SSH_AUTH_SOCK}:/run/ssh.sock",
-          "/etc/passwd:/etc/passwd:ro",
-          "/etc/group:/etc/group:ro",
-          "/run/docker.sock:/run/docker.sock"
-      ]
-
-      # environment variable mappings
-      envvars = [
-          "HOME:${HOME}",
-          "SSH_AUTH_SOCK:/run/ssh.sock",
-          "DOCKER_HOST=unix:///run/docker.sock"
-      ]
-
-      links = [
-		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
-        "containerXY:aliasXY"
-      ]
-
-      ports = [
-          "8080:9080",
-	      "8081:9081",
-      ]
-
-	  portsFromParams = [
-	      "some regex where the group (\\d*) parses the port from",
-	  ]
-
-      replaceArgs = [
-      	[
-			"-dxdebug.remote_host=127.0.0.1",
-			"-dxdebug.remote_host=172.17.0.1"		
-	    ]
-      ]
-
-	  additionalArgs = ["additionalArgument=123"]
-`)
+	return b
 }
 
 func TestParseFromBytes_emptyConfig(t *testing.T) {
@@ -257,4 +205,9 @@ func TestParse_FileNotExists_Error(t *testing.T) {
 func TestParseBytes_InvalidInput_ExpectError(t *testing.T) {
 	_, err := parseFromBytes([]byte("SBSGUOPGBSUOsg"))
 	assert.Error(t, err)
+}
+
+func getProjectDir() string {
+	gp := os.Getenv("GOPATH")
+	return path.Join(gp, "src/github.com/Oppodelldog/droxy")
 }

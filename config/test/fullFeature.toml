@@ -1,0 +1,61 @@
+
+	Version="1"
+
+    [[command]]
+      requireEnvVars=true
+      name = "some command"  # name of the command
+      isTemplate = true       # this command can be used as a template, no command will be created
+      addGroups = true        # add current systems groups
+      impersonate = true      # use executing user and group for execution in the container
+      workDir = "someDir/"        # define working directory
+      removeContainer=true    # remove container after command has finished
+      isInteractive=true      # enable interaction with the called command
+	  isDetached=true
+      isDaemon=true			  # deprecated
+      uniqueNames=true
+      network="some-docker-network"
+      image="some-image:v1.02"
+	  entryPoint="some-entryPoint"
+      command="some-cmd"
+      template="some template"
+      envFile=".env"
+      ip="127.1.2.3"
+
+      # volume mappings
+      volumes = [
+          "${HOME}:${HOME}",
+          "${SSH_AUTH_SOCK}:/run/ssh.sock",
+          "/etc/passwd:/etc/passwd:ro",
+          "/etc/group:/etc/group:ro",
+          "/run/docker.sock:/run/docker.sock"
+      ]
+
+      # environment variable mappings
+      envvars = [
+          "HOME:${HOME}",
+          "SSH_AUTH_SOCK:/run/ssh.sock",
+          "DOCKER_HOST=unix:///run/docker.sock"
+      ]
+
+      links = [
+		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
+        "containerXY:aliasXY"
+      ]
+
+      ports = [
+          "8080:9080",
+	      "8081:9081",
+      ]
+
+	  portsFromParams = [
+	      "some regex where the group (\\d*) parses the port from",
+	  ]
+
+      replaceArgs = [
+      	[
+			"-dxdebug.remote_host=127.0.0.1",
+			"-dxdebug.remote_host=172.17.0.1"
+	    ]
+      ]
+
+	  additionalArgs = ["additionalArgument=123"]
