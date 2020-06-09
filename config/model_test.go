@@ -6,6 +6,116 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const commandNameA = "COMMAND-A"
+const commandNameX = "COMMAND-X"
+const commandNameC = "COMMAND-Z"
+
+func TestConfiguration_FindCommandByName(t *testing.T) {
+	nameA := commandNameA
+	commandA := CommandDefinition{Name: &nameA}
+	nameX := commandNameX
+	commandX := CommandDefinition{Name: &nameX}
+	nameZ := commandNameC
+	commandZ := CommandDefinition{Name: &nameZ}
+
+	cfg := Configuration{
+		Command: []CommandDefinition{
+			commandA,
+			commandX,
+			commandZ,
+		},
+	}
+
+	commandDef, err := cfg.FindCommandByName(commandNameX)
+	if err != nil {
+		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
+	}
+
+	assert.Equal(t, &commandX, commandDef)
+}
+
+func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {
+	nameA := commandNameA
+	commandA := CommandDefinition{Name: &nameA}
+
+	cfg := Configuration{
+		Command: []CommandDefinition{
+			commandA,
+		},
+	}
+
+	_, err := cfg.FindCommandByName(commandNameX)
+
+	assert.Error(t, err)
+}
+
+func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
+	templateName := "TEMPLATE-A"
+	isTemplate := true
+	templateNetwork := "templateNetwork-by-template"
+	templateCommand := CommandDefinition{Name: &templateName, IsTemplate: &isTemplate, Network: &templateNetwork}
+
+	nameA := commandNameA
+	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
+
+	cfg := Configuration{
+		Command: []CommandDefinition{
+			commandA,
+			templateCommand,
+		},
+	}
+
+	commandDef, err := cfg.FindCommandByName(commandNameX)
+	if err != nil {
+		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
+	}
+
+	assert.Equal(t, &templateNetwork, commandDef.Network)
+}
+
+func TestConfiguration_FindCommandByName_TemplateNotFoundError(t *testing.T) {
+	templateName := "yes-template-does-not-exist"
+	nameA := commandNameA
+	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
+
+	cfg := Configuration{
+		Command: []CommandDefinition{
+			commandA,
+		},
+	}
+
+	_, err := cfg.FindCommandByName(commandNameA)
+
+	assert.Error(t, err)
+}
+
+func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
+	template1Name := "template1"
+	template1EntryPoint := "template1EntryPoint"
+	template2Name := "template2"
+	template1 := CommandDefinition{Name: &template1Name, EntryPoint: &template1EntryPoint}
+	template2 := CommandDefinition{Name: &template2Name, Template: &template1Name}
+	nameA := commandNameA
+	commandA := CommandDefinition{Name: &nameA, Template: &template2Name}
+
+	cfg := Configuration{
+		Command: []CommandDefinition{
+			template1,
+			template2,
+			commandA,
+		},
+	}
+
+	cmd, err := cfg.FindCommandByName(commandNameA)
+	if err != nil {
+		t.Fatalf("Did not expect error from cfg.FindCommandByName, but got %v", err)
+	}
+
+	expectedEntryPoint := template1EntryPoint
+	cmdEntryPoint, _ := cmd.GetEntryPoint()
+	assert.Equal(t, expectedEntryPoint, cmdEntryPoint)
+}
+
 func Test_resolvePropertyStringArray2D_BaseSet_OverlayNotSet(t *testing.T) {
 	base := &[][]string{
 		{"a", "b"},
@@ -53,112 +163,6 @@ func Test_resolvePropertyStringArray2D_BaseAndOverlaySet(t *testing.T) {
 	}
 
 	assert.Equal(t, expectedResult, result)
-}
-
-func TestConfiguration_FindCommandByName(t *testing.T) {
-	nameA := "COMMAND-A"
-	commandA := CommandDefinition{Name: &nameA}
-	nameX := "COMMAND-X"
-	commandX := CommandDefinition{Name: &nameX}
-	nameZ := "COMMAND-Z"
-	commandZ := CommandDefinition{Name: &nameZ}
-
-	cfg := Configuration{
-		Command: []CommandDefinition{
-			commandA,
-			commandX,
-			commandZ,
-		},
-	}
-
-	commandDef, err := cfg.FindCommandByName("COMMAND-X")
-	if err != nil {
-		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
-	}
-
-	assert.Equal(t, &commandX, commandDef)
-}
-
-func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {
-	nameA := "COMMAND-A"
-	commandA := CommandDefinition{Name: &nameA}
-
-	cfg := Configuration{
-		Command: []CommandDefinition{
-			commandA,
-		},
-	}
-
-	_, err := cfg.FindCommandByName("COMMAND-X")
-
-	assert.Error(t, err)
-}
-
-func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
-	templateName := "TEMPLATE-A"
-	isTemplate := true
-	templateNetwork := "templateNetwork-by-template"
-	templateCommand := CommandDefinition{Name: &templateName, IsTemplate: &isTemplate, Network: &templateNetwork}
-
-	nameA := "COMMAND-A"
-	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
-
-	cfg := Configuration{
-		Command: []CommandDefinition{
-			commandA,
-			templateCommand,
-		},
-	}
-
-	commandDef, err := cfg.FindCommandByName("COMMAND-A")
-	if err != nil {
-		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
-	}
-
-	assert.Equal(t, &templateNetwork, commandDef.Network)
-}
-
-func TestConfiguration_FindCommandByName_TemplateNotFoundError(t *testing.T) {
-	templateName := "yes-template-does-not-exist"
-	nameA := "COMMAND-A"
-	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
-
-	cfg := Configuration{
-		Command: []CommandDefinition{
-			commandA,
-		},
-	}
-
-	_, err := cfg.FindCommandByName("COMMAND-A")
-
-	assert.Error(t, err)
-}
-
-func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
-	template1Name := "template1"
-	template1EntryPoint := "template1EntryPoint"
-	template2Name := "template2"
-	template1 := CommandDefinition{Name: &template1Name, EntryPoint: &template1EntryPoint}
-	template2 := CommandDefinition{Name: &template2Name, Template: &template1Name}
-	nameA := "COMMAND-A"
-	commandA := CommandDefinition{Name: &nameA, Template: &template2Name}
-
-	cfg := Configuration{
-		Command: []CommandDefinition{
-			template1,
-			template2,
-			commandA,
-		},
-	}
-
-	cmd, err := cfg.FindCommandByName("COMMAND-A")
-	if err != nil {
-		t.Fatalf("Did not expect error from cfg.FindCommandByName, but got %v", err)
-	}
-
-	expectedEntryPoint := template1EntryPoint
-	cmdEntryPoint, _ := cmd.GetEntryPoint()
-	assert.Equal(t, expectedEntryPoint, cmdEntryPoint)
 }
 
 func TestConfiguration_SetConfigurationFilePath(t *testing.T) {
