@@ -10,7 +10,7 @@ coverage.*
 .test/droxy.log
 .test/outputs_test123
 .build
-!.build/ci.sh
+!.docker/ci.sh
 .bin
 .test
 droxy.log
