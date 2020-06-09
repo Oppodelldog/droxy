@@ -8,11 +8,8 @@ import (
 var errCommandNotDefined = errors.New("command not defined")
 var errCouldNotFindTemplate = errors.New("could not find template")
 
-// Configuration is the data model for a configuration file.
-type Configuration ConfigurationDefinition
-
-// ConfigurationDefinition defines the fields/types of the configuration file.
-type ConfigurationDefinition struct {
+// Configuration defines the fields/types of the configuration file.
+type Configuration struct {
 	Command        []CommandDefinition
 	Version        string
 	configFilePath string
