@@ -65,7 +65,7 @@ func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
 		},
 	}
 
-	commandDef, err := cfg.FindCommandByName(commandNameX)
+	commandDef, err := cfg.FindCommandByName(commandNameA)
 	if err != nil {
 		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
 	}

@@ -56,6 +56,7 @@ func TestBuildName_NameIsNotSet_AndNotUniqueNames(t *testing.T) {
 	builder := &mocks.Builder{}
 
 	nameBuilder := NewNameArgumentBuilder()
+
 	err := nameBuilder.BuildArgument(commandDef, builder)
 	if err != nil {
 		t.Fatalf(

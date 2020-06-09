@@ -126,7 +126,8 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 
 	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
 	fileThatShouldNotBeDeleted := commandNameStub
-	err := ioutil.WriteFile(fileThatShouldNotBeDeleted, []byte("TEST"), 0666)
+
+	err := ioutil.WriteFile(fileThatShouldNotBeDeleted, []byte("TEST"), writePerm)
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
 	}
@@ -191,7 +192,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingF
 	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
 	fileThatShouldBeDeleted := ensureOsSpecificBinaryFilename(commandNameStub)
 
-	err := ioutil.WriteFile(fileThatShouldBeDeleted, []byte("TEST"), 0666)
+	err := ioutil.WriteFile(fileThatShouldBeDeleted, []byte("TEST"), writePerm)
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
 	}
