@@ -45,34 +45,61 @@ func (pfc *Creator) CreateProxyFiles(isForced bool) error {
 			continue
 		}
 
-		if commandName, ok := command.GetName(); ok {
-			commandNameFileName := GetCommandNameFilename(commandName)
-			if fileInfo, err := os.Stat(commandNameFileName); err == nil {
-				if fileInfo.IsDir() {
-					logrus.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
-					return nil
-				}
-
-				if isForced {
-					err := os.Remove(commandNameFileName)
-					if err != nil {
-						panic(err)
-					}
-				} else {
-					logrus.Warnf("droxy command file (%s) already exists for command '%s'", commandNameFileName, commandName)
-					continue
-				}
-			}
-
-			err := pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, commandNameFileName)
-			if err != nil {
-				logrus.Errorf("error creating symlink '%s': %v", commandName, err)
-				continue
-			}
-
-			logrus.Infof("created '%s'", commandName)
+		commandName, ok := command.GetName()
+		if !ok {
+			continue
 		}
+
+		commandNameFileName := GetCommandNameFilename(commandName)
+
+		if fileExistsAsDir(commandNameFileName) {
+			logrus.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
+			return nil
+		}
+
+		if isForced {
+			removeFile(commandNameFileName)
+		} else if fileExists(commandNameFileName) {
+			logrus.Warnf("droxy command file (%s) already exists for command '%s'", commandNameFileName, commandName)
+			continue
+		}
+
+		err = pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, commandNameFileName)
+		if err != nil {
+			logrus.Errorf("error creating symlink '%s': %v", commandName, err)
+			continue
+		}
+
+		logrus.Infof("created '%s'", commandName)
 	}
 
 	return nil
+}
+
+func fileExists(filePath string) bool {
+	_, err := os.Stat(filePath)
+
+	return err == nil
+}
+
+func removeFile(filePath string) {
+	_, err := os.Stat(filePath)
+	if err != nil {
+		logrus.Warnf("cannot delete droxy command file (%s): %v", filePath, err)
+		return
+	}
+
+	err = os.Remove(filePath)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func fileExistsAsDir(filePath string) bool {
+	fileInfo, err := os.Stat(filePath)
+	if err != nil {
+		return false
+	}
+
+	return fileInfo.IsDir()
 }
