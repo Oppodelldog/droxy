@@ -90,7 +90,7 @@ func Test_newSubCommandAction_isResponsible(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := newSubCommandAction(nil).(*action).isResponsibleFunc(tt.args); got != tt.want {
+			if got := newSubCommandAction(nil).isResponsibleFunc(tt.args); got != tt.want {
 				t.Errorf("newSubCommandAction().isResponsibleFunc(%v) = %v, want %v", tt.args, got, tt.want)
 			}
 		})
@@ -112,7 +112,7 @@ func Test_newRevealItsDroxyAction_isResponsible(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := newRevealItsDroxyAction().(*action).isResponsibleFunc(tt.args); got != tt.want {
+			if got := newRevealItsDroxyAction().isResponsibleFunc(tt.args); got != tt.want {
 				t.Errorf("newRevealItsDroxyAction().isResponsibleFunc(%v) = %v, want %v", tt.args, got, tt.want)
 			}
 		})
@@ -132,7 +132,7 @@ func Test_newHelpDisplayAction_isResponsible(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := newHelpDisplayAction(nil).(*action).isResponsibleFunc(tt.args); got != tt.want {
+			if got := newHelpDisplayAction(nil).isResponsibleFunc(tt.args); got != tt.want {
 				t.Errorf("newHelpDisplayAction().isResponsibleFunc(%v) = %v, want %v", tt.args, got, tt.want)
 			}
 		})
@@ -140,11 +140,11 @@ func Test_newHelpDisplayAction_isResponsible(t *testing.T) {
 }
 
 func Test_newDroxyCommandAction(t *testing.T) {
-	assert.True(t, newDroxyCommandAction().(*action).isResponsibleFunc(nil))
+	assert.True(t, newDroxyCommandAction().isResponsibleFunc(nil))
 }
 
 func Test_newDroxyCommandAction_defaultExecuteFunc(t *testing.T) {
-	got := reflect.ValueOf(newDroxyCommandAction().(*action).executeFunc).Pointer()
+	got := reflect.ValueOf(newDroxyCommandAction().executeFunc).Pointer()
 	want := reflect.ValueOf(defaultExecuteFunc).Pointer()
 
 	if got != want {

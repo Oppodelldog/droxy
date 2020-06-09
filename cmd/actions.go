@@ -17,11 +17,11 @@ type action struct {
 	executeFunc       func() int
 }
 
-func (a *action) IsResponsible(args []string) bool {
+func (a action) IsResponsible(args []string) bool {
 	return a.isResponsibleFunc(args)
 }
 
-func (a *action) Execute() int {
+func (a action) Execute() int {
 	return a.executeFunc()
 }
 
@@ -34,15 +34,15 @@ func getActionChain() actionChain {
 	}
 }
 
-func newSubCommandAction(cmd executer) actionChainElement {
-	return &action{
+func newSubCommandAction(cmd executer) action {
+	return action{
 		isResponsibleFunc: func(args []string) bool { return shallExecuteSubCommand(args, newRoot()) },
 		executeFunc:       func() int { return execSubCommand(cmd) },
 	}
 }
 
-func newDroxyCommandAction() actionChainElement {
-	return &action{
+func newDroxyCommandAction() action {
+	return action{
 		isResponsibleFunc: func([]string) bool { return true },
 		executeFunc:       defaultExecuteFunc,
 	}
@@ -50,15 +50,15 @@ func newDroxyCommandAction() actionChainElement {
 
 func defaultExecuteFunc() int { return proxyexecution.ExecuteDroxyCommand(os.Args) }
 
-func newRevealItsDroxyAction() actionChainElement {
-	return &action{
+func newRevealItsDroxyAction() action {
+	return action{
 		isResponsibleFunc: shallRevealItsDroxy,
 		executeFunc:       revealTheTruth,
 	}
 }
 
-func newHelpDisplayAction(cmd helper) actionChainElement {
-	return &action{
+func newHelpDisplayAction(cmd helper) action {
+	return action{
 		isResponsibleFunc: shallDisplayHelp,
 		executeFunc:       func() int { return displayHelp(cmd) },
 	}
