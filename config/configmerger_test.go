@@ -85,8 +85,10 @@ func TestResolvePropertyStringArray_parm2Defined_outputAddressIsDifferentToInput
 }
 
 func TestResolvePropertyStringArray_allParamsDefined_outputLatestParamValue(t *testing.T) {
-	var arr1 []string
-	var arr2 []string
+	var (
+		arr1 []string
+		arr2 []string
+	)
 
 	res := resolvePropertyStringArray(false, &arr1, &arr2)
 
@@ -143,8 +145,10 @@ func TestResolvePropertyStringArray2D_parm2Defined_outputAddressIsDifferentToInp
 }
 
 func TestResolvePropertyStringArray2D_allParamsDefined_outputLatestParamValue(t *testing.T) {
-	var arr1 [][]string
-	var arr2 [][]string
+	var (
+		arr1 [][]string
+		arr2 [][]string
+	)
 
 	res := resolvePropertyStringArray2D(&arr1, &arr2)
 

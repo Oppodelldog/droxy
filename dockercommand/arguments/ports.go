@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-// BuildPorts sets mappings of host ports to container ports
+// BuildPorts sets mappings of host ports to container ports.
 func BuildPorts(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if ports, ok := commandDef.GetPorts(); ok {
 		return buildPorts(ports, builder)
@@ -16,11 +16,11 @@ func BuildPorts(commandDef *config.CommandDefinition, builder builder.Builder) e
 
 func buildPorts(portMappings []string, builder builder.Builder) error {
 	for _, portMapping := range portMappings {
-
 		portMappingWithValues, resolveErr := resolveEnvVar(portMapping)
 		if resolveErr != nil {
 			return resolveErr
 		}
+
 		builder.AddPortMapping(portMappingWithValues)
 	}
 

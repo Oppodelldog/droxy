@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//BuildRemoveContainerFlag adds --rm flag to remove container after it terminated
+//BuildRemoveContainerFlag adds --rm flag to remove container after it terminated.
 func BuildRemoveContainerFlag(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if removeContainer, ok := commandDef.GetRemoveContainer(); ok {
 		if !removeContainer {

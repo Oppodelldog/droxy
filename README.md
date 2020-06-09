@@ -12,10 +12,10 @@
 If you have go installed on your machine simply get it.  
 ```go get github.com/Oppodelldog/droxy```  
 
-Otherwise download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).  
+Otherwise, download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).  
 
 **Wiki**  
-Take a look at the wiki examples to learn how to setup up custom commands  
+Take a look at the wiki examples to learn how to set up custom commands  
 [https://github.com/Oppodelldog/droxy/wiki](https://github.com/Oppodelldog/droxy/wiki)
 
 
@@ -95,8 +95,8 @@ The following example contains all possible configuration options.
 ```
 
 ## Create commands
-Once you have setup your config, you want to create commands out of it.
-To generate the command binaries, navigate next to droxy.toml file and execute
+Once you have set up your config, you want to create commands out of it.
+To generate the command binaries, navigate next to droxy.toml file and execute:
 ```bash
     droxy clones
 ```

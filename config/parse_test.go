@@ -191,8 +191,11 @@ func getEmptyConfig() []byte {
 }
 
 func TestParse(t *testing.T) {
-	const testFolder = "/tmp/droxy/test/config/parse"
-	const testFile = "testFile.toml"
+	const (
+		testFolder = "/tmp/droxy/test/config/parse"
+		testFile   = "testFile.toml"
+	)
+
 	err := os.RemoveAll(testFolder)
 	if err != nil {
 		t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
@@ -215,16 +218,19 @@ func TestParse(t *testing.T) {
 	}
 
 	testFilePath := path.Join(testFolder, testFile)
+
 	tempFile, err := os.OpenFile(testFilePath, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		t.Fatalf("Did not expect os.OpenFile to return an error, but got: %v", err)
 	}
 
 	tomlEncoder := toml.NewEncoder(tempFile)
+
 	err = tomlEncoder.Encode(cfg)
 	if err != nil {
 		t.Fatalf("Did not expect tomlEncoder.Encode to return an error, but got: %v", err)
 	}
+
 	err = tempFile.Close()
 	if err != nil {
 		t.Fatalf("Did not expect tempFile.Close to return an error, but got: %v", err)
@@ -244,7 +250,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestParse_FileNotExists_Error(t *testing.T) {
-	_, err := Parse("/tmp/tdroxy/his-does-not-exist.toml")
+	_, err := Parse("/tmp/droxy/this-does-not-exist.toml")
 	assert.Error(t, err)
 }
 

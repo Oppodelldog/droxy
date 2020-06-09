@@ -15,6 +15,7 @@ func TestNewCommandResultHandler(t *testing.T) {
 
 func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
+
 	commandResultHandler := NewCommandResultHandler()
 
 	cmd := exec.Command("hostname")
@@ -26,6 +27,7 @@ func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
 
 func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
+
 	commandResultHandler := NewCommandResultHandler()
 
 	cmd := exec.Command("ping", "blackHole")
@@ -38,6 +40,7 @@ func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.
 
 func TestCommandResultHandler_HandleCommandResult_ExtCodeError(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
+
 	commandResultHandler := NewCommandResultHandler()
 
 	cmd := exec.Command("horstName")

@@ -44,13 +44,13 @@ func cleanupTestFile(t *testing.T) {
 }
 
 func createTestFile(t *testing.T) string {
-
 	testFile := "droxy.toml"
 
 	err := os.RemoveAll(testFolder)
 	if err != nil {
 		t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
 	}
+
 	err = os.MkdirAll(testFolder, 0777)
 	if err != nil {
 		t.Fatalf("Did not expect os.MkDirAll to return an error, but got: %v", err)
@@ -62,6 +62,7 @@ func createTestFile(t *testing.T) string {
 	if err != nil {
 		t.Fatalf("Did not expect os.OpenFile to return an error, but got: %v", err)
 	}
+
 	defer func() {
 		err := tempFile.Close()
 		if err != nil {
@@ -72,6 +73,7 @@ func createTestFile(t *testing.T) string {
 	cfg := Configuration{Version: "0815"}
 	tomlEncoder := toml.NewEncoder(tempFile)
 	err = tomlEncoder.Encode(cfg)
+
 	if err != nil {
 		t.Fatalf("Did not expect tomlEncoder.Encode to return an error, but got: %v", err)
 	}

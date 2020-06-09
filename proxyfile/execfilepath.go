@@ -26,5 +26,6 @@ func getExecutablePath() (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	return filepath.Dir(ex), nil
 }

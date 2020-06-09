@@ -38,7 +38,10 @@ func (w *fileCreationSubCommandWrapper) getCommand() *cobra.Command {
 	return w.cobraCommand
 }
 
-func (w *fileCreationSubCommandWrapper) createCommand(commandName string, proxyFilesCreator ProxyFilesCreator) *cobra.Command {
+func (w *fileCreationSubCommandWrapper) createCommand(
+	commandName string,
+	proxyFilesCreator ProxyFilesCreator,
+) *cobra.Command {
 	w.cobraCommand = &cobra.Command{
 		Use:   commandName,
 		Short: fmt.Sprintf("creates command %s", commandName),
@@ -60,7 +63,6 @@ func (w *fileCreationSubCommandWrapper) createCommand(commandName string, proxyF
 }
 
 func newFileCreationSubCommand(commandName string, proxyFilesCreator ProxyFilesCreator) *fileCreationSubCommandWrapper {
-
 	commandWrapper := new(fileCreationSubCommandWrapper)
 	commandWrapper.createCommand(commandName, proxyFilesCreator)
 

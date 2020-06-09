@@ -30,10 +30,12 @@ func TestBuildWorkDir_WorkDirIsSet(t *testing.T) {
 
 func TestBuildWorkDir_ResolvesEnvVars(t *testing.T) {
 	expectedWorkingDir := "/home/somewhere"
+
 	err := os.Setenv("CURRENT_WORKING_DIR", expectedWorkingDir)
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
+
 	defer func() {
 		err := os.Unsetenv("CURRENT_WORKING_DIR")
 		if err != nil {
@@ -56,7 +58,6 @@ func TestBuildWorkDir_ResolvesEnvVars(t *testing.T) {
 	}
 
 	builder.AssertExpectations(t)
-
 }
 
 func TestBuildWorkDir_WorkDirIsNotSet(t *testing.T) {

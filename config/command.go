@@ -2,7 +2,7 @@ package config
 
 import "strings"
 
-// CommandDefinition gives public access to the fields by accessor functions
+// CommandDefinition gives public access to the fields by accessor functions.
 type CommandDefinition struct {
 	RequireEnvVars      *bool
 	IsTemplate          *bool
@@ -38,6 +38,7 @@ func (c *CommandDefinition) GetRequireEnvVars() (bool, bool) {
 	if c.RequireEnvVars != nil {
 		return *c.RequireEnvVars, true
 	}
+
 	return false, false
 }
 
@@ -46,6 +47,7 @@ func (c *CommandDefinition) GetIsTemplate() (bool, bool) {
 	if c.IsTemplate != nil {
 		return *c.IsTemplate, true
 	}
+
 	return false, false
 }
 
@@ -54,6 +56,7 @@ func (c *CommandDefinition) GetTemplate() (string, bool) {
 	if c.Template != nil {
 		return *c.Template, true
 	}
+
 	return "", false
 }
 
@@ -62,9 +65,11 @@ func (c *CommandDefinition) GetIsDetached() (bool, bool) {
 	if c.IsDetached != nil {
 		return *c.IsDetached, true
 	}
+
 	if c.IsDaemon != nil {
 		return *c.IsDaemon, true
 	}
+
 	return false, false
 }
 
@@ -73,6 +78,7 @@ func (c *CommandDefinition) GetEntryPoint() (string, bool) {
 	if c.EntryPoint != nil {
 		return *c.EntryPoint, true
 	}
+
 	return "", false
 }
 
@@ -81,6 +87,7 @@ func (c *CommandDefinition) GetCommand() (string, bool) {
 	if c.Command != nil {
 		return *c.Command, true
 	}
+
 	return "", false
 }
 
@@ -89,6 +96,7 @@ func (c *CommandDefinition) GetName() (string, bool) {
 	if c.Name != nil {
 		return *c.Name, true
 	}
+
 	return "", false
 }
 
@@ -97,6 +105,7 @@ func (c *CommandDefinition) GetImage() (string, bool) {
 	if c.Image != nil {
 		return *c.Image, true
 	}
+
 	return "", false
 }
 
@@ -105,6 +114,7 @@ func (c *CommandDefinition) GetNetwork() (string, bool) {
 	if c.Network != nil {
 		return *c.Network, true
 	}
+
 	return "", false
 }
 
@@ -113,6 +123,7 @@ func (c *CommandDefinition) GetEnvFile() (string, bool) {
 	if c.EnvFile != nil {
 		return *c.EnvFile, true
 	}
+
 	return "", false
 }
 
@@ -121,6 +132,7 @@ func (c *CommandDefinition) GetIP() (string, bool) {
 	if c.IP != nil {
 		return *c.IP, true
 	}
+
 	return "", false
 }
 
@@ -129,6 +141,7 @@ func (c *CommandDefinition) GetIsInteractive() (bool, bool) {
 	if c.IsInteractive != nil {
 		return *c.IsInteractive, true
 	}
+
 	return false, false
 }
 
@@ -137,6 +150,7 @@ func (c *CommandDefinition) GetAddGroups() (bool, bool) {
 	if c.AddGroups != nil {
 		return *c.AddGroups, true
 	}
+
 	return false, false
 }
 
@@ -145,6 +159,7 @@ func (c *CommandDefinition) GetImpersonate() (bool, bool) {
 	if c.Impersonate != nil {
 		return *c.Impersonate, true
 	}
+
 	return false, false
 }
 
@@ -153,6 +168,7 @@ func (c *CommandDefinition) GetWorkDir() (string, bool) {
 	if c.WorkDir != nil {
 		return *c.WorkDir, true
 	}
+
 	return "", false
 }
 
@@ -161,6 +177,7 @@ func (c *CommandDefinition) GetAutoMountWorkDir() (bool, bool) {
 	if c.AutoMountWorkDir != nil {
 		return *c.AutoMountWorkDir, true
 	}
+
 	return false, false
 }
 
@@ -169,6 +186,7 @@ func (c *CommandDefinition) GetRemoveContainer() (bool, bool) {
 	if c.RemoveContainer != nil {
 		return *c.RemoveContainer, true
 	}
+
 	return false, false
 }
 
@@ -177,6 +195,7 @@ func (c *CommandDefinition) GetUniqueNames() (bool, bool) {
 	if c.UniqueNames != nil {
 		return *c.UniqueNames, true
 	}
+
 	return false, false
 }
 
@@ -185,6 +204,7 @@ func (c *CommandDefinition) GetVolumes() ([]string, bool) {
 	if c.Volumes != nil {
 		return *c.Volumes, true
 	}
+
 	return []string{}, false
 }
 
@@ -193,6 +213,7 @@ func (c *CommandDefinition) GetLinks() ([]string, bool) {
 	if c.Links != nil {
 		return *c.Links, true
 	}
+
 	return []string{}, false
 }
 
@@ -201,6 +222,7 @@ func (c *CommandDefinition) GetEnvVars() ([]string, bool) {
 	if c.EnvVars != nil {
 		return *c.EnvVars, true
 	}
+
 	return []string{}, false
 }
 
@@ -209,6 +231,7 @@ func (c *CommandDefinition) GetPorts() ([]string, bool) {
 	if c.Ports != nil {
 		return *c.Ports, true
 	}
+
 	return []string{}, false
 }
 
@@ -217,6 +240,7 @@ func (c *CommandDefinition) GetPortsFromParams() ([]string, bool) {
 	if c.PortsFromParams != nil {
 		return *c.PortsFromParams, true
 	}
+
 	return []string{}, false
 }
 
@@ -225,6 +249,7 @@ func (c *CommandDefinition) GetMergeTemplateArrays() ([]string, bool) {
 	if c.MergeTemplateArrays != nil {
 		return *c.MergeTemplateArrays, true
 	}
+
 	return []string{}, false
 }
 
@@ -233,6 +258,7 @@ func (c *CommandDefinition) GetReplaceArgs() ([][]string, bool) {
 	if c.ReplaceArgs != nil {
 		return *c.ReplaceArgs, true
 	}
+
 	return [][]string{}, false
 }
 
@@ -241,23 +267,25 @@ func (c *CommandDefinition) GetAdditionalArgs() ([]string, bool) {
 	if c.AdditionalArgs != nil {
 		return *c.AdditionalArgs, true
 	}
+
 	return []string{}, false
 }
 
-// HasTemplate indicates if the command definition has a template set
+// HasTemplate indicates if the command definition has a template set.
 func (c *CommandDefinition) HasTemplate() bool { return c.Template != nil && *c.Template != "" }
 
-// HasName indicates if the command definition has Name
+// HasName indicates if the command definition has Name.
 func (c *CommandDefinition) HasName() bool { return c.Name != nil && *c.Name != "" }
 
 // IsTemplateArrayMerged returns true if the given identifier is part of MergeTemplateArrays.
 func (c *CommandDefinition) IsTemplateArrayMerged(arrayKeyName string) bool {
 	if identifiers, ok := c.GetMergeTemplateArrays(); ok {
 		for _, identifier := range identifiers {
-			if strings.ToLower(identifier) == strings.ToLower(arrayKeyName) {
+			if strings.EqualFold(identifier, arrayKeyName) {
 				return true
 			}
 		}
 	}
+
 	return false
 }

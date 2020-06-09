@@ -47,8 +47,8 @@ func TestBuildLinks_LinksEnvVarsAreResolves(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
-	Links := []string{"${WHERE_THE_HECK_AM_I}"}
 
+	Links := []string{"${WHERE_THE_HECK_AM_I}"}
 	commandDef := &config.CommandDefinition{
 		Links: &Links,
 	}

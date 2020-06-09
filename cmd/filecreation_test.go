@@ -8,7 +8,6 @@ import (
 )
 
 func Test_fileCreationSubCommandWrapper_createCommand(t *testing.T) {
-
 	proxyFilesCreatorMock := &mocks.ProxyFilesCreator{}
 	proxyFilesCreatorMock.On("CreateProxyFiles", mock.Anything).Return(nil)
 	filecreator := newFileCreationSubCommand("symlinks", proxyFilesCreatorMock)

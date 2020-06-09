@@ -14,9 +14,11 @@ func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.
 	val1 := "VALUE1"
 	val2 := "VALUE2"
 	err := os.Setenv("ENV_VAR_1", val1)
+
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
+
 	err = os.Setenv("ENV_VAR_2", val2)
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
@@ -27,6 +29,7 @@ func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.
 		if err != nil {
 			t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
 		}
+
 		err = os.Unsetenv("ENV_VAR_2")
 		if err != nil {
 			t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
@@ -50,7 +53,6 @@ func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.
 	}
 	for testCaseName, testData := range testDataSet {
 		t.Run(testCaseName, func(t *testing.T) {
-
 			requireEnvVars := testData.requireEnvVars
 
 			commandDef := &config.CommandDefinition{
@@ -67,7 +69,6 @@ func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.
 }
 
 func TestBuildEnvVars_EnvVarsNotRequired_EnvVarDefinedButCannotResolve_ResolvesEmptyString(t *testing.T) {
-
 	envVars := &[]string{
 		"${ENV_VAR_1}",
 	}
@@ -87,7 +88,6 @@ func TestBuildEnvVars_EnvVarsNotRequired_EnvVarDefinedButCannotResolve_ResolvesE
 }
 
 func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *testing.T) {
-
 	assert.Panics(t, func() {
 		val1 := "VALUE1"
 		envVars := &[]string{
@@ -113,6 +113,7 @@ func TestBuildEnvVars_NoEnvVarsDefines(t *testing.T) {
 		EnvVars: nil,
 	}
 	builder := &mocks.Builder{}
+
 	err := BuildEnvVars(commandDef, builder)
 	if err != nil {
 		t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
@@ -123,6 +124,7 @@ func TestBuildEnvVars_NoEnvVarsDefines(t *testing.T) {
 
 func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *testing.T) {
 	val1 := "VALUE1"
+
 	err := os.Setenv("ENV_VAR_1", val1)
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)

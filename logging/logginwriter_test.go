@@ -11,11 +11,11 @@ import (
 )
 
 func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
-	loggerStub := getLoggetStub()
+	loggerStub := getLoggerStub()
 
 	var bytesBuffer []byte
 	target := bytes.NewBuffer(bytesBuffer)
-	loggingWriter := NewLoggingWriter(target, loggerStub, "logprefix")
+	loggingWriter := NewLoggingWriter(target, loggerStub, "logPrefix")
 
 	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
 	if err != nil {
@@ -33,9 +33,10 @@ func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 	logger := logrus.StandardLogger()
 	logger.Formatter = &testFormatter{}
+
 	var bytesBuffer []byte
-	outpoutBuffer := bytes.NewBuffer(bytesBuffer)
-	logger.Out = outpoutBuffer
+	outputBuffer := bytes.NewBuffer(bytesBuffer)
+	logger.Out = outputBuffer
 
 	targetStub := ioutil.Discard
 	loggingWriter := NewLoggingWriter(targetStub, logger, "logPrefix")
@@ -45,7 +46,7 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 		t.Fatalf("Did not expect loggingWriter.Write to return an error, but got: %v", err)
 	}
 
-	bufferContent, err := ioutil.ReadAll(outpoutBuffer)
+	bufferContent, err := ioutil.ReadAll(outputBuffer)
 	if err != nil {
 		panic(err)
 	}
@@ -53,9 +54,10 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 	assert.Equal(t, "logPrefix:HELLO WORLD", string(bufferContent))
 }
 
-func getLoggetStub() *logrus.Logger {
+func getLoggerStub() *logrus.Logger {
 	logger := logrus.StandardLogger()
 	logger.Out = ioutil.Discard
+
 	return logger
 }
 

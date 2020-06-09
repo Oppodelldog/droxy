@@ -10,15 +10,16 @@ import (
 )
 
 func TestCopyFile(t *testing.T) {
-
 	testFolder := "/tmp/droxy/fileCopyTest/"
 	err := os.MkdirAll(testFolder, 0776)
+
 	if err != nil {
 		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
 	}
 
 	srcBytes := []byte("HELLO DROXY!!")
 	src := path.Join(testFolder, "fileToCopy")
+
 	err = ioutil.WriteFile(src, srcBytes, 0666)
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
@@ -45,7 +46,6 @@ func TestCopyFile(t *testing.T) {
 }
 
 func TestCopyFile_srcFileDoesNotExist_expectError(t *testing.T) {
-
 	src := "/tmp/THIS_FILE_DOES_NOT_EXIST"
 	dst := ""
 	err := copyFile(src, dst)

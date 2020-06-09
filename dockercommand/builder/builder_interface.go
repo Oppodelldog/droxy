@@ -5,7 +5,7 @@ import (
 	"os/exec"
 )
 
-//Builder describes the interface of the "docker run" command builder
+//Builder describes the interface of the "docker run" command builder.
 type Builder interface {
 	SetStdIn(r io.Reader) Builder
 	SetStdOut(w io.Writer) Builder

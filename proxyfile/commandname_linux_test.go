@@ -13,11 +13,13 @@ func TestGetCommandName(t *testing.T) {
 
 func TestParseCommandNameFromCommandLine(t *testing.T) {
 	originalValue := os.Args[0]
+
 	defer func() {
 		os.Args[0] = originalValue
 	}()
 
 	os.Args[0] = "/tmp/test123"
+
 	assert.Equal(t, "test123", ParseCommandNameFromCommandLine())
 }
 

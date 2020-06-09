@@ -23,7 +23,6 @@ func TestNewUserGroupsArgumentBuilder(t *testing.T) {
 }
 
 func TestAddGroups_AddGroupsTrue_ExpectAllUsersGroupsAddedToBuilder(t *testing.T) {
-
 	addGroupsFlag := true
 	commandDef := &config.CommandDefinition{
 		AddGroups: &addGroupsFlag,
@@ -48,7 +47,6 @@ func TestAddGroups_AddGroupsTrue_ExpectAllUsersGroupsAddedToBuilder(t *testing.T
 }
 
 func TestAddGroups_AddGroupsTrue_IdResolverReturnsError_ExpectError(t *testing.T) {
-
 	addGroupsFlag := true
 	commandDef := &config.CommandDefinition{
 		AddGroups: &addGroupsFlag,
@@ -68,6 +66,7 @@ func TestAddGroups_AddGroupsFalse_ExpectBuilderNotCalled(t *testing.T) {
 	builder := &mocks.Builder{}
 
 	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{}}
+
 	err := argumentBuilder.BuildArgument(commandDef, builder)
 	if err != nil {
 		t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)

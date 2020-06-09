@@ -9,13 +9,13 @@ import (
 )
 
 func TestBuildIpIp_IpIsSet(t *testing.T) {
-	Ip := ".env"
+	IP := ".env"
 	commandDef := &config.CommandDefinition{
-		IP: &Ip,
+		IP: &IP,
 	}
 	builder := &mocks.Builder{}
 
-	builder.On("SetIP", Ip).Return(builder)
+	builder.On("SetIP", IP).Return(builder)
 
 	err := BuildIP(commandDef, builder)
 	if err != nil {

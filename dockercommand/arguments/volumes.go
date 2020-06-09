@@ -5,7 +5,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-// BuildVolumes maps volumes from host to container
+// BuildVolumes maps volumes from host to container.
 func BuildVolumes(commandDef *config.CommandDefinition, builder builder.Builder) error {
 	if volumes, ok := commandDef.GetVolumes(); ok {
 		for _, volume := range volumes {
@@ -13,8 +13,10 @@ func BuildVolumes(commandDef *config.CommandDefinition, builder builder.Builder)
 			if err != nil {
 				return err
 			}
+
 			builder.AddVolumeMapping(resolvedVolume)
 		}
 	}
+
 	return nil
 }

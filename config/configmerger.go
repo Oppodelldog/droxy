@@ -37,7 +37,6 @@ func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinit
 }
 
 func resolveProperty(base interface{}, overlay interface{}) interface{} {
-
 	if base == nil && overlay == nil {
 		return nil
 	}

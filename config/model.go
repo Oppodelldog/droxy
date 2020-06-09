@@ -4,10 +4,10 @@ import (
 	"fmt"
 )
 
-// Configuration is the data model for a configuration file
+// Configuration is the data model for a configuration file.
 type Configuration ConfigurationDefinition
 
-// ConfigurationDefinition defines the fields/types of the configuration file
+// ConfigurationDefinition defines the fields/types of the configuration file.
 type ConfigurationDefinition struct {
 	Command        []CommandDefinition
 	Version        string
@@ -15,7 +15,7 @@ type ConfigurationDefinition struct {
 	Logging        bool
 }
 
-// FindCommandByName finds a command by the given name
+// FindCommandByName finds a command by the given name.
 func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinition, error) {
 	for _, command := range c.Command {
 		if configCommandName, ok := command.GetName(); ok {
@@ -39,7 +39,6 @@ func (c *Configuration) GetConfigurationFilePath() string {
 }
 
 func (c *Configuration) resolveConfig(command *CommandDefinition) (*CommandDefinition, error) {
-
 	if !command.HasTemplate() {
 		return command, nil
 	}

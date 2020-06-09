@@ -10,6 +10,7 @@ func Test_resolvePropertyStringArray2D_BaseSet_OverlayNotSet(t *testing.T) {
 	base := &[][]string{
 		{"a", "b"},
 	}
+
 	var overlay *[][]string
 
 	result := resolvePropertyStringArray2D(base, overlay)
@@ -22,13 +23,14 @@ func Test_resolvePropertyStringArray2D_BaseSet_OverlayNotSet(t *testing.T) {
 }
 
 func Test_resolvePropertyStringArray2D_BaseNotSet_OverlaySet(t *testing.T) {
-	var base *[][]string
-	overlay := &[][]string{
-		{"a", "b"},
-	}
+	var (
+		base    *[][]string
+		overlay = &[][]string{
+			{"a", "b"},
+		}
+	)
 
 	result := resolvePropertyStringArray2D(base, overlay)
-
 	expectedResult := &[][]string{
 		{"a", "b"},
 	}
@@ -54,7 +56,6 @@ func Test_resolvePropertyStringArray2D_BaseAndOverlaySet(t *testing.T) {
 }
 
 func TestConfiguration_FindCommandByName(t *testing.T) {
-
 	nameA := "COMMAND-A"
 	commandA := CommandDefinition{Name: &nameA}
 	nameX := "COMMAND-X"
@@ -79,7 +80,6 @@ func TestConfiguration_FindCommandByName(t *testing.T) {
 }
 
 func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {
-
 	nameA := "COMMAND-A"
 	commandA := CommandDefinition{Name: &nameA}
 
@@ -95,7 +95,6 @@ func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {
 }
 
 func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
-
 	templateName := "TEMPLATE-A"
 	isTemplate := true
 	templateNetwork := "templateNetwork-by-template"
@@ -120,7 +119,6 @@ func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
 }
 
 func TestConfiguration_FindCommandByName_TemplateNotFoundError(t *testing.T) {
-
 	templateName := "yes-template-does-not-exist"
 	nameA := "COMMAND-A"
 	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
@@ -137,7 +135,6 @@ func TestConfiguration_FindCommandByName_TemplateNotFoundError(t *testing.T) {
 }
 
 func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
-
 	template1Name := "template1"
 	template1EntryPoint := "template1EntryPoint"
 	template2Name := "template2"

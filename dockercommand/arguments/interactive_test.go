@@ -9,7 +9,6 @@ import (
 )
 
 func TestBuildInteractiveFlag_InteractiveIsTrue(t *testing.T) {
-
 	isInteractive := true
 	commandDef := &config.CommandDefinition{
 		IsInteractive: &isInteractive,

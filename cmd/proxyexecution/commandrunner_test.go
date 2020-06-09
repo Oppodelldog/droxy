@@ -12,7 +12,6 @@ func TestNewCommandRunner(t *testing.T) {
 }
 
 func TestCommandRunner_RunCommand_smokeTest(t *testing.T) {
-
 	commandRunner := NewCommandRunner()
 
 	cmd := exec.Command("echo", "'1'")

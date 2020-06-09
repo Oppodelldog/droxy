@@ -9,7 +9,6 @@ import (
 )
 
 func TestBuildCommand_CommandDefined(t *testing.T) {
-
 	command := "command"
 	commandDef := &config.CommandDefinition{
 		Command: &command,

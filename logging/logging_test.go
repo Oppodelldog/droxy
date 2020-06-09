@@ -13,8 +13,8 @@ import (
 const testFolder = "/tmp/droxy-tests"
 
 func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
-
 	prepareTestFolder(t)
+
 	configFilePath := path.Join(testFolder, "droxy.toml")
 
 	cfg := &config.Configuration{}
@@ -24,6 +24,7 @@ func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect GetLogWriter to return an error, but got: %v", err)
 	}
+
 	err = writer.Close()
 	if err != nil {
 		t.Fatalf("Did not expect writer.Close() to return an error, but got: %v", err)
@@ -33,8 +34,8 @@ func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 }
 
 func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
-
 	prepareTestFolder(t)
+
 	configFilePath := path.Join(testFolder, "droxy.toml")
 
 	cfg := &config.Configuration{}
@@ -44,6 +45,7 @@ func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect GetLogWriter to return an error, but got: %v", err)
 	}
+
 	err = writer.Close()
 	if err != nil {
 		t.Fatalf("Did not expect writer.Close() to return an error, but got: %v", err)
@@ -53,8 +55,7 @@ func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 }
 
 func TestGetLogWriter_returnsErrorOnFileCreation(t *testing.T) {
-
-	configFilePath := "/invalid-apth/this-will-create-an-error"
+	configFilePath := "/invalid-path/this-will-create-an-error"
 
 	cfg := &config.Configuration{}
 	cfg.SetConfigurationFilePath(configFilePath)
@@ -74,7 +75,6 @@ func assertLogfile(t *testing.T, logfilePath string) {
 }
 
 func prepareTestFolder(t *testing.T) {
-
 	err := os.RemoveAll(testFolder)
 	if err != nil {
 		t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)

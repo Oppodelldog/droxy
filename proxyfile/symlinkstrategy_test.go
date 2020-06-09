@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewSymlinkStrategy_callsTheAppripriateSystemFunction(t *testing.T) {
+func TestNewSymlinkStrategy_callsTheAppropriateSystemFunction(t *testing.T) {
 	strategy := NewSymlinkStrategy()
 
 	strategyFunction := strategy.(*SymlinkStrategy).symlinkFunction
@@ -27,6 +27,7 @@ func TestNewSymlinkStrategy_callsConfiguredSystemFunction(t *testing.T) {
 
 	expectedSrc := "A"
 	expectedDst := "B"
+
 	err := strategy.CreateProxyFile(expectedSrc, expectedDst)
 	if err != nil {
 		t.Fatalf("Did not expect CreateProxyFile to return an error, but got: %v", err)

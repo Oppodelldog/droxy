@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// New creates a new proxy file creator
+// New creates a new proxy file creator.
 func New(creationStrategy FileCreationStrategy, configLoader config.Loader) *Creator {
 	return &Creator{
 		creationStrategy:          creationStrategy,
@@ -16,7 +16,7 @@ func New(creationStrategy FileCreationStrategy, configLoader config.Loader) *Cre
 	}
 }
 
-// Creator creates commands
+// Creator creates commands.
 type Creator struct {
 	creationStrategy          FileCreationStrategy
 	configLoader              config.Loader
@@ -25,7 +25,7 @@ type Creator struct {
 
 type getExecutableFilePathFuncDef func() (string, error)
 
-// CreateProxyFiles creates droxy commands
+// CreateProxyFiles creates droxy commands.
 func (pfc *Creator) CreateProxyFiles(isForced bool) error {
 	cfg := pfc.configLoader.Load()
 
@@ -36,7 +36,6 @@ func (pfc *Creator) CreateProxyFiles(isForced bool) error {
 	}
 
 	for _, command := range cfg.Command {
-
 		if !command.HasName() {
 			logrus.Warnf("skipped command because name is missing!")
 			continue
@@ -47,13 +46,13 @@ func (pfc *Creator) CreateProxyFiles(isForced bool) error {
 		}
 
 		if commandName, ok := command.GetName(); ok {
-
 			commandNameFileName := GetCommandNameFilename(commandName)
 			if fileInfo, err := os.Stat(commandNameFileName); err == nil {
 				if fileInfo.IsDir() {
 					logrus.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
 					return nil
 				}
+
 				if isForced {
 					err := os.Remove(commandNameFileName)
 					if err != nil {
@@ -73,7 +72,6 @@ func (pfc *Creator) CreateProxyFiles(isForced bool) error {
 
 			logrus.Infof("created '%s'", commandName)
 		}
-
 	}
 
 	return nil

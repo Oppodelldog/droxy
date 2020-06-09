@@ -43,6 +43,7 @@ func checkCommandDefinitionGettersUnset(t *testing.T, command CommandDefinition)
 		if method == zero {
 			t.Fatalf("missing getter '%s'", getterName)
 		}
+
 		result := method.Call([]reflect.Value{})
 
 		// 2nd return value must be false, since there is no valid configuration value
@@ -74,6 +75,7 @@ func checkCommandDefinitionGetters(t *testing.T, command CommandDefinition) {
 		if method == zero {
 			t.Fatalf("missing getter '%s'", getterName)
 		}
+
 		result := method.Call([]reflect.Value{})
 
 		// second return value must be true to indicate there is a valid configuration value
@@ -84,7 +86,6 @@ func checkCommandDefinitionGetters(t *testing.T, command CommandDefinition) {
 		structValue := val.Field(i).Elem()
 
 		assert.Equal(t, structValue.Interface(), returnedValue.Interface(), getterName)
-
 	}
 }
 

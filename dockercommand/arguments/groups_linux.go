@@ -7,7 +7,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out
+//NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out.
 func NewUserGroupsArgumentBuilder() ArgumentBuilderInterface {
 	return &userGroupsArgumentBuilder{
 		userGroupIdsResolver: &currentUserGroupIDsResolver{},
@@ -19,9 +19,7 @@ type userGroupsArgumentBuilder struct {
 }
 
 func (b *userGroupsArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error {
-
 	if addGroups, ok := commandDef.GetAddGroups(); ok && addGroups {
-
 		groupIDs, err := b.userGroupIdsResolver.getUserGroupIDs()
 		if err != nil {
 			return err
@@ -31,6 +29,7 @@ func (b *userGroupsArgumentBuilder) BuildArgument(commandDef *config.CommandDefi
 			builder.AddGroup(groupID)
 		}
 	}
+
 	return nil
 }
 
@@ -41,12 +40,10 @@ type userGroupIdsResolverInterface interface {
 type currentUserGroupIDsResolver struct{}
 
 func (r *currentUserGroupIDsResolver) getUserGroupIDs() ([]string, error) {
-
 	currentUser, err := user.Current()
 	if err != nil {
 		return nil, err
 	}
 
 	return currentUser.GroupIds()
-
 }

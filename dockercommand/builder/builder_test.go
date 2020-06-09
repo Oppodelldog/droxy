@@ -13,7 +13,6 @@ func TestNewBuilder(t *testing.T) {
 }
 
 func TestBuilder_FullFeature(t *testing.T) {
-
 	testWriterA := bytes.NewBufferString("")
 	testWriterB := bytes.NewBufferString("")
 	testReader := bytes.NewBufferString("")
@@ -77,7 +76,6 @@ cmdArg2`,
 	assert.Equal(t, cmd.Stdout, testWriterA)
 	assert.Equal(t, cmd.Stderr, testWriterB)
 	assert.Equal(t, cmd.Stdin, testReader)
-
 }
 
 func TestBuilder_DefaultOutput(t *testing.T) {

@@ -12,6 +12,7 @@ import (
 
 func TestBuildPortsFromParams_portsDefined_matchWithArgs(t *testing.T) {
 	originalArgs := os.Args
+
 	defer func() { os.Args = originalArgs }()
 
 	os.Args = []string{"-test1", "--inspect-brk=78129", "-colors=on"}
@@ -37,6 +38,7 @@ func TestBuildPortsFromParams_portsDefined_matchWithArgs(t *testing.T) {
 
 func TestBuildPortsFromParams_portsDefined_2matchesWithArgs(t *testing.T) {
 	originalArgs := os.Args
+
 	defer func() { os.Args = originalArgs }()
 
 	os.Args = []string{"-test1", "--inspect-brk=78129", "-colors=on", "--inspect=2938"}
@@ -64,6 +66,7 @@ func TestBuildPortsFromParams_portsDefined_2matchesWithArgs(t *testing.T) {
 
 func TestBuildPortsFromParams_portsDefined_noMatchWithArgs(t *testing.T) {
 	originalArgs := os.Args
+
 	defer func() { os.Args = originalArgs }()
 
 	os.Args = []string{"-test1", "-colors=on"}

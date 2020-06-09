@@ -25,7 +25,6 @@ func TestBuildName_NameIsSet_AndNotUnique_ExpectAppropriateBuilderCall(t *testin
 	}
 
 	for _, testCase := range testCases {
-
 		t.Logf("testCase no: %v", testCase.testNo)
 
 		containerName := testCase.containerName
@@ -37,7 +36,12 @@ func TestBuildName_NameIsSet_AndNotUnique_ExpectAppropriateBuilderCall(t *testin
 		builder := &mocks.Builder{}
 		builder.On("SetContainerName", testCase.expectedContainerName).Return(builder)
 
-		nameBuilder := nameArgumentBuilder{nameRandomizerFunc: func(containerName string) string { return fmt.Sprintf("%s%v", containerName, randomNamePartStub) }}
+		nameBuilder := nameArgumentBuilder{
+			nameRandomizerFunc: func(containerName string) string {
+				return fmt.Sprintf("%s%v", containerName, randomNamePartStub)
+			},
+		}
+
 		err := nameBuilder.BuildArgument(commandDef, builder)
 		if err != nil {
 			t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)
@@ -54,14 +58,20 @@ func TestBuildName_NameIsNotSet_AndNotUniqueNames(t *testing.T) {
 	nameBuilder := NewNameArgumentBuilder()
 	err := nameBuilder.BuildArgument(commandDef, builder)
 	if err != nil {
-		t.Fatalf("Did not expect BuildArgument to return an error, but got: %v", err)
+		t.Fatalf(
+			"Did not expect BuildArgument to return an error, but got: %v",
+			err,
+		)
 	}
 
 	assert.Empty(t, builder.Calls)
 }
 
 func TestBuildName_ArgumentsBuilderNameRandomizerFunc(t *testing.T) {
-	if reflect.ValueOf(NewNameArgumentBuilder().(*nameArgumentBuilder).nameRandomizerFunc).Pointer() != reflect.ValueOf(defaultNameRandomizerFunc).Pointer() {
+	got := reflect.ValueOf(NewNameArgumentBuilder().(*nameArgumentBuilder).nameRandomizerFunc).Pointer()
+	want := reflect.ValueOf(defaultNameRandomizerFunc).Pointer()
+
+	if got != want {
 		t.Fatalf("nameArgumentBuilder.nameRandomizerFunc is not set to defaultNameRandomizerFunc")
 	}
 }

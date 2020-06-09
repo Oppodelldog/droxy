@@ -15,6 +15,7 @@ import (
 
 func TestBuildCommandFromConfig(t *testing.T) {
 	originalArgs := os.Args
+
 	defer func() { os.Args = originalArgs }()
 
 	os.Args = append(os.Args, "--inspect-brk=78129")
@@ -23,10 +24,12 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
+
 	err = os.Setenv("LINK_ENV_VAR", "linkEnvVarStub")
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
+
 	err = os.Setenv("ENV_VAR", "envVarStub")
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
@@ -39,6 +42,7 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect NewCommandBuilder to return an error, but got: %v", err)
 	}
+
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
@@ -60,10 +64,12 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
 	}
+
 	err = os.Unsetenv("LINK_ENV_VAR")
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
 	}
+
 	err = os.Unsetenv("ENV_VAR")
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
@@ -71,7 +77,6 @@ func TestBuildCommandFromConfig(t *testing.T) {
 }
 
 func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *testing.T) {
-
 	commandName := "some-command"
 
 	configuration := &config.Configuration{
@@ -86,6 +91,7 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 	if err != nil {
 		t.Fatalf("Did not expect NewCommandBuilder to return an error, but got: %v", err)
 	}
+
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
@@ -105,10 +111,12 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
 	}
+
 	err = os.Unsetenv("LINK_ENV_VAR")
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
 	}
+
 	err = os.Unsetenv("ENV_VAR")
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
@@ -116,7 +124,6 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 }
 
 func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *testing.T) {
-
 	testDataSet := map[string]struct {
 		containerExists       bool
 		expectedDockerCommand string
@@ -133,7 +140,6 @@ func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *
 
 	for testCaseName, testData := range testDataSet {
 		t.Run(testCaseName, func(t *testing.T) {
-
 			commandName := "some-command"
 			configuration := getFullFeatureConfig(commandName)
 
@@ -150,15 +156,14 @@ func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *
 			commandString := strings.Join(cmd.Args, " ")
 
 			assert.Contains(t, commandString, testData.expectedDockerCommand)
-
 		})
 	}
 }
 
 func getFullFeatureConfig(commandName string) *config.Configuration {
-
 	fullFeatureTemplate := getFullFeatureTemplateDef()
 	fullFeatureCommand := getFullFeatureDef(commandName)
+
 	return &config.Configuration{
 		Command: []config.CommandDefinition{
 			fullFeatureTemplate,
@@ -247,10 +252,12 @@ func getTestHostDir() string {
 	if err != nil {
 		panic(fmt.Sprintf("Did not expect os.Getwd() to return an error, but got: %v", err))
 	}
+
 	absoluteHostPath, err := filepath.Abs(hostDir)
 	if err != nil {
 		panic(fmt.Sprintf("could not get absolute path of the tests working dir: %v", err))
 	}
+
 	return absoluteHostPath
 }
 

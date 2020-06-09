@@ -75,7 +75,6 @@ func shallDisplayHelp(args []string) bool {
 func shallRevealItsDroxy(args []string) bool {
 	for _, arg := range args {
 		if arg == "--is-it-droxy" {
-
 			return true
 		}
 	}
@@ -117,10 +116,10 @@ func displayHelp(cmd helper) int {
 }
 
 func isSubCommand(s string, commands []*cobra.Command) bool {
-	var subCommandNames []string
+	subCommandNames := make([]string, len(commands))
+
 	for _, subCommand := range commands {
 		subCommandNames = append(subCommandNames, subCommand.Name())
-
 	}
 
 	return stringInSlice(s, subCommandNames)

@@ -7,13 +7,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-//ExtCodeError general error occurred when executing cmd
+//ExtCodeError general error occurred when executing cmd.
 const ExtCodeError = 993
 
-//ExitCodeExitError of executed cmd could not be determined
+//ExitCodeExitError of executed cmd could not be determined.
 const ExitCodeExitError = 990
 
-//ExitSuccessError ExitCode of successfully executed cmd could not be determined
+//ExitSuccessError ExitCode of successfully executed cmd could not be determined.
 const ExitSuccessError = 991
 
 type (
@@ -25,9 +25,9 @@ func NewCommandResultHandler() CommandResultHandler {
 	return &commandResultHandler{}
 }
 
-// HandleCommandResult tries to get to ExitCode of and already run cmd. Returns the exit code or a custom one if original exitCode could not be determined.
+// HandleCommandResult tries to get to ExitCode of and already run cmd.
+// Returns the exit code or a custom one if original exitCode could not be determined.
 func (rh *commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int {
-
 	switch exitErr := err.(type) {
 	case *exec.Error:
 		logrus.Warning("Could execute command")
@@ -42,7 +42,6 @@ func (rh *commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) in
 		logrus.Warning("Could not get exit code")
 
 		return ExitCodeExitError
-
 	}
 
 	if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
@@ -51,5 +50,6 @@ func (rh *commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) in
 	}
 
 	logrus.Warning("Could not get exit code")
+
 	return ExitSuccessError
 }

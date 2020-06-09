@@ -27,12 +27,13 @@ func TestCreator_New(t *testing.T) {
 	assert.Exactly(t, configLoaderMock, creator.configLoader)
 
 	if reflect.ValueOf(creator.getExecutableFilePathFunc).Pointer() != reflect.ValueOf(getExecutableFilePath).Pointer() {
-		t.Fatal("expected 'getExecutableFilePath' to be configred as getExecutableFilePathFunc, but was not")
+		t.Fatal("expected 'getExecutableFilePath' to be configured as getExecutableFilePathFunc, but was not")
 	}
 }
 
 func getTestConfig() *config.Configuration {
 	commandNameStub := "some-command-name"
+
 	return &config.Configuration{
 		Command: []config.CommandDefinition{
 			{Name: &commandNameStub},
@@ -135,8 +136,8 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
 	}
 
-	_, err = os.Stat(fileThatShouldNotBeDeleted)
-	assert.Nil(t, err, "Expect no error, since file should not have been deleted")
+	_, errStat := os.Stat(fileThatShouldNotBeDeleted)
+	assert.Nil(t, errStat, "Expect no error, since file should not have been deleted")
 
 	err = os.Remove(fileThatShouldNotBeDeleted)
 	if err != nil {
@@ -158,8 +159,9 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForce
 	}
 
 	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
-	folderThatShalNotBeDeleted := commandNameStub
-	err := os.MkdirAll(folderThatShalNotBeDeleted, 0666)
+	folderThatShallNotBeDeleted := commandNameStub
+
+	err := os.MkdirAll(folderThatShallNotBeDeleted, 0666)
 	if err != nil {
 		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
 	}
@@ -169,7 +171,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForce
 		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
 	}
 
-	_, err = os.Stat(folderThatShalNotBeDeleted)
+	_, err = os.Stat(folderThatShallNotBeDeleted)
 	assert.NoError(t, err, "Expect no error, since folder should not be deleted, but got: %v", err)
 }
 
@@ -207,6 +209,7 @@ func ensureOsSpecificBinaryFilename(filePath string) string {
 	if runtime.GOOS == "windows" {
 		filePath += ".exe"
 	}
+
 	return filePath
 }
 

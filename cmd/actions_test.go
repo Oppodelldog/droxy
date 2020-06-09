@@ -144,8 +144,10 @@ func Test_newDroxyCommandAction(t *testing.T) {
 }
 
 func Test_newDroxyCommandAction_defaultExecuteFunc(t *testing.T) {
+	got := reflect.ValueOf(newDroxyCommandAction().(*action).executeFunc).Pointer()
+	want := reflect.ValueOf(defaultExecuteFunc).Pointer()
 
-	if reflect.ValueOf(newDroxyCommandAction().(*action).executeFunc).Pointer() != reflect.ValueOf(defaultExecuteFunc).Pointer() {
+	if got != want {
 		t.Fatal("expected newDroxyCommand to be configured with 'defaultExecuteFunc', but was not")
 	}
 }
@@ -167,7 +169,6 @@ func (e *executerMock) Execute() error {
 }
 
 func Test_execSubCommand(t *testing.T) {
-
 	mock := &executerMock{result: errors.New("for code coverage")}
 	newSubCommandAction(mock).Execute()
 
@@ -185,7 +186,6 @@ func (e *helperMock) Help() error {
 }
 
 func Test_displayHelp(t *testing.T) {
-
 	mock := &helperMock{result: errors.New("for code coverage")}
 	newHelpDisplayAction(mock).Execute()
 

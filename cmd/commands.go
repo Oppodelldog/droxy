@@ -7,9 +7,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// newRoot returns a new cobra command, which contains help display and sub-commands
+// newRoot returns a new cobra command, which contains help display and sub-commands.
 func newRoot() *cobra.Command {
-
 	rootCmd := &cobra.Command{
 		Use:   "droxy",
 		Short: "docker proxy commands by configuration",

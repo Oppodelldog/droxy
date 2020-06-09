@@ -47,6 +47,7 @@ func TestBuildPorts_portsWithEnvVarsDefined_ExpectEnvVarsTobeResolved(t *testing
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
+
 	err = os.Setenv("CONTAINER_PORT", "4711")
 	if err != nil {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
@@ -71,6 +72,7 @@ func TestBuildPorts_portsWithEnvVarsDefined_ExpectEnvVarsTobeResolved(t *testing
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)
 	}
+
 	err = os.Unsetenv("CONTAINER_PORT")
 	if err != nil {
 		t.Fatalf("Did not expect os.Unsetenv to return an error, but got: %v", err)

@@ -9,7 +9,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//NewNameArgumentBuilder has no implementation for windows, it is stubbed out
+//NewNameArgumentBuilder has no implementation for windows, it is stubbed out.
 func NewNameArgumentBuilder() ArgumentBuilderInterface {
 	return &nameArgumentBuilder{
 		nameRandomizerFunc: defaultNameRandomizerFunc,
@@ -35,8 +35,8 @@ func (b *nameArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition
 }
 
 func defaultNameRandomizerFunc(containerName string) string {
-
 	rand.Seed(time.Now().UnixNano())
 	randomValue := rand.Int31()
+
 	return fmt.Sprintf("%s%v", containerName, randomValue)
 }

@@ -12,7 +12,7 @@ import (
 func newDockerClientAdapter() (*dockerClientAdapter, error) {
 	dockerClient, err := client.NewEnvClient()
 	if err != nil {
-		err = fmt.Errorf("error building name argument, opening docker client failed: %v", err)
+		err = fmt.Errorf("error building name argument, opening docker client failed: %w", err)
 		return nil, err
 	}
 
@@ -25,6 +25,7 @@ type dockerClientAdapter struct {
 
 func (a *dockerClientAdapter) getAPIVersion() (string, error) {
 	ctx := context.Background()
+
 	v, err := a.dockerClient.ServerVersion(ctx)
 	if err != nil {
 		return "", err
@@ -34,7 +35,6 @@ func (a *dockerClientAdapter) getAPIVersion() (string, error) {
 }
 
 func (a *dockerClientAdapter) exists(containerName string) bool {
-
 	ctx := context.Background()
 	options := types.ContainerListOptions{
 		All: true,

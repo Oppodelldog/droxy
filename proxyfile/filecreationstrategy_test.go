@@ -11,7 +11,6 @@ import (
 )
 
 func TestFileCreation_AllStrategies(t *testing.T) {
-
 	testCases := []struct {
 		strategy FileCreationStrategy
 	}{

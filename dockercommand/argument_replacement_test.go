@@ -12,7 +12,6 @@ import (
 )
 
 func TestPrepareArguments(t *testing.T) {
-
 	commandDef := &config.CommandDefinition{
 		ReplaceArgs: &[][]string{
 			{
@@ -29,9 +28,9 @@ func TestPrepareArguments(t *testing.T) {
 }
 
 func TestPrepareArguments_WithInvalidArgumentLength_ExpectWarning(t *testing.T) {
-
 	logRecorderBuffer := bytes.NewBufferString("")
 	logrus.SetOutput(logRecorderBuffer)
+
 	invalidReplacementArgs := &[][]string{
 		{
 			"arg2",
@@ -49,5 +48,10 @@ func TestPrepareArguments_WithInvalidArgumentLength_ExpectWarning(t *testing.T) 
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.ReadAll to return an error, but got: %v", err)
 	}
-	assert.Contains(t, string(recordedLogEntries), "invalid argument replacement mapping '[arg2]'. Replacement mapping must consist of 2 array entries.")
+
+	assert.Contains(
+		t,
+		string(recordedLogEntries),
+		"invalid argument replacement mapping '[arg2]'. Replacement mapping must consist of 2 array entries.",
+	)
 }

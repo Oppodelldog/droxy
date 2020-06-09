@@ -9,7 +9,6 @@ import (
 )
 
 func TestBuildIsDaemonFlag_InteractiveIsTrue(t *testing.T) {
-
 	isDetached := true
 	commandDef := &config.CommandDefinition{
 		IsDetached: &isDetached,
@@ -41,9 +40,8 @@ func TestBuildIsDaemonFlag_InteractiveIsFalse(t *testing.T) {
 	assert.Empty(t, builder.Calls)
 }
 
-// deprecated
+// deprecated.
 func TestBuildIsDaemonFlag_InteractiveIsTrue_deprecatedIsDaemon(t *testing.T) {
-
 	isDaemon := true
 	commandDef := &config.CommandDefinition{
 		IsDaemon: &isDaemon,
@@ -60,7 +58,7 @@ func TestBuildIsDaemonFlag_InteractiveIsTrue_deprecatedIsDaemon(t *testing.T) {
 	builder.AssertExpectations(t)
 }
 
-// deprecated
+// deprecated.
 func TestBuildIsDaemonFlag_InteractiveIsFalse_deprecatedIsDaemon(t *testing.T) {
 	isDaemon := false
 	commandDef := &config.CommandDefinition{

@@ -7,13 +7,16 @@ import (
 )
 
 func Test_action_IsResponsible(t *testing.T) {
-	type fields struct {
-		isResponsibleFunc func(args []string) bool
-		executeFunc       func() int
-	}
-	type args struct {
-		args []string
-	}
+	type (
+		fields struct {
+			isResponsibleFunc func(args []string) bool
+			executeFunc       func() int
+		}
+		args struct {
+			args []string
+		}
+	)
+
 	tests := []struct {
 		name   string
 		fields fields
@@ -61,7 +64,6 @@ func Test_action_Execute(t *testing.T) {
 	a := &action{
 		isResponsibleFunc: func([]string) bool { return true },
 		executeFunc: func() int {
-
 			return resultStub
 		},
 	}
@@ -83,7 +85,6 @@ func (m *chainElementStub) Execute() int {
 }
 
 func Test_actionChain_execute(t *testing.T) {
-
 	tests := []struct {
 		name  string
 		chain actionChain
@@ -118,7 +119,6 @@ func Test_actionChain_execute(t *testing.T) {
 
 func Test_actionChain_execute_emptyChain_panics(t *testing.T) {
 	chain := &actionChain{}
-	assert.Panics(t, func() {
-		chain.execute([]string{})
-	})
+
+	assert.Panics(t, func() { chain.execute([]string{}) })
 }

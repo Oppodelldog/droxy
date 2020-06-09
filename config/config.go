@@ -5,7 +5,7 @@ import "github.com/Oppodelldog/filediscovery"
 const configFileName = "droxy.toml"
 const configEnvVarName = "DROXY_CONFIG"
 
-//NewLoader returns a new config loader
+//NewLoader returns a new config loader.
 func NewLoader() Loader {
 	return &configLoader{}
 }
@@ -20,9 +20,9 @@ type (
 
 // Load loads the configuration file.
 func (cl *configLoader) Load() *Configuration {
-
 	configFileDiscovery := cl.createFileDiscovery()
 	configFilePath, err := configFileDiscovery.Discover(configFileName)
+
 	if err != nil {
 		panic(err)
 	}

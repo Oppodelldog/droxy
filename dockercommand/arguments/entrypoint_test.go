@@ -9,7 +9,6 @@ import (
 )
 
 func TestBuildEntryPoint_EntryPointDefined(t *testing.T) {
-
 	entryPoint := "entryPoint"
 	commandDef := &config.CommandDefinition{
 		EntryPoint: &entryPoint,

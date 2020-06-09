@@ -16,6 +16,7 @@ func BuildWorkDir(commandDef *config.CommandDefinition, builder builder.Builder)
 		if err != nil {
 			return err
 		}
+
 		builder.SetWorkingDir(resolvedWorkDir)
 
 		if isAutoMount, ok := commandDef.GetAutoMountWorkDir(); ok && isAutoMount {
@@ -24,5 +25,6 @@ func BuildWorkDir(commandDef *config.CommandDefinition, builder builder.Builder)
 			}
 		}
 	}
+
 	return nil
 }
