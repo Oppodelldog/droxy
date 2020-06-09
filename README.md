@@ -1,7 +1,3 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/Oppodelldog/droxy)](https://goreportcard.com/report/github.com/Oppodelldog/droxy)
-[![License](https://img.shields.io/badge/License-BSD--3-blue.svg)](https://raw.githubusercontent.com/Oppodelldog/droxy/master/LICENSE)
-[![Build Status](https://travis-ci.com/Oppodelldog/droxy.svg?branch=master)](https://travis-ci.com/Oppodelldog/droxy)
-[![codecov](https://codecov.io/gh/Oppodelldog/droxy/branch/master/graph/badge.svg)](https://codecov.io/gh/Oppodelldog/droxy)
 # Droxy
 > create commands that proxy to docker
   
