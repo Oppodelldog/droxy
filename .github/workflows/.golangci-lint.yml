@@ -1,0 +1,4 @@
+#https://github.com/golangci/golangci-lint-action
+
+- name: Run golangci-lint
+  uses: golangci/golangci-lint-action@v1.2.1
