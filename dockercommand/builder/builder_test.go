@@ -2,6 +2,8 @@ package builder
 
 import (
 	"bytes"
+	"io"
+	"os/exec"
 	"strings"
 	"testing"
 
@@ -17,6 +19,18 @@ func TestBuilder_FullFeature(t *testing.T) {
 	testWriterB := bytes.NewBufferString("")
 	testReader := bytes.NewBufferString("")
 
+	cmd := buildCmd(testWriterA, testWriterB, testReader)
+
+	got := strings.Join(cmd.Args, " ")
+	want := getExpectedCmdString()
+
+	assert.Equal(t, want, got)
+	assert.Equal(t, cmd.Stdout, testWriterA)
+	assert.Equal(t, cmd.Stderr, testWriterB)
+	assert.Equal(t, cmd.Stdin, testReader)
+}
+
+func buildCmd(w1 io.Writer, w2 io.Writer, r io.Reader) *exec.Cmd {
 	b := New()
 	b.AddArgument("arg1")
 	b.AddArgument("arg2")
@@ -39,13 +53,15 @@ func TestBuilder_FullFeature(t *testing.T) {
 	b.SetNetwork("network")
 	b.SetEnvFile(".env")
 	b.SetIP("127.1.2.3")
-	b.SetStdOut(testWriterA)
-	b.SetStdErr(testWriterB)
-	b.SetStdIn(testReader)
+	b.SetStdOut(w1)
+	b.SetStdErr(w2)
+	b.SetStdIn(r)
 	b.SetWorkingDir("workingDir")
-	cmd := b.Build()
 
-	commandString := strings.Join(cmd.Args, " ")
+	return b.Build()
+}
+
+func getExpectedCmdString() string {
 	expectedCommandString := strings.Replace(`docker run
 arg1
 arg2
@@ -71,11 +87,7 @@ command
 cmdArg1
 cmdArg2`,
 		"\n", " ", -1)
-
-	assert.Equal(t, expectedCommandString, commandString)
-	assert.Equal(t, cmd.Stdout, testWriterA)
-	assert.Equal(t, cmd.Stderr, testWriterB)
-	assert.Equal(t, cmd.Stdin, testReader)
+	return expectedCommandString
 }
 
 func TestBuilder_DefaultOutput(t *testing.T) {
