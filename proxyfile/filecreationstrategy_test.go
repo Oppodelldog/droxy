@@ -38,7 +38,7 @@ func TestFileCreation_AllStrategies(t *testing.T) {
 			src := path.Join(testFolderPath, "testFileSrc")
 
 			srcBytes := []byte{1, 2, 3, 4, 5}
-			err = ioutil.WriteFile(src, srcBytes, 0776)
+			err = ioutil.WriteFile(src, srcBytes, writePerm)
 			failOnError(t, err, "did not expect ioutil.WriteAndSyncFile to return an error, but got: %v")
 
 			target := path.Join(testFolderPath, "testFileTarget")
