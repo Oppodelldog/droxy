@@ -31,7 +31,7 @@ func TestConfiguration_FindCommandByName(t *testing.T) {
 		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
 	}
 
-	assert.Equal(t, &commandX, commandDef)
+	assert.Equal(t, commandX, commandDef)
 }
 
 func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {

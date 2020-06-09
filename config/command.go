@@ -34,7 +34,7 @@ type CommandDefinition struct {
 }
 
 // GetRequireEnvVars returns value of RequireEnvVars and an boolean indicating if value is set.
-func (c *CommandDefinition) GetRequireEnvVars() (bool, bool) {
+func (c CommandDefinition) GetRequireEnvVars() (bool, bool) {
 	if c.RequireEnvVars != nil {
 		return *c.RequireEnvVars, true
 	}
@@ -43,7 +43,7 @@ func (c *CommandDefinition) GetRequireEnvVars() (bool, bool) {
 }
 
 // GetIsTemplate returns value of IsTemplate and an boolean indicating if value is set.
-func (c *CommandDefinition) GetIsTemplate() (bool, bool) {
+func (c CommandDefinition) GetIsTemplate() (bool, bool) {
 	if c.IsTemplate != nil {
 		return *c.IsTemplate, true
 	}
@@ -52,7 +52,7 @@ func (c *CommandDefinition) GetIsTemplate() (bool, bool) {
 }
 
 // GetTemplate returns value of Template and an boolean indicating if value is set.
-func (c *CommandDefinition) GetTemplate() (string, bool) {
+func (c CommandDefinition) GetTemplate() (string, bool) {
 	if c.Template != nil {
 		return *c.Template, true
 	}
@@ -61,7 +61,7 @@ func (c *CommandDefinition) GetTemplate() (string, bool) {
 }
 
 // GetIsDetached returns value of GetIsDetached and an boolean indicating if value is set.
-func (c *CommandDefinition) GetIsDetached() (bool, bool) {
+func (c CommandDefinition) GetIsDetached() (bool, bool) {
 	if c.IsDetached != nil {
 		return *c.IsDetached, true
 	}
@@ -74,7 +74,7 @@ func (c *CommandDefinition) GetIsDetached() (bool, bool) {
 }
 
 // GetEntryPoint returns entrypoint and an boolean indicating if value is set.
-func (c *CommandDefinition) GetEntryPoint() (string, bool) {
+func (c CommandDefinition) GetEntryPoint() (string, bool) {
 	if c.EntryPoint != nil {
 		return *c.EntryPoint, true
 	}
@@ -83,7 +83,7 @@ func (c *CommandDefinition) GetEntryPoint() (string, bool) {
 }
 
 // getCommand returns value of Command (CMD) and an boolean indicating if value is set.
-func (c *CommandDefinition) GetCommand() (string, bool) {
+func (c CommandDefinition) GetCommand() (string, bool) {
 	if c.Command != nil {
 		return *c.Command, true
 	}
@@ -92,7 +92,7 @@ func (c *CommandDefinition) GetCommand() (string, bool) {
 }
 
 // GetName returns value of Name and an boolean indicating if value is set.
-func (c *CommandDefinition) GetName() (string, bool) {
+func (c CommandDefinition) GetName() (string, bool) {
 	if c.Name != nil {
 		return *c.Name, true
 	}
@@ -101,7 +101,7 @@ func (c *CommandDefinition) GetName() (string, bool) {
 }
 
 // GetImage returns value of Image and an boolean indicating if value is set.
-func (c *CommandDefinition) GetImage() (string, bool) {
+func (c CommandDefinition) GetImage() (string, bool) {
 	if c.Image != nil {
 		return *c.Image, true
 	}
@@ -110,7 +110,7 @@ func (c *CommandDefinition) GetImage() (string, bool) {
 }
 
 // GetNetwork returns value of Network and an boolean indicating if value is set.
-func (c *CommandDefinition) GetNetwork() (string, bool) {
+func (c CommandDefinition) GetNetwork() (string, bool) {
 	if c.Network != nil {
 		return *c.Network, true
 	}
@@ -119,7 +119,7 @@ func (c *CommandDefinition) GetNetwork() (string, bool) {
 }
 
 // GetEnvFile returns value of EnvFile and an boolean indicating if value is set.
-func (c *CommandDefinition) GetEnvFile() (string, bool) {
+func (c CommandDefinition) GetEnvFile() (string, bool) {
 	if c.EnvFile != nil {
 		return *c.EnvFile, true
 	}
@@ -128,7 +128,7 @@ func (c *CommandDefinition) GetEnvFile() (string, bool) {
 }
 
 // GetIP returns value of Ip and an boolean indicating if value is set.
-func (c *CommandDefinition) GetIP() (string, bool) {
+func (c CommandDefinition) GetIP() (string, bool) {
 	if c.IP != nil {
 		return *c.IP, true
 	}
@@ -137,7 +137,7 @@ func (c *CommandDefinition) GetIP() (string, bool) {
 }
 
 // GetIsInteractive returns value of IsInteractive and an boolean indicating if value is set.
-func (c *CommandDefinition) GetIsInteractive() (bool, bool) {
+func (c CommandDefinition) GetIsInteractive() (bool, bool) {
 	if c.IsInteractive != nil {
 		return *c.IsInteractive, true
 	}
@@ -146,7 +146,7 @@ func (c *CommandDefinition) GetIsInteractive() (bool, bool) {
 }
 
 // GetAddGroups returns value of IsInteractive and an boolean indicating if value is set.
-func (c *CommandDefinition) GetAddGroups() (bool, bool) {
+func (c CommandDefinition) GetAddGroups() (bool, bool) {
 	if c.AddGroups != nil {
 		return *c.AddGroups, true
 	}
@@ -155,7 +155,7 @@ func (c *CommandDefinition) GetAddGroups() (bool, bool) {
 }
 
 // GetImpersonate returns value of Impersonate and an boolean indicating if value is set.
-func (c *CommandDefinition) GetImpersonate() (bool, bool) {
+func (c CommandDefinition) GetImpersonate() (bool, bool) {
 	if c.Impersonate != nil {
 		return *c.Impersonate, true
 	}
@@ -164,7 +164,7 @@ func (c *CommandDefinition) GetImpersonate() (bool, bool) {
 }
 
 // GetWorkDir returns value of Impersonate and an boolean indicating if value is set.
-func (c *CommandDefinition) GetWorkDir() (string, bool) {
+func (c CommandDefinition) GetWorkDir() (string, bool) {
 	if c.WorkDir != nil {
 		return *c.WorkDir, true
 	}
@@ -173,7 +173,7 @@ func (c *CommandDefinition) GetWorkDir() (string, bool) {
 }
 
 // GetAutoMountWorkDir returns value of AutoMountWorkDir and an boolean indicating if value is set.
-func (c *CommandDefinition) GetAutoMountWorkDir() (bool, bool) {
+func (c CommandDefinition) GetAutoMountWorkDir() (bool, bool) {
 	if c.AutoMountWorkDir != nil {
 		return *c.AutoMountWorkDir, true
 	}
@@ -182,7 +182,7 @@ func (c *CommandDefinition) GetAutoMountWorkDir() (bool, bool) {
 }
 
 // GetRemoveContainer returns value of RemoveContainer and an boolean indicating if value is set.
-func (c *CommandDefinition) GetRemoveContainer() (bool, bool) {
+func (c CommandDefinition) GetRemoveContainer() (bool, bool) {
 	if c.RemoveContainer != nil {
 		return *c.RemoveContainer, true
 	}
@@ -191,7 +191,7 @@ func (c *CommandDefinition) GetRemoveContainer() (bool, bool) {
 }
 
 // GetUniqueNames returns value of UniqueNames and an boolean indicating if value is set.
-func (c *CommandDefinition) GetUniqueNames() (bool, bool) {
+func (c CommandDefinition) GetUniqueNames() (bool, bool) {
 	if c.UniqueNames != nil {
 		return *c.UniqueNames, true
 	}
@@ -200,7 +200,7 @@ func (c *CommandDefinition) GetUniqueNames() (bool, bool) {
 }
 
 // GetVolumes returns value of Volumes and an boolean indicating if value is set.
-func (c *CommandDefinition) GetVolumes() ([]string, bool) {
+func (c CommandDefinition) GetVolumes() ([]string, bool) {
 	if c.Volumes != nil {
 		return *c.Volumes, true
 	}
@@ -209,7 +209,7 @@ func (c *CommandDefinition) GetVolumes() ([]string, bool) {
 }
 
 // GetLinks returns value of Links and an boolean indicating if value is set.
-func (c *CommandDefinition) GetLinks() ([]string, bool) {
+func (c CommandDefinition) GetLinks() ([]string, bool) {
 	if c.Links != nil {
 		return *c.Links, true
 	}
@@ -218,7 +218,7 @@ func (c *CommandDefinition) GetLinks() ([]string, bool) {
 }
 
 // GetEnvVars returns value of EnvVars and an boolean indicating if value is set.
-func (c *CommandDefinition) GetEnvVars() ([]string, bool) {
+func (c CommandDefinition) GetEnvVars() ([]string, bool) {
 	if c.EnvVars != nil {
 		return *c.EnvVars, true
 	}
@@ -227,7 +227,7 @@ func (c *CommandDefinition) GetEnvVars() ([]string, bool) {
 }
 
 // GetPorts returns value of Ports and an boolean indicating if value is set.
-func (c *CommandDefinition) GetPorts() ([]string, bool) {
+func (c CommandDefinition) GetPorts() ([]string, bool) {
 	if c.Ports != nil {
 		return *c.Ports, true
 	}
@@ -236,7 +236,7 @@ func (c *CommandDefinition) GetPorts() ([]string, bool) {
 }
 
 // GetPortsFromParams returns value of Ports and an boolean indicating if value is set.
-func (c *CommandDefinition) GetPortsFromParams() ([]string, bool) {
+func (c CommandDefinition) GetPortsFromParams() ([]string, bool) {
 	if c.PortsFromParams != nil {
 		return *c.PortsFromParams, true
 	}
@@ -245,7 +245,7 @@ func (c *CommandDefinition) GetPortsFromParams() ([]string, bool) {
 }
 
 // GetMergeTemplateArrays returns value of MergeTemplateArrays and an boolean indicating if value is set.
-func (c *CommandDefinition) GetMergeTemplateArrays() ([]string, bool) {
+func (c CommandDefinition) GetMergeTemplateArrays() ([]string, bool) {
 	if c.MergeTemplateArrays != nil {
 		return *c.MergeTemplateArrays, true
 	}
@@ -254,7 +254,7 @@ func (c *CommandDefinition) GetMergeTemplateArrays() ([]string, bool) {
 }
 
 // GetReplaceArgs returns value of ReplaceArgs and an boolean indicating if value is set.
-func (c *CommandDefinition) GetReplaceArgs() ([][]string, bool) {
+func (c CommandDefinition) GetReplaceArgs() ([][]string, bool) {
 	if c.ReplaceArgs != nil {
 		return *c.ReplaceArgs, true
 	}
@@ -263,7 +263,7 @@ func (c *CommandDefinition) GetReplaceArgs() ([][]string, bool) {
 }
 
 // GetAdditionalArgs returns value of AdditionalArgs and an boolean indicating if value is set.
-func (c *CommandDefinition) GetAdditionalArgs() ([]string, bool) {
+func (c CommandDefinition) GetAdditionalArgs() ([]string, bool) {
 	if c.AdditionalArgs != nil {
 		return *c.AdditionalArgs, true
 	}
@@ -272,13 +272,13 @@ func (c *CommandDefinition) GetAdditionalArgs() ([]string, bool) {
 }
 
 // HasTemplate indicates if the command definition has a template set.
-func (c *CommandDefinition) HasTemplate() bool { return c.Template != nil && *c.Template != "" }
+func (c CommandDefinition) HasTemplate() bool { return c.Template != nil && *c.Template != "" }
 
 // HasName indicates if the command definition has Name.
-func (c *CommandDefinition) HasName() bool { return c.Name != nil && *c.Name != "" }
+func (c CommandDefinition) HasName() bool { return c.Name != nil && *c.Name != "" }
 
 // IsTemplateArrayMerged returns true if the given identifier is part of MergeTemplateArrays.
-func (c *CommandDefinition) IsTemplateArrayMerged(arrayKeyName string) bool {
+func (c CommandDefinition) IsTemplateArrayMerged(arrayKeyName string) bool {
 	if identifiers, ok := c.GetMergeTemplateArrays(); ok {
 		for _, identifier := range identifiers {
 			if strings.EqualFold(identifier, arrayKeyName) {

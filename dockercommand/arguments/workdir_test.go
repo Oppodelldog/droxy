@@ -12,7 +12,7 @@ import (
 
 func TestBuildWorkDir_WorkDirIsSet(t *testing.T) {
 	workDir := "/someDir"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		WorkDir: &workDir,
 	}
 
@@ -44,7 +44,7 @@ func TestBuildWorkDir_ResolvesEnvVars(t *testing.T) {
 	}()
 
 	workDir := "${CURRENT_WORKING_DIR}"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		WorkDir: &workDir,
 	}
 
@@ -61,7 +61,7 @@ func TestBuildWorkDir_ResolvesEnvVars(t *testing.T) {
 }
 
 func TestBuildWorkDir_WorkDirIsNotSet(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		WorkDir: nil,
 	}
 
@@ -82,7 +82,7 @@ func TestBuildWorkDir_AutoMountIsTrue_AutomaticallyMountsVolumeIfHostDir(t *test
 	}
 
 	autoMountIsOn := true
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		WorkDir:          &hostDir,
 		AutoMountWorkDir: &autoMountIsOn,
 	}
@@ -107,7 +107,7 @@ func TestBuildWorkDir_AutoMountIsFalse_DoesNotMountWorkDir(t *testing.T) {
 	}
 
 	autoMountIsOff := false
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		WorkDir:          &hostDir,
 		AutoMountWorkDir: &autoMountIsOff,
 	}

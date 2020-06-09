@@ -10,7 +10,7 @@ import (
 
 func TestBuildIpIp_IpIsSet(t *testing.T) {
 	IP := ".env"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IP: &IP,
 	}
 	builder := &mocks.Builder{}
@@ -26,7 +26,7 @@ func TestBuildIpIp_IpIsSet(t *testing.T) {
 }
 
 func TestBuildNetwork_IpIsNotSet(t *testing.T) {
-	commandDef := &config.CommandDefinition{}
+	commandDef := config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
 	err := BuildIP(commandDef, builder)

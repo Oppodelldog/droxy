@@ -6,7 +6,7 @@ import (
 )
 
 //BuildImage sets the docker image.
-func BuildImage(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildImage(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if imageName, ok := commandDef.GetImage(); ok {
 		builder.SetImageName(imageName)
 	}

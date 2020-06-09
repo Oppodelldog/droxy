@@ -10,7 +10,7 @@ import (
 
 func TestBuildIsDaemonFlag_InteractiveIsTrue(t *testing.T) {
 	isDetached := true
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsDetached: &isDetached,
 	}
 	builder := &mocks.Builder{}
@@ -27,7 +27,7 @@ func TestBuildIsDaemonFlag_InteractiveIsTrue(t *testing.T) {
 
 func TestBuildIsDaemonFlag_InteractiveIsFalse(t *testing.T) {
 	isDetached := false
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsDetached: &isDetached,
 	}
 	builder := &mocks.Builder{}
@@ -43,7 +43,7 @@ func TestBuildIsDaemonFlag_InteractiveIsFalse(t *testing.T) {
 // deprecated.
 func TestBuildIsDaemonFlag_InteractiveIsTrue_deprecatedIsDaemon(t *testing.T) {
 	isDaemon := true
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsDaemon: &isDaemon,
 	}
 	builder := &mocks.Builder{}
@@ -61,7 +61,7 @@ func TestBuildIsDaemonFlag_InteractiveIsTrue_deprecatedIsDaemon(t *testing.T) {
 // deprecated.
 func TestBuildIsDaemonFlag_InteractiveIsFalse_deprecatedIsDaemon(t *testing.T) {
 	isDaemon := false
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsDaemon: &isDaemon,
 	}
 	builder := &mocks.Builder{}

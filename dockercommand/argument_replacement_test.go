@@ -12,7 +12,7 @@ import (
 )
 
 func TestPrepareArguments(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		ReplaceArgs: &[][]string{
 			{
 				"arg2", "arg99",
@@ -37,7 +37,7 @@ func TestPrepareArguments_WithInvalidArgumentLength_ExpectWarning(t *testing.T) 
 		},
 	}
 
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		ReplaceArgs: invalidReplacementArgs,
 	}
 

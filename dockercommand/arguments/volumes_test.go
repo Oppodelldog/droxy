@@ -12,7 +12,7 @@ import (
 func TestBuildVolumes_VolumesAreSet(t *testing.T) {
 	volumes := []string{"/home/samwise/:/app/walktovulcano"}
 
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Volumes: &volumes,
 	}
 
@@ -28,7 +28,7 @@ func TestBuildVolumes_VolumesAreSet(t *testing.T) {
 }
 
 func TestBuildVolumes_VolumesAreNotSet(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Volumes: nil,
 	}
 
@@ -50,7 +50,7 @@ func TestBuildVolumes_VolumesEnvVarsAreResolves(t *testing.T) {
 
 	volumes := []string{"${WHERE_THE_HECK_AM_I}"}
 
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Volumes: &volumes,
 	}
 

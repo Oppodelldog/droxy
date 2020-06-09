@@ -6,7 +6,7 @@ import (
 )
 
 //BuildEnvFile maps the given env file into the container.
-func BuildEnvFile(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildEnvFile(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if envFile, ok := commandDef.GetEnvFile(); ok {
 		builder.SetEnvFile(envFile)
 	}

@@ -13,7 +13,7 @@ func NewUserGroupsArgumentBuilder() ArgumentBuilderInterface {
 type userGroupsArgumentBuilder struct {
 }
 
-func (b *userGroupsArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func (b *userGroupsArgumentBuilder) BuildArgument(commandDef config.CommandDefinition, builder builder.Builder) error {
 	_ = commandDef
 	_ = builder
 

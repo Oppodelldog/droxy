@@ -8,7 +8,7 @@ import (
 const containerLabel = "droxy"
 
 // LabelContainer labels the container.
-func LabelContainer(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func LabelContainer(commandDef config.CommandDefinition, builder builder.Builder) error {
 	_ = commandDef
 
 	builder.AddLabel(containerLabel)

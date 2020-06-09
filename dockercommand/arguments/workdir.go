@@ -10,7 +10,7 @@ import (
 
 // BuildWorkDir sets the working directory inside the container
 // if the directory exists on the host, it is automatically mounted when the appropriate option is set.
-func BuildWorkDir(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildWorkDir(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if workDir, ok := commandDef.GetWorkDir(); ok {
 		resolvedWorkDir, err := resolveEnvVar(workDir)
 		if err != nil {

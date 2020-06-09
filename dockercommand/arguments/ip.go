@@ -6,7 +6,7 @@ import (
 )
 
 //BuildIP maps the given Ip file into the container.
-func BuildIP(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildIP(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if ip, ok := commandDef.GetIP(); ok {
 		builder.SetIP(ip)
 	}

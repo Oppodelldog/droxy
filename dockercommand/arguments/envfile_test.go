@@ -10,7 +10,7 @@ import (
 
 func TestBuildEnvFile_EnvFileIsSet(t *testing.T) {
 	envFile := ".env"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		EnvFile: &envFile,
 	}
 	builder := &mocks.Builder{}
@@ -26,7 +26,7 @@ func TestBuildEnvFile_EnvFileIsSet(t *testing.T) {
 }
 
 func TestBuildNetwork_EnvFileIsNotSet(t *testing.T) {
-	commandDef := &config.CommandDefinition{}
+	commandDef := config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
 	err := BuildEnvFile(commandDef, builder)

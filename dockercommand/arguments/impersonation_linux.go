@@ -7,7 +7,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-func addImpersonation(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func addImpersonation(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if impersonate, ok := commandDef.GetImpersonate(); ok {
 		err := buildImpersonation(impersonate, builder)
 		if err != nil {

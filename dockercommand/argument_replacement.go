@@ -5,7 +5,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func prepareCommandLineArguments(commandDef *config.CommandDefinition, arguments []string) []string {
+func prepareCommandLineArguments(commandDef config.CommandDefinition, arguments []string) []string {
 	for index, argVal := range arguments {
 		replacement := getReplacement(commandDef, argVal)
 		if replacement != nil {
@@ -16,7 +16,7 @@ func prepareCommandLineArguments(commandDef *config.CommandDefinition, arguments
 	return arguments
 }
 
-func getReplacement(commandDef *config.CommandDefinition, s string) *string {
+func getReplacement(commandDef config.CommandDefinition, s string) *string {
 	if replaceArgs, ok := commandDef.GetReplaceArgs(); ok {
 		for _, replaceMapping := range replaceArgs {
 			const mustHaveEntries = 2

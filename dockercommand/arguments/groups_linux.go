@@ -18,7 +18,7 @@ type userGroupsArgumentBuilder struct {
 	userGroupIdsResolver userGroupIdsResolverInterface
 }
 
-func (b *userGroupsArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func (b *userGroupsArgumentBuilder) BuildArgument(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if addGroups, ok := commandDef.GetAddGroups(); ok && addGroups {
 		groupIDs, err := b.userGroupIdsResolver.getUserGroupIDs()
 		if err != nil {

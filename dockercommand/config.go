@@ -44,7 +44,7 @@ type (
 		containerExistenceChecker containerExistenceChecker
 	}
 
-	argumentBuilderDef func(commandDef *config.CommandDefinition, builder builder.Builder) error
+	argumentBuilderDef func(commandDef config.CommandDefinition, builder builder.Builder) error
 )
 
 // BuildCommandFromConfig builds a docker-run command on base of the given configuration.
@@ -71,7 +71,7 @@ func (cb *commandBuilder) BuildCommandFromConfig(commandName string, cfg *config
 	return cmd, nil
 }
 
-func (cb *commandBuilder) buildRunCommand(commandDef *config.CommandDefinition) (*exec.Cmd, error) {
+func (cb *commandBuilder) buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 	commandBuilder := builder.New()
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
@@ -92,7 +92,7 @@ func (cb *commandBuilder) buildRunCommand(commandDef *config.CommandDefinition) 
 	return commandBuilder.Build(), nil
 }
 
-func (cb *commandBuilder) buildExecCommand(commandDef *config.CommandDefinition) (*exec.Cmd, error) {
+func (cb *commandBuilder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 	commandBuilder := builder.New()
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
@@ -121,7 +121,7 @@ func (cb *commandBuilder) buildExecCommand(commandDef *config.CommandDefinition)
 }
 
 func (cb *commandBuilder) buildRunArgumentsFromBuilders(
-	commandDef *config.CommandDefinition,
+	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
 	argumentBuilders := []arguments.ArgumentBuilderInterface{
@@ -140,7 +140,7 @@ func (cb *commandBuilder) buildRunArgumentsFromBuilders(
 }
 
 func (cb *commandBuilder) buildRunArgumentsFromFunctions(
-	commandDef *config.CommandDefinition,
+	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
 	argumentBuilderFunctions := []argumentBuilderDef{
@@ -176,7 +176,7 @@ func (cb *commandBuilder) buildRunArgumentsFromFunctions(
 }
 
 func (cb *commandBuilder) buildExecArgumentsFromFunctions(
-	commandDef *config.CommandDefinition,
+	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
 	argumentBuilderFunctions := []argumentBuilderDef{
@@ -204,7 +204,7 @@ func (cb *commandBuilder) withVersionConstraint(
 	argumentBuilderFunc argumentBuilderDef,
 	versionConstraint string,
 ) argumentBuilderDef {
-	return func(commandDef *config.CommandDefinition, builder builder.Builder) error {
+	return func(commandDef config.CommandDefinition, builder builder.Builder) error {
 		if cb.isVersionSupported(versionConstraint) {
 			return argumentBuilderFunc(commandDef, builder)
 		}

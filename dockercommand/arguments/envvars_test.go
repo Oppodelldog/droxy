@@ -55,7 +55,7 @@ func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.
 		t.Run(testCaseName, func(t *testing.T) {
 			requireEnvVars := testData.requireEnvVars
 
-			commandDef := &config.CommandDefinition{
+			commandDef := config.CommandDefinition{
 				RequireEnvVars: &requireEnvVars,
 				EnvVars:        envVars,
 			}
@@ -73,7 +73,7 @@ func TestBuildEnvVars_EnvVarsNotRequired_EnvVarDefinedButCannotResolve_ResolvesE
 		"${ENV_VAR_1}",
 	}
 	envVarsRequired := false
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		RequireEnvVars: &envVarsRequired,
 		EnvVars:        envVars,
 	}
@@ -94,7 +94,7 @@ func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *tes
 			"${ENV_VAR_1}",
 		}
 		envVarsRequired := true
-		commandDef := &config.CommandDefinition{
+		commandDef := config.CommandDefinition{
 			RequireEnvVars: &envVarsRequired,
 			EnvVars:        envVars,
 		}
@@ -109,7 +109,7 @@ func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *tes
 }
 
 func TestBuildEnvVars_NoEnvVarsDefines(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		EnvVars: nil,
 	}
 	builder := &mocks.Builder{}
@@ -133,7 +133,7 @@ func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *test
 	envVarsConfig := &[]string{
 		"${ENV_VAR_1",
 	}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		EnvVars: envVarsConfig,
 	}
 	builder := &mocks.Builder{}

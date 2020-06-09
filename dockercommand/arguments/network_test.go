@@ -10,7 +10,7 @@ import (
 
 func TestBuildNetwork_NetworkIsTrue(t *testing.T) {
 	network := "my-docker-network"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Network: &network,
 	}
 	builder := &mocks.Builder{}
@@ -26,7 +26,7 @@ func TestBuildNetwork_NetworkIsTrue(t *testing.T) {
 }
 
 func TestBuildNetwork_NetworkIsFalse(t *testing.T) {
-	commandDef := &config.CommandDefinition{}
+	commandDef := config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
 	err := BuildNetwork(commandDef, builder)

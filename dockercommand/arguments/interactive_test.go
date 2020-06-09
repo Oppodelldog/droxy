@@ -10,7 +10,7 @@ import (
 
 func TestBuildInteractiveFlag_InteractiveIsTrue(t *testing.T) {
 	isInteractive := true
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsInteractive: &isInteractive,
 	}
 	builder := &mocks.Builder{}
@@ -27,7 +27,7 @@ func TestBuildInteractiveFlag_InteractiveIsTrue(t *testing.T) {
 
 func TestBuildInteractiveFlag_InteractiveIsFalse(t *testing.T) {
 	isInteractive := false
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsInteractive: &isInteractive,
 	}
 	builder := &mocks.Builder{}

@@ -10,7 +10,7 @@ import (
 )
 
 // BuildPortsFromParams sets mappings of host ports to container ports.
-func BuildPortsFromParams(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildPortsFromParams(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if portsFromParams, ok := commandDef.GetPortsFromParams(); ok {
 		return buildPortsFromParams(portsFromParams, builder)
 	}

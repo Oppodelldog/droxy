@@ -10,7 +10,7 @@ import (
 
 func TestBuildEntryPoint_EntryPointDefined(t *testing.T) {
 	entryPoint := "entryPoint"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		EntryPoint: &entryPoint,
 	}
 
@@ -26,7 +26,7 @@ func TestBuildEntryPoint_EntryPointDefined(t *testing.T) {
 }
 
 func TestBuildEntryPoint_NoEntryPointDefined(t *testing.T) {
-	commandDef := &config.CommandDefinition{Command: nil}
+	commandDef := config.CommandDefinition{Command: nil}
 	builder := &mocks.Builder{}
 
 	err := BuildEntryPoint(commandDef, builder)

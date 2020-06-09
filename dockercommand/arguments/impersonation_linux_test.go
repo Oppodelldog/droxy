@@ -12,7 +12,7 @@ import (
 
 func TestBuildImpersonation_enabledByConfig_builderIsCalled(t *testing.T) {
 	impersonate := true
-	commandDef := &config.CommandDefinition{Impersonate: &impersonate}
+	commandDef := config.CommandDefinition{Impersonate: &impersonate}
 	builder := &mocks.Builder{}
 
 	usr, err := user.Current()
@@ -32,7 +32,7 @@ func TestBuildImpersonation_enabledByConfig_builderIsCalled(t *testing.T) {
 
 func TestBuildImpersonation_disabledByConfig_builderIsNotCalled(t *testing.T) {
 	impersonate := false
-	commandDef := &config.CommandDefinition{Impersonate: &impersonate}
+	commandDef := config.CommandDefinition{Impersonate: &impersonate}
 	builder := &mocks.Builder{}
 
 	_, err := user.Current()

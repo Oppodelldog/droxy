@@ -6,7 +6,7 @@ import (
 )
 
 // BuildLinks maps Links from host to container.
-func BuildLinks(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildLinks(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if Links, ok := commandDef.GetLinks(); ok {
 		for _, volume := range Links {
 			resolvedLinkMapping, err := resolveEnvVar(volume)

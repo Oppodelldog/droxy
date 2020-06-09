@@ -20,7 +20,7 @@ func TestBuildPortsFromParams_portsDefined_matchWithArgs(t *testing.T) {
 	portsFromParams := []string{
 		"--inspect-brk=(\\d*)",
 	}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		PortsFromParams: &portsFromParams,
 	}
 
@@ -47,7 +47,7 @@ func TestBuildPortsFromParams_portsDefined_2matchesWithArgs(t *testing.T) {
 		"--inspect-brk=(\\d*)",
 		"--inspect=(\\d*)",
 	}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		PortsFromParams: &portsFromParams,
 	}
 
@@ -74,7 +74,7 @@ func TestBuildPortsFromParams_portsDefined_noMatchWithArgs(t *testing.T) {
 	portsFromParams := []string{
 		"--inspect-brk=(\\d*)",
 	}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		PortsFromParams: &portsFromParams,
 	}
 
@@ -89,7 +89,7 @@ func TestBuildPortsFromParams_portsDefined_noMatchWithArgs(t *testing.T) {
 }
 
 func TestBuildPortsFromParams_portsNotDefined(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		PortsFromParams: nil,
 	}
 

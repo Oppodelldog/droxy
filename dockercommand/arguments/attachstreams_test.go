@@ -12,7 +12,7 @@ import (
 
 func TestAttachStreams(t *testing.T) {
 	builder := &mocks.Builder{}
-	commandDef := &config.CommandDefinition{}
+	commandDef := config.CommandDefinition{}
 
 	builder.
 		On("AttachTo", "STDIN").Once().Return(builder).
@@ -29,7 +29,7 @@ func TestAttachStreams(t *testing.T) {
 func TestAttachStreams_inDetachedMode_notAttached(t *testing.T) {
 	isDetached := true
 	builder := &mocks.Builder{}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsDetached: &isDetached,
 	}
 
@@ -47,7 +47,7 @@ func TestAttachStreams_inDetachedMode_notAttached(t *testing.T) {
 func TestAttachStreams_isInteractiveIsSetToFalse_attached(t *testing.T) {
 	isInteractive := true
 	builder := &mocks.Builder{}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsInteractive: &isInteractive,
 	}
 
@@ -65,7 +65,7 @@ func TestAttachStreams_isInteractiveIsSetToFalse_attached(t *testing.T) {
 func TestAttachStreams_isNotInteractiveIsSetToFalse_notAttached(t *testing.T) {
 	isInteractive := false
 	builder := &mocks.Builder{}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		IsInteractive: &isInteractive,
 	}
 

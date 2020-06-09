@@ -12,7 +12,7 @@ import (
 func TestBuildLinks_LinksAreSet(t *testing.T) {
 	Links := []string{"/home/samwise/:/app/walktovulcano"}
 
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Links: &Links,
 	}
 
@@ -28,7 +28,7 @@ func TestBuildLinks_LinksAreSet(t *testing.T) {
 }
 
 func TestBuildLinks_LinksAreNotSet(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Links: nil,
 	}
 
@@ -49,7 +49,7 @@ func TestBuildLinks_LinksEnvVarsAreResolves(t *testing.T) {
 	}
 
 	Links := []string{"${WHERE_THE_HECK_AM_I}"}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Links: &Links,
 	}
 

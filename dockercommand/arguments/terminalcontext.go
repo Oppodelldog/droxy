@@ -6,7 +6,7 @@ import (
 )
 
 // BuildTerminalContext sets -t if terminal context was detected.
-func BuildTerminalContext(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildTerminalContext(commandDef config.CommandDefinition, builder builder.Builder) error {
 	_ = commandDef
 
 	if isTerminalContext() {

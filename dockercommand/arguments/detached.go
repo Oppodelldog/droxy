@@ -6,7 +6,7 @@ import (
 )
 
 //BuildDetachedFlag sets the daemon flag, which starts the container in background.
-func BuildDetachedFlag(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildDetachedFlag(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if isDetached, ok := commandDef.GetIsDetached(); isDetached && ok {
 		builder.AddArgument("-d")
 	}

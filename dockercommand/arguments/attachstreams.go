@@ -6,7 +6,7 @@ import (
 )
 
 // AttachStreams attaches STDIN, STDOUT and STDERR to docker run call.
-func AttachStreams(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func AttachStreams(commandDef config.CommandDefinition, builder builder.Builder) error {
 	_ = commandDef
 
 	if isDetached, ok := commandDef.GetIsDetached(); isDetached && ok {

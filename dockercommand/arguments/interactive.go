@@ -6,7 +6,7 @@ import (
 )
 
 //BuildInteractiveFlag sets the interactive flag, which enables user interaction.
-func BuildInteractiveFlag(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildInteractiveFlag(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if isInteractive, ok := commandDef.GetIsInteractive(); isInteractive && ok {
 		builder.AddArgument("-i")
 	}

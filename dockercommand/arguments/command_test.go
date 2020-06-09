@@ -10,7 +10,7 @@ import (
 
 func TestBuildCommand_CommandDefined(t *testing.T) {
 	command := "command"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Command: &command,
 	}
 
@@ -26,7 +26,7 @@ func TestBuildCommand_CommandDefined(t *testing.T) {
 }
 
 func TestBuildCommand_NoCommandDefined(t *testing.T) {
-	commandDef := &config.CommandDefinition{Command: nil}
+	commandDef := config.CommandDefinition{Command: nil}
 	builder := &mocks.Builder{}
 
 	err := BuildCommand(commandDef, builder)

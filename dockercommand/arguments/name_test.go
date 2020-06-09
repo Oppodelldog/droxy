@@ -29,7 +29,7 @@ func TestBuildName_NameIsSet_AndNotUnique_ExpectAppropriateBuilderCall(t *testin
 
 		containerName := testCase.containerName
 		uniqueNames := testCase.uniqueNames
-		commandDef := &config.CommandDefinition{
+		commandDef := config.CommandDefinition{
 			Name:        &containerName,
 			UniqueNames: &uniqueNames,
 		}
@@ -52,7 +52,7 @@ func TestBuildName_NameIsSet_AndNotUnique_ExpectAppropriateBuilderCall(t *testin
 }
 
 func TestBuildName_NameIsNotSet_AndNotUniqueNames(t *testing.T) {
-	commandDef := &config.CommandDefinition{}
+	commandDef := config.CommandDefinition{}
 	builder := &mocks.Builder{}
 
 	nameBuilder := NewNameArgumentBuilder()

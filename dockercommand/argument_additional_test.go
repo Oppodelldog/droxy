@@ -8,7 +8,7 @@ import (
 )
 
 func TestAddAdditionalArguments(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		AdditionalArgs: &[]string{"--some-additional-argument"},
 	}
 	args := []string{"--some-arg"}

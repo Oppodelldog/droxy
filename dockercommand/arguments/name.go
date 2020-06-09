@@ -22,7 +22,7 @@ type nameArgumentBuilder struct {
 
 type nameRandomizerFuncDef func(string) string
 
-func (b *nameArgumentBuilder) BuildArgument(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func (b *nameArgumentBuilder) BuildArgument(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if containerName, ok := commandDef.GetName(); ok {
 		if uniqueContainerNames, ok := commandDef.GetUniqueNames(); ok && uniqueContainerNames {
 			containerName = b.nameRandomizerFunc(containerName)

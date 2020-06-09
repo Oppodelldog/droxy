@@ -2,8 +2,8 @@ package config
 
 import "reflect"
 
-func mergeCommand(baseCommand *CommandDefinition, overlayCommand *CommandDefinition) *CommandDefinition {
-	mergedCommand := new(CommandDefinition)
+func mergeCommand(baseCommand CommandDefinition, overlayCommand CommandDefinition) CommandDefinition {
+	mergedCommand := CommandDefinition{}
 
 	mergedCommand.Name = resolvePropertyString(baseCommand.Name, overlayCommand.Name)
 	mergedCommand.EntryPoint = resolvePropertyString(baseCommand.EntryPoint, overlayCommand.EntryPoint)

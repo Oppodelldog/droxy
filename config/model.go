@@ -17,7 +17,7 @@ type Configuration struct {
 }
 
 // FindCommandByName finds a command by the given name.
-func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinition, error) {
+func (c *Configuration) FindCommandByName(commandName string) (CommandDefinition, error) {
 	for _, command := range c.Command {
 		if configCommandName, ok := command.GetName(); ok {
 			if configCommandName == commandName {
@@ -26,7 +26,7 @@ func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinitio
 		}
 	}
 
-	return nil, fmt.Errorf("%w: '%s'", errCommandNotDefined, commandName)
+	return CommandDefinition{}, fmt.Errorf("%w: '%s'", errCommandNotDefined, commandName)
 }
 
 // SetConfigurationFilePath sets the filepath the configuration was load from. this is for debugging purpose.
@@ -39,15 +39,21 @@ func (c *Configuration) GetConfigurationFilePath() string {
 	return c.configFilePath
 }
 
-func (c *Configuration) resolveConfig(command CommandDefinition) (*CommandDefinition, error) {
+func (c *Configuration) resolveConfig(command CommandDefinition) (CommandDefinition, error) {
 	if !command.HasTemplate() {
-		return &command, nil
+		return command, nil
 	}
 
 	templateDefinition, err := c.FindCommandByName(*command.Template)
 	if err != nil {
-		return nil, fmt.Errorf("%w '%s' to resolve config of '%s'", errCouldNotFindTemplate, *command.Template, *command.Name)
+		return CommandDefinition{},
+			fmt.Errorf(
+				"%w '%s' to resolve config of '%s'",
+				errCouldNotFindTemplate,
+				*command.Template,
+				*command.Name,
+			)
 	}
 
-	return mergeCommand(templateDefinition, &command), nil
+	return mergeCommand(templateDefinition, command), nil
 }

@@ -11,7 +11,7 @@ import (
 
 func TestBuildPorts_portsDefined(t *testing.T) {
 	ports := []string{"PORT_HOST:PORT_CONTAINER"}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Ports: &ports,
 	}
 
@@ -28,7 +28,7 @@ func TestBuildPorts_portsDefined(t *testing.T) {
 }
 
 func TestBuildPorts_portsNotDefined(t *testing.T) {
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Ports: nil,
 	}
 
@@ -54,7 +54,7 @@ func TestBuildPorts_portsWithEnvVarsDefined_ExpectEnvVarsTobeResolved(t *testing
 	}
 
 	ports := []string{"${HOST_PORT}:${CONTAINER_PORT}"}
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Ports: &ports,
 	}
 

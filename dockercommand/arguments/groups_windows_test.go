@@ -9,5 +9,5 @@ import (
 )
 
 func TestAddGroups(t *testing.T) {
-	assert.Nil(t, NewUserGroupsArgumentBuilder().BuildArgument(&config.CommandDefinition{}, &mocks.Builder{}))
+	assert.Nil(t, NewUserGroupsArgumentBuilder().BuildArgument(config.CommandDefinition{}, &mocks.Builder{}))
 }

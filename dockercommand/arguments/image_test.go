@@ -10,7 +10,7 @@ import (
 
 func TestBuildImage_ImageDefined(t *testing.T) {
 	imageName := "imageName"
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		Image: &imageName,
 	}
 
@@ -26,7 +26,7 @@ func TestBuildImage_ImageDefined(t *testing.T) {
 }
 
 func TestBuildImage_NoImageNameDefined(t *testing.T) {
-	commandDef := &config.CommandDefinition{Image: nil}
+	commandDef := config.CommandDefinition{Image: nil}
 	builder := &mocks.Builder{}
 
 	err := BuildImage(commandDef, builder)

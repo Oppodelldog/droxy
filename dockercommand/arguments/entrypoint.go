@@ -6,7 +6,7 @@ import (
 )
 
 // BuildEntryPoint sets the docker entrypoint.
-func BuildEntryPoint(commandDef *config.CommandDefinition, builder builder.Builder) error {
+func BuildEntryPoint(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if entryPoint, ok := commandDef.GetEntryPoint(); ok {
 		builder.SetEntryPoint(entryPoint)
 	}

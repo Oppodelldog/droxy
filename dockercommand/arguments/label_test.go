@@ -10,7 +10,7 @@ import (
 
 func TestLabelContainer(t *testing.T) {
 	builder := &mocks.Builder{}
-	commandDef := &config.CommandDefinition{}
+	commandDef := config.CommandDefinition{}
 
 	builder.On("AddLabel", containerLabel).Return(builder)
 

@@ -10,7 +10,7 @@ import (
 
 func TestBuildRemoveContainerFlag_RemoveIsTrue(t *testing.T) {
 	removeContainer := true
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		RemoveContainer: &removeContainer,
 	}
 
@@ -28,7 +28,7 @@ func TestBuildRemoveContainerFlag_RemoveIsTrue(t *testing.T) {
 
 func TestBuildRemoveContainerFlag_RemoveIsFalse(t *testing.T) {
 	removeContainer := false
-	commandDef := &config.CommandDefinition{
+	commandDef := config.CommandDefinition{
 		RemoveContainer: &removeContainer,
 	}
 

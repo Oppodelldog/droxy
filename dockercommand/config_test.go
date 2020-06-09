@@ -404,7 +404,7 @@ func TestBuildCommandFromConfig_singleArgumentTest(t *testing.T) {
 
 			workDir := "someWorkDir"
 			envVars := []string{"SOME_ENV_VAR"}
-			commandDef := &config.CommandDefinition{
+			commandDef := config.CommandDefinition{
 				WorkDir: &workDir,
 				EnvVars: &envVars,
 			}
