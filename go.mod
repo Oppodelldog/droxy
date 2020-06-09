@@ -19,5 +19,3 @@ require (
 	github.com/stretchr/testify v1.4.0
 	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa // indirect
 )
-
-replace github.com/drone/envsubst => github.com/Oppodelldog/envsubst v0.0.0-20180915092829-73c8b7a36b56
