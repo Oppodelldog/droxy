@@ -1,8 +1,12 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 )
+
+var errCommandNotDefined = errors.New("command not defined")
+var errCouldNotFindTemplate = errors.New("could not find template")
 
 // Configuration is the data model for a configuration file.
 type Configuration ConfigurationDefinition
@@ -25,7 +29,7 @@ func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinitio
 		}
 	}
 
-	return nil, fmt.Errorf("command not defined: '%s'", commandName)
+	return nil, fmt.Errorf("%w: '%s'", errCommandNotDefined, commandName)
 }
 
 // SetConfigurationFilePath sets the filepath the configuration was load from. this is for debugging purpose.
@@ -45,7 +49,7 @@ func (c *Configuration) resolveConfig(command CommandDefinition) (*CommandDefini
 
 	templateDefinition, err := c.FindCommandByName(*command.Template)
 	if err != nil {
-		return nil, fmt.Errorf("could not find template '%s' to resolve config of '%s'", *command.Template, *command.Name)
+		return nil, fmt.Errorf("%w '%s' to resolve config of '%s'", errCouldNotFindTemplate, *command.Template, *command.Name)
 	}
 
 	return mergeCommand(templateDefinition, &command), nil
