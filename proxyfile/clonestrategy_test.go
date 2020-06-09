@@ -11,7 +11,7 @@ import (
 func TestNewClonesStrategy_configuresTheAppropriateSystemFunction(t *testing.T) {
 	strategy := NewClonesStrategy()
 
-	strategyFunction := strategy.(*ClonesStrategy).copyFileFunction
+	strategyFunction := strategy.copyFileFunction
 	expectedFunction := copyFile
 
 	if reflect.ValueOf(expectedFunction).Pointer() != reflect.ValueOf(strategyFunction).Pointer() {
@@ -22,7 +22,7 @@ func TestNewClonesStrategy_configuresTheAppropriateSystemFunction(t *testing.T) 
 func TestNewClonesStrategy_callsConfiguredSystemFunction(t *testing.T) {
 	mock := fileCreationFunctionMock{}
 	strategy := NewClonesStrategy()
-	strategy.(*ClonesStrategy).copyFileFunction = mock.FileCreationFunc
+	strategy.copyFileFunction = mock.FileCreationFunc
 
 	expectedSrc := "A"
 	expectedDst := "B"
@@ -42,7 +42,7 @@ func TestNewClonesStrategy_returnsErrorIfSystemFunctionReturnsError(t *testing.T
 
 	mock := fileCreationFunctionMock{returnValue: expectedError}
 	strategy := NewClonesStrategy()
-	strategy.(*ClonesStrategy).copyFileFunction = mock.FileCreationFunc
+	strategy.copyFileFunction = mock.FileCreationFunc
 
 	err := strategy.CreateProxyFile("A", "B")
 

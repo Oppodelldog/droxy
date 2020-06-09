@@ -5,7 +5,7 @@ import (
 )
 
 // NewClonesStrategy creates a new FileCreationStrategy that produces clones of droxy command.
-func NewClonesStrategy() FileCreationStrategy {
+func NewClonesStrategy() *ClonesStrategy {
 	return &ClonesStrategy{
 		copyFileFunction: copyFile,
 	}
