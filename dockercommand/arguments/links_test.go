@@ -1,4 +1,4 @@
-package arguments
+package arguments //nolint:dupl
 
 import (
 	"os"
