@@ -11,8 +11,8 @@ import (
 )
 
 func TestBuildEnvVars_EnvVarsResolved_NoMatterIfTheyAreRequiredOrNot(t *testing.T) {
-	val1 := "VALUE1"
-	val2 := "VALUE2"
+	val1 := value1()
+	val2 := value2()
 	err := os.Setenv("ENV_VAR_1", val1)
 
 	if err != nil {
@@ -89,7 +89,7 @@ func TestBuildEnvVars_EnvVarsNotRequired_EnvVarDefinedButCannotResolve_ResolvesE
 
 func TestBuildEnvVars_EnvVarsRequired_EnvVarDefinedButCannotResolve_Panic(t *testing.T) {
 	assert.Panics(t, func() {
-		val1 := "VALUE1"
+		val1 := value1()
 		envVars := &[]string{
 			"${ENV_VAR_1}",
 		}
@@ -123,7 +123,7 @@ func TestBuildEnvVars_NoEnvVarsDefines(t *testing.T) {
 }
 
 func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *testing.T) {
-	val1 := "VALUE1"
+	val1 := value1()
 
 	err := os.Setenv("ENV_VAR_1", val1)
 	if err != nil {
@@ -141,4 +141,12 @@ func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *test
 	assert.IsType(t, parse.ErrBadSubstitution, BuildEnvVars(commandDef, builder))
 
 	assert.Empty(t, builder.Calls)
+}
+
+func value2() string {
+	return "VALUE2"
+}
+
+func value1() string {
+	return "VALUE1"
 }
