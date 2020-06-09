@@ -20,7 +20,7 @@ func (c *Configuration) FindCommandByName(commandName string) (*CommandDefinitio
 	for _, command := range c.Command {
 		if configCommandName, ok := command.GetName(); ok {
 			if configCommandName == commandName {
-				return c.resolveConfig(&command)
+				return c.resolveConfig(command)
 			}
 		}
 	}
@@ -38,9 +38,9 @@ func (c *Configuration) GetConfigurationFilePath() string {
 	return c.configFilePath
 }
 
-func (c *Configuration) resolveConfig(command *CommandDefinition) (*CommandDefinition, error) {
+func (c *Configuration) resolveConfig(command CommandDefinition) (*CommandDefinition, error) {
 	if !command.HasTemplate() {
-		return command, nil
+		return &command, nil
 	}
 
 	templateDefinition, err := c.FindCommandByName(*command.Template)
@@ -48,5 +48,5 @@ func (c *Configuration) resolveConfig(command *CommandDefinition) (*CommandDefin
 		return nil, fmt.Errorf("could not find template '%s' to resolve config of '%s'", *command.Template, *command.Name)
 	}
 
-	return mergeCommand(templateDefinition, command), nil
+	return mergeCommand(templateDefinition, &command), nil
 }
