@@ -13,6 +13,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const someCommand = "some-command"
+
 func TestBuildCommandFromConfig(t *testing.T) {
 	originalArgs := os.Args
 
@@ -35,7 +37,7 @@ func TestBuildCommandFromConfig(t *testing.T) {
 		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
 	}
 
-	commandName := "some-command"
+	commandName := someCommand
 	configuration := getFullFeatureConfig(commandName)
 
 	commandBuilder, err := NewCommandBuilder()
@@ -77,7 +79,7 @@ func TestBuildCommandFromConfig(t *testing.T) {
 }
 
 func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *testing.T) {
-	commandName := "some-command"
+	commandName := someCommand
 
 	configuration := &config.Configuration{
 		Command: []config.CommandDefinition{
@@ -140,7 +142,7 @@ func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *
 
 	for testCaseName, testData := range testDataSet {
 		t.Run(testCaseName, func(t *testing.T) {
-			commandName := "some-command"
+			commandName := someCommand
 			configuration := getFullFeatureConfig(commandName)
 
 			cb := &commandBuilder{
