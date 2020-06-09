@@ -62,7 +62,8 @@ func buildCmd(w1 io.Writer, w2 io.Writer, r io.Reader) *exec.Cmd {
 }
 
 func getExpectedCmdString() string {
-	expectedCommandString := strings.Replace(`docker run
+
+	return strings.Replace(`docker run
 arg1
 arg2
 --name containerName
@@ -87,7 +88,6 @@ command
 cmdArg1
 cmdArg2`,
 		"\n", " ", -1)
-	return expectedCommandString
 }
 
 func TestBuilder_DefaultOutput(t *testing.T) {
