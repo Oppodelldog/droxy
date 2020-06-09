@@ -23,7 +23,7 @@ cover: test ## Run all the tests and opens the coverage report
 fmt: ## gofmt and goimports all go files
 	find . -name '*.go' -not -wholename './vendor/*' | while read -r file; do gofmt -w -s "$$file"; goimports -w "$$file"; done
 
-ci: test-with-coverage codecov build ## Run all the tests and code checks
+ci: test-with-coverage codecov build lint ## Run all the tests and code checks
 
 functional-tests: build ## Runs functional tests on built binary
 	cp ".build/$(BINARY_NAME)" ".test/$(BINARY_NAME)"

@@ -15,7 +15,8 @@ Version="1"
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
           "${GOPATH}/pkg:/go/pkg",
-          "${GOPATH}/mod:/go/mod"
+          "${GOPATH}/mod:/go/mod",
+          "${HOME}/.cache/golangci-lint:${HOME}/.cache/golangci-lint"
       ]
       envvars = [
           "GOCACHE=/tmp"

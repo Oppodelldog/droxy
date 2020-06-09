@@ -174,6 +174,7 @@ func getFullFeatureConfig(commandName string) *config.Configuration {
 	}
 }
 
+//nolint:funlen
 func getFullFeatureTemplateDef() config.CommandDefinition {
 	isTemplate := true
 	isDetached := false
@@ -263,6 +264,7 @@ func getTestHostDir() string {
 	return absoluteHostPath
 }
 
+//nolint:funlen
 func getFullFeatureDef(commandName string) config.CommandDefinition {
 	isTemplate := true
 	isDetached := false
