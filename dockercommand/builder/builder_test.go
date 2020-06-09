@@ -62,7 +62,6 @@ func buildCmd(w1 io.Writer, w2 io.Writer, r io.Reader) *exec.Cmd {
 }
 
 func getExpectedCmdString() string {
-
 	return strings.Replace(`docker run
 arg1
 arg2
