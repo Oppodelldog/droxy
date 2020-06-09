@@ -5,12 +5,18 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
+)
+
+const (
+	dockerBinaryName     = "docker"
+	dockerRunSubCommand  = "run"
+	DockerExecSubCommand = "exec"
 )
 
 type (
 	// builder can be used to build a docker run command
 	builder struct {
-		dockerBinaryName string
 		dockerSubCommand string
 		imageName        string
 		entryPoint       []string
@@ -41,8 +47,7 @@ type (
 // New returns a new docker command builder.
 func New() Builder {
 	return &builder{
-		dockerBinaryName: "docker",
-		dockerSubCommand: "run",
+		dockerSubCommand: dockerRunSubCommand,
 		stdIn:            os.Stdin,
 		stdOut:           os.Stdout,
 		stdErr:           os.Stderr,
@@ -189,7 +194,16 @@ func (b *builder) SetContainerUserAndGroup(userID string, groupID string) Builde
 
 // Build builds the exec.Cmd which will start a docker-container.
 func (b *builder) Build() *exec.Cmd {
-	cmd := exec.Command(b.dockerBinaryName, b.dockerSubCommand)
+	var cmd *exec.Cmd
+
+	switch b.dockerSubCommand {
+	case dockerRunSubCommand:
+		cmd = exec.Command(dockerBinaryName, dockerRunSubCommand)
+	case DockerExecSubCommand:
+		cmd = exec.Command(dockerBinaryName, DockerExecSubCommand)
+	default:
+		panic(fmt.Sprintf("invalid subcommand '%s'", b.dockerSubCommand))
+	}
 
 	b.buildArgsAppend(b.args...)
 	b.buildArgsAppend(b.containerName...)
@@ -225,8 +239,17 @@ func (b *builder) Build() *exec.Cmd {
 
 func (b *builder) buildArgAppend(arg string) {
 	if len(arg) > 0 {
-		b.buildArgs = append(b.buildArgs, arg)
+		b.buildArgs = append(b.buildArgs, sanitize(arg))
 	}
+}
+
+func sanitize(str string) string {
+	return strings.Map(func(r rune) rune {
+		if r >= 32 && r < 127 {
+			return r
+		}
+		return -1
+	}, str)
 }
 
 func (b *builder) buildArgsAppend(args ...string) {

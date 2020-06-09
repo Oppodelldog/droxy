@@ -115,7 +115,7 @@ func (cb *commandBuilder) buildExecCommand(commandDef *config.CommandDefinition)
 		commandBuilder.SetCommand(command)
 	}
 
-	commandBuilder.SetDockerSubCommand("exec")
+	commandBuilder.SetDockerSubCommand(builder.DockerExecSubCommand)
 
 	return commandBuilder.Build(), nil
 }
