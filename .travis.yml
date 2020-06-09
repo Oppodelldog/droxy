@@ -15,4 +15,4 @@ env:
 go_import_path: github.com/Oppodelldog/droxy
 
 script:
-  - go test -race -covermode=atomic  ./... 
+  - make ci
