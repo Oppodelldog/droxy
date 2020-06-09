@@ -11,6 +11,8 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+const someCommandName = "some-command-name"
+
 func TestExecuteCommand_LoadsConfigFromLoader(t *testing.T) {
 	configStub := &config.Configuration{}
 	configLoaderMock := &mocks.ConfigLoader{}
@@ -18,7 +20,7 @@ func TestExecuteCommand_LoadsConfigFromLoader(t *testing.T) {
 		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := "some-command-name"
+	commandNameStub := someCommandName
 
 	executableNameParserStub.On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
@@ -57,7 +59,7 @@ func TestExecuteCommand_ExecutableNameIsParsed(t *testing.T) {
 		Return(configStub)
 
 	executableNameParserMock := &mocks.ExecutableNameParser{}
-	commandNameStub := "some-command-name"
+	commandNameStub := someCommandName
 	executableNameParserMock.On("ParseCommandNameFromCommandLine").Once().
 		Return(commandNameStub)
 
@@ -94,7 +96,7 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := "some-command-name"
+	commandNameStub := someCommandName
 	executableNameParserStub.On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
 
@@ -131,7 +133,7 @@ func TestExecuteCommand_CommandIsRun(t *testing.T) {
 	configLoaderStub.On("Load").Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := "some-command-name"
+	commandNameStub := someCommandName
 	executableNameParserStub.On("ParseCommandNameFromCommandLine").Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
@@ -167,7 +169,7 @@ func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
 	configLoaderStub.On("Load").Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := "some-command-name"
+	commandNameStub := someCommandName
 	executableNameParserStub.On("ParseCommandNameFromCommandLine").Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
@@ -203,7 +205,7 @@ func TestExecuteCommand_ErrorFromCommandBuild_ExitCode900Returned(t *testing.T) 
 	configLoaderStub.On("Load").Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := "some-command-name"
+	commandNameStub := someCommandName
 	executableNameParserStub.On("ParseCommandNameFromCommandLine").Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
