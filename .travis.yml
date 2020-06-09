@@ -5,6 +5,7 @@ go:
 
 os:
   - linux
+  - windows
 
 env:
   global:

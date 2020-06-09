@@ -2,8 +2,11 @@ package proxyfile
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
+	"path/filepath"
 	"reflect"
+	"runtime"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/config"
@@ -42,7 +45,7 @@ func getTestConfigWithEmptyCommand() *config.Configuration {
 }
 
 func TestCreator_CreateProxyFiles(t *testing.T) {
-	prepareTest(t)
+	defer prepareTest(t)()
 
 	commandBinaryFilePathStub := "/tmp/droxy"
 
@@ -59,7 +62,7 @@ func TestCreator_CreateProxyFiles(t *testing.T) {
 		t.Fatalf("Did not expect CreateProxyFiles to return an error, but got: %v", err)
 	}
 
-	expectedCommandFilename := *configLoaderMock.stubbedConfig.Command[0].Name
+	expectedCommandFilename := ensureOsSpecificBinaryFilename(*configLoaderMock.stubbedConfig.Command[0].Name)
 
 	assert.Equal(t, 1, fileCreatorMock.calls)
 	assert.Equal(t, commandBinaryFilePathStub, fileCreatorMock.parmCommandBinaryFilePath)
@@ -67,7 +70,7 @@ func TestCreator_CreateProxyFiles(t *testing.T) {
 }
 
 func TestCreator_CreateProxyFiles_commandHasNoName_noFileWillBeCreated(t *testing.T) {
-	prepareTest(t)
+	defer prepareTest(t)()
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfigWithEmptyCommand()}
@@ -86,7 +89,7 @@ func TestCreator_CreateProxyFiles_commandHasNoName_noFileWillBeCreated(t *testin
 }
 
 func TestCreator_CreateProxyFiles_commandIsTemplate_noFileWillBeCreated(t *testing.T) {
-	prepareTest(t)
+	defer prepareTest(t)()
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	testConfig := getTestConfig()
@@ -108,7 +111,7 @@ func TestCreator_CreateProxyFiles_commandIsTemplate_noFileWillBeCreated(t *testi
 }
 
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existingFileWillNotBeReplaced(t *testing.T) {
-	prepareTest(t)
+	defer prepareTest(t)()
 
 	logrus.SetOutput(ioutil.Discard)
 
@@ -142,7 +145,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 }
 
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForced_folderWillNotBeDeleted(t *testing.T) {
-	prepareTest(t)
+	defer prepareTest(t)()
 
 	logrus.SetOutput(ioutil.Discard)
 
@@ -171,7 +174,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForce
 }
 
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingFileWillBeReplaced(t *testing.T) {
-	prepareTest(t)
+	defer prepareTest(t)()
 
 	logrus.SetOutput(ioutil.Discard)
 
@@ -184,7 +187,8 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingF
 	}
 
 	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
-	fileThatShouldBeDeleted := commandNameStub
+	fileThatShouldBeDeleted := ensureOsSpecificBinaryFilename(commandNameStub)
+
 	err := ioutil.WriteFile(fileThatShouldBeDeleted, []byte("TEST"), 0666)
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
@@ -199,7 +203,14 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingF
 	assert.Error(t, err, "Expect error, since file should be deleted")
 }
 
-func prepareTest(t *testing.T) {
+func ensureOsSpecificBinaryFilename(filePath string) string {
+	if runtime.GOOS == "windows" {
+		filePath += ".exe"
+	}
+	return filePath
+}
+
+func prepareTest(t *testing.T) func() {
 	logrus.SetOutput(ioutil.Discard)
 
 	err := os.RemoveAll(testFolder)
@@ -212,8 +223,25 @@ func prepareTest(t *testing.T) {
 		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
 	}
 
+	originalDir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	err = os.Chdir(testFolder)
 	if err != nil {
 		t.Fatalf("Did not expect os.Chdir to return an error, but got: %v", err)
+	}
+
+	return func() {
+		err = os.Chdir(originalDir)
+		if err != nil {
+			t.Fatalf("Did not expect os.Chdir to return an error when switching back to original dir, but got: %v", err)
+		}
+
+		err := os.RemoveAll(testFolder)
+		if err != nil {
+			t.Fatalf("Did not expect os.RemoveAll to return an error, but got: %v", err)
+		}
 	}
 }

@@ -140,27 +140,3 @@ func TestBuildEnvVars_InvalidBashSubstitution_ExpectBadSubstitutionError(t *test
 
 	assert.Empty(t, builder.Calls)
 }
-
-func TestBuildEnvVars_UnderScoreDashVarName(t *testing.T) {
-	val1 := "true"
-	err := os.Setenv("_MY_BELOVED_IDE_PARAMETER_MAKING_it-hard", val1)
-	if err != nil {
-		t.Fatalf("Did not expect os.Setenv to return an error, but got: %v", err)
-	}
-
-	envVarsConfig := &[]string{
-		"${_MY_BELOVED_IDE_PARAMETER_MAKING_it-hard}",
-	}
-	commandDef := &config.CommandDefinition{
-		EnvVars: envVarsConfig,
-	}
-	builder := &mocks.Builder{}
-	builder.On("AddEnvVar", val1).Return(builder)
-
-	err = BuildEnvVars(commandDef, builder)
-	if err != nil {
-		t.Fatalf("Did not expect BuildEnvVars to return an error, but got: %v", err)
-	}
-
-	builder.AssertExpectations(t)
-}
