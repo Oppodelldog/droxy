@@ -14,9 +14,9 @@ Version="1"
           "${PWD}:/go/src/github.com/Oppodelldog/droxy",
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
-          "${GOPATH}/pkg/mod:/go/pkg/mod"
+          "${GOPATH}/pkg:/go/pkg",
+          "${GOPATH}/mod:/go/mod"
       ]
-
       envvars = [
           "GOCACHE=/tmp"
       ]
