@@ -337,7 +337,7 @@ type containerExistenceCheckerStub struct {
 	containerExists bool
 }
 
-func (c *containerExistenceCheckerStub) exists(containerName string) bool {
+func (c *containerExistenceCheckerStub) exists(_ string) bool {
 	return c.containerExists
 }
 

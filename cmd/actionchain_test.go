@@ -74,7 +74,7 @@ type chainElementStub struct {
 	executionResult int
 }
 
-func (m *chainElementStub) IsResponsible(args []string) bool {
+func (m *chainElementStub) IsResponsible(_ []string) bool {
 	return m.isResponsible
 }
 
