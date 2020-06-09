@@ -9,6 +9,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const writePerm = 0600
+
 func TestCopyFile(t *testing.T) {
 	testFolder := "/tmp/droxy/fileCopyTest/"
 	err := os.MkdirAll(testFolder, 0776)
@@ -20,7 +22,7 @@ func TestCopyFile(t *testing.T) {
 	srcBytes := []byte("HELLO DROXY!!")
 	src := path.Join(testFolder, "fileToCopy")
 
-	err = ioutil.WriteFile(src, srcBytes, 0666)
+	err = ioutil.WriteFile(src, srcBytes, writePerm)
 	if err != nil {
 		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
 	}
