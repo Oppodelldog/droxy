@@ -49,23 +49,8 @@ func executeCommand(
 	cfg := configLoader.Load()
 	cfg.Logging = true
 
-	if cfg.Logging {
-		logfileWriter, err := logging.GetLogWriter(cfg)
-		if err != nil {
-			// no chance to log error output since running docker process has priority before logging
-			logrus.SetOutput(ioutil.Discard)
-		} else {
-			logrus.SetOutput(logfileWriter)
-			defer func() {
-				err := logfileWriter.Close()
-				if err != nil {
-					logrus.Error(err)
-				}
-			}()
-		}
-	} else {
-		logrus.SetOutput(ioutil.Discard)
-	}
+	closeLogger := enableLogging(cfg)
+	defer closeLogger()
 
 	logrus.Infof("configuration load from: '%s'", cfg.GetConfigurationFilePath())
 	logrus.Info()
@@ -102,4 +87,31 @@ func executeCommand(
 	exitCode := commandResultHandler.HandleCommandResult(cmd, err)
 
 	return exitCode
+}
+
+func enableLogging(cfg *config.Configuration) (f func()) {
+	f = func() {}
+
+	if !cfg.Logging {
+		logrus.SetOutput(ioutil.Discard)
+		return
+	}
+
+	logfileWriter, err := logging.GetLogWriter(cfg)
+	if err != nil {
+		// no chance to log error output since running docker process has priority before logging
+		logrus.SetOutput(ioutil.Discard)
+		return
+	}
+
+	logrus.SetOutput(logfileWriter)
+
+	f = func() {
+		err := logfileWriter.Close()
+		if err != nil {
+			logrus.Error(err)
+		}
+	}
+
+	return
 }
