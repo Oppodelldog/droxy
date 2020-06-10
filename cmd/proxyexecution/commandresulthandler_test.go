@@ -10,13 +10,13 @@ import (
 )
 
 func TestNewCommandResultHandler(t *testing.T) {
-	assert.IsType(t, new(commandResultHandler), NewCommandResultHandler())
+	assert.IsType(t, ResultHandler{}, newResultHandler())
 }
 
 func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
 
-	commandResultHandler := NewCommandResultHandler()
+	commandResultHandler := newResultHandler()
 
 	cmd := exec.Command("hostname")
 	err := cmd.Run()
@@ -28,7 +28,7 @@ func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
 func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
 
-	commandResultHandler := NewCommandResultHandler()
+	commandResultHandler := newResultHandler()
 
 	cmd := exec.Command("ping", "blackHole")
 	err := cmd.Run()
@@ -41,7 +41,7 @@ func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.
 func TestCommandResultHandler_HandleCommandResult_ExtCodeError(t *testing.T) {
 	logrus.SetOutput(ioutil.Discard)
 
-	commandResultHandler := NewCommandResultHandler()
+	commandResultHandler := newResultHandler()
 
 	cmd := exec.Command("horstName")
 	err := cmd.Run()
