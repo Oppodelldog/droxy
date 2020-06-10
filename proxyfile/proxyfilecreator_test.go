@@ -22,7 +22,7 @@ func TestCreator_New(t *testing.T) {
 	configLoaderMock := &configLoaderMock{}
 	creator := New(fileCreatorMock, configLoaderMock)
 
-	assert.IsType(t, new(Creator), creator)
+	assert.IsType(t, Creator{}, creator)
 	assert.Exactly(t, fileCreatorMock, creator.creationStrategy)
 	assert.Exactly(t, configLoaderMock, creator.configLoader)
 

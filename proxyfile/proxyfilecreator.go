@@ -8,8 +8,8 @@ import (
 )
 
 // New creates a new proxy file creator.
-func New(creationStrategy FileCreationStrategy, configLoader config.Loader) *Creator {
-	return &Creator{
+func New(creationStrategy FileCreationStrategy, configLoader config.Loader) Creator {
+	return Creator{
 		creationStrategy:          creationStrategy,
 		configLoader:              configLoader,
 		getExecutableFilePathFunc: getExecutableFilePath,
@@ -26,7 +26,7 @@ type Creator struct {
 type getExecutableFilePathFuncDef func() (string, error)
 
 // CreateProxyFiles creates droxy commands.
-func (pfc *Creator) CreateProxyFiles(isForced bool) error {
+func (pfc Creator) CreateProxyFiles(isForced bool) error {
 	cfg := pfc.configLoader.Load()
 
 	commandBinaryFilePath, err := pfc.getExecutableFilePathFunc()
