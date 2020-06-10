@@ -16,26 +16,31 @@ const someCommandName = "some-command-name"
 func TestExecuteCommand_LoadsConfigFromLoader(t *testing.T) {
 	configStub := &config.Configuration{}
 	configLoaderMock := &mocks.ConfigLoader{}
-	configLoaderMock.On("Load").Once().
+	configLoaderMock.
+		On("Load").Once().
 		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
 	commandNameStub := someCommandName
 
-	executableNameParserStub.On("ParseCommandNameFromCommandLine").
+	executableNameParserStub.
+		On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
 
-	commandBuilderStub.On("BuildCommandFromConfig", mock.Anything, mock.Anything).
+	commandBuilderStub.
+		On("BuildCommandFromConfig", mock.Anything, mock.Anything).
 		Return(&exec.Cmd{Args: []string{"echo", "1"}}, nil)
 
 	commandRunnerStub := &mocks.CommandRunner{}
-	commandRunnerStub.On("RunCommand", mock.Anything).
+	commandRunnerStub.
+		On("RunCommand", mock.Anything).
 		Return(nil)
 
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
-	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).
+	commandResultHandlerStub.
+		On("HandleCommandResult", mock.Anything, mock.Anything).
 		Return(4711)
 
 	var args []string
@@ -60,19 +65,25 @@ func TestExecuteCommand_ExecutableNameIsParsed(t *testing.T) {
 
 	executableNameParserMock := &mocks.ExecutableNameParser{}
 	commandNameStub := someCommandName
-	executableNameParserMock.On("ParseCommandNameFromCommandLine").Once().
+	executableNameParserMock.
+		On("ParseCommandNameFromCommandLine").
+		Once().
 		Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
 
-	commandBuilderStub.On("BuildCommandFromConfig", mock.Anything, mock.Anything).
+	commandBuilderStub.
+		On("BuildCommandFromConfig", mock.Anything, mock.Anything).
 		Return(&exec.Cmd{Args: []string{"echo", "1"}}, nil)
 
 	commandRunnerStub := &mocks.CommandRunner{}
-	commandRunnerStub.On("RunCommand", mock.Anything).Return(nil)
+	commandRunnerStub.
+		On("RunCommand", mock.Anything).
+		Return(nil)
 
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
-	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).
+	commandResultHandlerStub.
+		On("HandleCommandResult", mock.Anything, mock.Anything).
 		Return(4711)
 
 	var args []string
@@ -97,20 +108,24 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
 	commandNameStub := someCommandName
-	executableNameParserStub.On("ParseCommandNameFromCommandLine").
+	executableNameParserStub.
+		On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
 
 	commandBuilderMock := &mocks.CommandBuilder{}
 
-	commandBuilderMock.On("BuildCommandFromConfig", commandNameStub, configStub).
+	commandBuilderMock.
+		On("BuildCommandFromConfig", commandNameStub, configStub).
 		Return(&exec.Cmd{Args: []string{"echo", "1"}}, nil)
 
 	commandRunnerStub := &mocks.CommandRunner{}
-	commandRunnerStub.On("RunCommand", mock.Anything).
+	commandRunnerStub.
+		On("RunCommand", mock.Anything).
 		Return(nil)
 
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
-	commandResultHandlerStub.On("HandleCommandResult", mock.Anything, mock.Anything).
+	commandResultHandlerStub.
+		On("HandleCommandResult", mock.Anything, mock.Anything).
 		Return(4711)
 
 	var args []string
@@ -130,24 +145,32 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 func TestExecuteCommand_CommandIsRun(t *testing.T) {
 	configStub := &config.Configuration{}
 	configLoaderStub := &mocks.ConfigLoader{}
-	configLoaderStub.On("Load").Return(configStub)
+	configLoaderStub.On("Load").
+		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
 	commandNameStub := someCommandName
-	executableNameParserStub.On("ParseCommandNameFromCommandLine").Return(commandNameStub)
+	executableNameParserStub.
+		On("ParseCommandNameFromCommandLine").
+		Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
 	cmdStub := &exec.Cmd{Args: []string{}}
 
 	var errStub error
 
-	commandBuilderStub.On("BuildCommandFromConfig", commandNameStub, configStub).Return(cmdStub, errStub)
+	commandBuilderStub.
+		On("BuildCommandFromConfig", commandNameStub, configStub).
+		Return(cmdStub, errStub)
 
 	commandRunnerMock := &mocks.CommandRunner{}
-	commandRunnerMock.On("RunCommand", mock.Anything).Once().Return(nil)
+	commandRunnerMock.
+		On("RunCommand", mock.Anything).Once().Return(nil)
 
 	commandResultHandlerStub := &mocks.CommandResultHandler{}
-	commandResultHandlerStub.On("HandleCommandResult", cmdStub, errStub).Return(4711)
+	commandResultHandlerStub.
+		On("HandleCommandResult", cmdStub, errStub).
+		Return(4711)
 
 	var args []string
 
@@ -166,24 +189,34 @@ func TestExecuteCommand_CommandIsRun(t *testing.T) {
 func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
 	configStub := &config.Configuration{}
 	configLoaderStub := &mocks.ConfigLoader{}
-	configLoaderStub.On("Load").Return(configStub)
+	configLoaderStub.
+		On("Load").
+		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
 	commandNameStub := someCommandName
-	executableNameParserStub.On("ParseCommandNameFromCommandLine").Return(commandNameStub)
+	executableNameParserStub.
+		On("ParseCommandNameFromCommandLine").
+		Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
 	cmdStub := &exec.Cmd{Args: []string{}}
 
 	var errStub error
 
-	commandBuilderStub.On("BuildCommandFromConfig", commandNameStub, configStub).Return(cmdStub, errStub)
+	commandBuilderStub.
+		On("BuildCommandFromConfig", commandNameStub, configStub).
+		Return(cmdStub, errStub)
 
 	commandRunnerStub := &mocks.CommandRunner{}
-	commandRunnerStub.On("RunCommand", mock.Anything).Return(nil)
+	commandRunnerStub.
+		On("RunCommand", mock.Anything).
+		Return(nil)
 
 	commandResultHandlerMock := &mocks.CommandResultHandler{}
-	commandResultHandlerMock.On("HandleCommandResult", cmdStub, errStub).Return(4711)
+	commandResultHandlerMock.
+		On("HandleCommandResult", cmdStub, errStub).
+		Return(4711)
 
 	var args []string
 
