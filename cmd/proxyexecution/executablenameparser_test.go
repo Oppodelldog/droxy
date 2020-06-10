@@ -9,11 +9,11 @@ import (
 )
 
 func TestNewExecutableNameParser(t *testing.T) {
-	assert.IsType(t, new(executableNameParser), NewExecutableNameParser())
+	assert.IsType(t, executableNameParser{}, newExecutableNameParser())
 }
 
 func TestExecutableNameParser_ParseCommandNameFromCommandLine(t *testing.T) {
-	executableNameParser := NewExecutableNameParser()
+	executableNameParser := newExecutableNameParser()
 	parsedCommandName := executableNameParser.ParseCommandNameFromCommandLine()
 
 	assert.Equal(t, proxyfile.ParseCommandNameFromCommandLine(), parsedCommandName)

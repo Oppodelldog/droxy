@@ -6,12 +6,11 @@ import (
 
 type executableNameParser struct{}
 
-//NewExecutableNameParser returns a new executableNameParser.
-func NewExecutableNameParser() ExecutableNameParser {
-	return &executableNameParser{}
+func newExecutableNameParser() executableNameParser {
+	return executableNameParser{}
 }
 
 //ParseCommandNameFromCommandLine parsed the command name of the currently executed binary from cli arguments.
-func (p *executableNameParser) ParseCommandNameFromCommandLine() string {
+func (p executableNameParser) ParseCommandNameFromCommandLine() string {
 	return proxyfile.ParseCommandNameFromCommandLine()
 }

@@ -10,7 +10,7 @@ import (
 )
 
 func TestNewCommandResultHandler(t *testing.T) {
-	assert.IsType(t, ResultHandler{}, newResultHandler())
+	assert.IsType(t, commandResultHandler{}, newResultHandler())
 }
 
 func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {

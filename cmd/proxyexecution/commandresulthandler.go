@@ -16,17 +16,17 @@ const ExitCodeExitError = 990
 //ExitSuccessError ExitCode of successfully executed cmd could not be determined.
 const ExitSuccessError = 991
 
-func newResultHandler() ResultHandler {
-	return ResultHandler{}
+func newResultHandler() commandResultHandler {
+	return commandResultHandler{}
 }
 
 type (
-	ResultHandler struct{}
+	commandResultHandler struct{}
 )
 
 // HandleCommandResult tries to get to ExitCode of and already run cmd.
 // Returns the exit code or a custom one if original exitCode could not be determined.
-func (rh ResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int {
+func (rh commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int {
 	switch exitErr := err.(type) {
 	case *exec.Error:
 		logrus.Warning("Could execute command")

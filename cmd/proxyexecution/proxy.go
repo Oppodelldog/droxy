@@ -24,8 +24,8 @@ func ExecuteDroxyCommand(args []string) int {
 
 	configLoader := config.NewLoader()
 	commandResultHandler := newResultHandler()
-	commandRunner := NewCommandRunner()
-	executableNameParser := NewExecutableNameParser()
+	commandRunner := newCommandRunner()
+	executableNameParser := newExecutableNameParser()
 
 	return executeCommand(
 		args,
