@@ -9,21 +9,21 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func newDockerClientAdapter() (*dockerClientAdapter, error) {
+func newDockerClientAdapter() (dockerClientAdapter, error) {
 	dockerClient, err := client.NewEnvClient()
 	if err != nil {
 		err = fmt.Errorf("error building name argument, opening docker client failed: %w", err)
-		return nil, err
+		return dockerClientAdapter{}, err
 	}
 
-	return &dockerClientAdapter{dockerClient: dockerClient}, nil
+	return dockerClientAdapter{dockerClient: dockerClient}, nil
 }
 
 type dockerClientAdapter struct {
 	dockerClient *client.Client
 }
 
-func (a *dockerClientAdapter) getAPIVersion() (string, error) {
+func (a dockerClientAdapter) getAPIVersion() (string, error) {
 	ctx := context.Background()
 
 	v, err := a.dockerClient.ServerVersion(ctx)
@@ -34,7 +34,7 @@ func (a *dockerClientAdapter) getAPIVersion() (string, error) {
 	return v.APIVersion, nil
 }
 
-func (a *dockerClientAdapter) exists(containerName string) bool {
+func (a dockerClientAdapter) exists(containerName string) bool {
 	ctx := context.Background()
 	options := types.ContainerListOptions{
 		All: true,
