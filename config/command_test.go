@@ -143,64 +143,46 @@ func TestHasName_configSetAndNotEmpty(t *testing.T) {
 }
 
 func TestGetBoolConfigValues(t *testing.T) {
-	testCases := map[string]struct {
-		initField     func(*bool) CommandDefinition
-		getFieldValue func(CommandDefinition) (bool, bool)
-	}{
-		"AddGroups": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{AddGroups: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetAddGroups() },
-		},
-		"AutoMountWorkDir": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{AutoMountWorkDir: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetAutoMountWorkDir() },
-		},
-		"Impersonate": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{Impersonate: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetImpersonate() },
-		},
-		"IsDetached": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{IsDetached: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetIsDetached() },
-		},
-		"IsInteractive": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{IsInteractive: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetIsInteractive() },
-		},
-		"IsTemplate": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{IsTemplate: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetIsTemplate() },
-		},
-		"RemoveContainer": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{RemoveContainer: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetRemoveContainer() },
-		},
-		"RequireEnvVars": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{RequireEnvVars: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetRequireEnvVars() },
-		},
-		"UniqueNames": {
-			initField:     func(b *bool) CommandDefinition { return CommandDefinition{UniqueNames: b} },
-			getFieldValue: func(d CommandDefinition) (bool, bool) { return d.GetUniqueNames() },
-		},
+	boolFieldNames := []string{
+		"AddGroups",
+		"AutoMountWorkDir",
+		"Impersonate",
+		"IsDetached",
+		"IsInteractive",
+		"IsTemplate",
+		"RemoveContainer",
+		"RequireEnvVars",
+		"UniqueNames",
 	}
 
-	for testName, testCase := range testCases {
-		t.Run(testName, func(t *testing.T) {
-			commandDef := testCase.initField(boolP(false))
-			v, ok := testCase.getFieldValue(commandDef)
-			assert.True(t, ok)
-			assert.False(t, v)
+	for _, fieldName := range boolFieldNames {
+		t.Run(fieldName, func(t *testing.T) {
+			var (
+				r        []reflect.Value
+				gotValue bool
+				gotOk    bool
+			)
 
-			commandDef = testCase.initField(boolP(true))
-			v, ok = testCase.getFieldValue(commandDef)
-			assert.True(t, ok)
-			assert.True(t, v)
+			r = initCommandDef(fieldName, boolP(false))
+			gotValue = r[0].Bool()
+			gotOk = r[1].Bool()
 
-			commandDef = testCase.initField(nil)
-			v, ok = testCase.getFieldValue(commandDef)
-			assert.False(t, ok)
-			assert.False(t, v)
+			assert.True(t, gotOk)
+			assert.False(t, gotValue)
+
+			r = initCommandDef(fieldName, boolP(true))
+			gotValue = r[0].Bool()
+			gotOk = r[1].Bool()
+
+			assert.True(t, gotOk)
+			assert.True(t, gotValue)
+
+			r = initCommandDef(fieldName, nil)
+			gotValue = r[0].Bool()
+			gotOk = r[1].Bool()
+
+			assert.False(t, gotOk)
+			assert.False(t, gotValue)
 		})
 	}
 }
@@ -210,145 +192,115 @@ func boolP(b bool) *bool {
 }
 
 func TestGetStringConfigValues(t *testing.T) {
-	testCases := map[string]struct {
-		initField     func(*string) CommandDefinition
-		getFieldValue func(CommandDefinition) (string, bool)
-	}{
-		"Template": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{Template: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetTemplate() },
-		},
-		"EntryPoint": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{EntryPoint: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetEntryPoint() },
-		},
-		"Command": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{Command: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetCommand() },
-		},
-		"Name": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{Name: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetName() },
-		},
-		"Image": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{Image: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetImage() },
-		},
-		"Network": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{Network: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetNetwork() },
-		},
-		"EnvFile": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{EnvFile: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetEnvFile() },
-		},
-		"IP": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{IP: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetIP() },
-		},
-		"WorkDir": {
-			initField:     func(s *string) CommandDefinition { return CommandDefinition{WorkDir: s} },
-			getFieldValue: func(d CommandDefinition) (string, bool) { return d.GetWorkDir() },
-		},
+	stringFields := []string{
+		"Command",
+		"EntryPoint",
+		"EnvFile",
+		"Image",
+		"IP",
+		"Name",
+		"Network",
+		"Template",
+		"WorkDir",
 	}
 
-	const want = "TEST"
+	for _, fieldName := range stringFields {
+		t.Run(fieldName, func(t *testing.T) {
+			var want = "TEST"
+			var (
+				r        []reflect.Value
+				gotValue string
+				gotOk    bool
+			)
+			r = initCommandDef(fieldName, &want)
+			gotValue = r[0].String()
+			gotOk = r[1].Bool()
 
-	for testName, testCase := range testCases {
-		t.Run(testName, func(t *testing.T) {
-			commandDef := testCase.initField(stringP(want))
-			v, ok := testCase.getFieldValue(commandDef)
-			assert.True(t, ok)
-			assert.Equal(t, want, v)
+			assert.True(t, gotOk)
+			assert.Equal(t, want, gotValue)
 
-			commandDef = testCase.initField(nil)
-			v, ok = testCase.getFieldValue(commandDef)
-			assert.False(t, ok)
-			assert.Equal(t, "", v)
+			r = initCommandDef(fieldName, nil)
+			gotValue = r[0].String()
+			gotOk = r[1].Bool()
+
+			assert.False(t, gotOk)
+			assert.Equal(t, "", gotValue)
 		})
 	}
 }
 
-func stringP(s string) *string {
-	return &s
-}
-
 func TestGetStringSliceConfigValues(t *testing.T) {
-	testCases := map[string]struct {
-		initField     func(*[]string) CommandDefinition
-		getFieldValue func(CommandDefinition) ([]string, bool)
-	}{
-		"PortsFromParams": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{PortsFromParams: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetPortsFromParams() },
-		},
-		"MergeTemplateArrays": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{MergeTemplateArrays: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetMergeTemplateArrays() },
-		},
-		"AdditionalArgs": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{AdditionalArgs: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetAdditionalArgs() },
-		},
-		"Volumes": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{Volumes: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetVolumes() },
-		},
-		"Links": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{Links: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetLinks() },
-		},
-		"EnvVars": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{EnvVars: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetEnvVars() },
-		},
-		"Ports": {
-			initField:     func(s *[]string) CommandDefinition { return CommandDefinition{Ports: s} },
-			getFieldValue: func(d CommandDefinition) ([]string, bool) { return d.GetPorts() },
-		},
+	stringSliceFieldNames := []string{
+		"AdditionalArgs",
+		"EnvVars",
+		"Links",
+		"MergeTemplateArrays",
+		"Ports",
+		"PortsFromParams",
+		"Volumes",
 	}
 
-	const want = "TEST"
+	for _, fieldName := range stringSliceFieldNames {
+		t.Run(fieldName, func(t *testing.T) {
+			const want = "TEST"
+			var (
+				r        []reflect.Value
+				gotValue []string
+				gotOk    bool
+			)
 
-	for testName, testCase := range testCases {
-		t.Run(testName, func(t *testing.T) {
-			commandDef := testCase.initField(&[]string{"TEST"})
-			v, ok := testCase.getFieldValue(commandDef)
-			assert.True(t, ok)
-			assert.Equal(t, want, v[0])
+			r = initCommandDef(fieldName, &[]string{want})
+			gotValue = r[0].Interface().([]string)
+			gotOk = r[1].Bool()
 
-			commandDef = testCase.initField(nil)
-			v, ok = testCase.getFieldValue(commandDef)
-			assert.False(t, ok)
-			assert.Equal(t, []string{}, v)
+			assert.True(t, gotOk)
+			assert.Equal(t, want, gotValue[0])
+
+			r = initCommandDef(fieldName, nil)
+			gotValue = r[0].Interface().([]string)
+			gotOk = r[1].Bool()
+
+			assert.False(t, gotOk)
+			assert.Equal(t, []string{}, gotValue)
 		})
 	}
 }
 
 func TestGet2DStringSliceConfigValues(t *testing.T) {
-	testCases := map[string]struct {
-		initField     func(*[][]string) CommandDefinition
-		getFieldValue func(CommandDefinition) ([][]string, bool)
-	}{
-		"ReplaceArgs": {
-			initField:     func(s *[][]string) CommandDefinition { return CommandDefinition{ReplaceArgs: s} },
-			getFieldValue: func(d CommandDefinition) ([][]string, bool) { return d.GetReplaceArgs() },
-		},
-	}
+	slice2dFieldNames := []string{"ReplaceArgs"}
 
-	const want = "TEST"
+	for _, fieldName := range slice2dFieldNames {
+		t.Run(fieldName, func(t *testing.T) {
+			const want = "TEST"
+			var (
+				r        []reflect.Value
+				gotValue [][]string
+				gotOk    bool
+			)
+			r = initCommandDef(fieldName, &[][]string{{want}})
+			gotValue = r[0].Interface().([][]string)
+			gotOk = r[1].Bool()
 
-	for testName, testCase := range testCases {
-		t.Run(testName, func(t *testing.T) {
-			commandDef := testCase.initField(&[][]string{{"TEST"}})
-			v, ok := testCase.getFieldValue(commandDef)
-			assert.True(t, ok)
-			assert.Equal(t, want, v[0][0])
+			assert.True(t, gotOk)
+			assert.Equal(t, want, gotValue[0][0])
 
-			commandDef = testCase.initField(nil)
-			v, ok = testCase.getFieldValue(commandDef)
-			assert.False(t, ok)
-			assert.Equal(t, [][]string{}, v)
+			r = initCommandDef(fieldName, nil)
+			gotValue = r[0].Interface().([][]string)
+			gotOk = r[1].Bool()
+
+			assert.False(t, gotOk)
+			assert.Equal(t, [][]string{}, gotValue)
 		})
 	}
+}
+
+func initCommandDef(fieldName string, value interface{}) []reflect.Value {
+	accessMethodName := "Get" + fieldName
+	cv := reflect.ValueOf(&CommandDefinition{}).Elem()
+
+	if value != nil {
+		cv.FieldByName(fieldName).Set(reflect.ValueOf(value))
+	}
+
+	return cv.MethodByName(accessMethodName).Call(nil)
 }
