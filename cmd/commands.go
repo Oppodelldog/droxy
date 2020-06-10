@@ -26,13 +26,9 @@ About  : droxy creates commands that proxy to docker`, version.Number),
 		},
 	}
 
-	symlinkCommandWrapper := newSymlinkCommandWrapper()
-	hardlinkCommandWrapper := newHardlinkCommandWrapper()
-	cloneCommandWrapper := newCloneCommandWrapper()
-
-	rootCmd.AddCommand(symlinkCommandWrapper.getCommand())
-	rootCmd.AddCommand(hardlinkCommandWrapper.getCommand())
-	rootCmd.AddCommand(cloneCommandWrapper.getCommand())
+	rootCmd.AddCommand(newSymlinkCommandWrapper())
+	rootCmd.AddCommand(newHardlinkCommandWrapper())
+	rootCmd.AddCommand(newCloneCommandWrapper())
 
 	return rootCmd
 }
