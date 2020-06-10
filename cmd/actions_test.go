@@ -4,42 +4,14 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/Oppodelldog/droxy/crossplatform"
+
 	"github.com/pkg/errors"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_stringInSlice_StringIsInSlice(t *testing.T) {
-	s := "abc"
-	slice := []string{"iop", "zui", "abc"}
-	res := stringInSlice(s, slice)
-
-	assert.True(t, res)
-}
-
-func Test_stringInSlice_StringIsNotInSlice(t *testing.T) {
-	s := "abc"
-	slice := []string{"iop", "zui", "abf"}
-	res := stringInSlice(s, slice)
-
-	assert.False(t, res)
-}
-
-func Test_shallRevealItsDroxy(t *testing.T) {
-	testDataSet := map[string]struct {
-		args           []string
-		expectedResult bool
-	}{
-		"flag is not set": {args: []string{}, expectedResult: false},
-		"flag is set":     {args: []string{"--is-it-droxy"}, expectedResult: true},
-	}
-
-	for testCaseName, testData := range testDataSet {
-		t.Run(testCaseName, func(t *testing.T) {
-			assert.Exactly(t, testData.expectedResult, shallRevealItsDroxy(testData.args))
-		})
-	}
-}
+var testCommandName = crossplatform.GetCommandName()
 
 func Test_getActionChain(t *testing.T) {
 	tests := []struct {
@@ -156,6 +128,38 @@ func Test_revealTheTruth(t *testing.T) {
 	res := revealTheTruth()
 
 	assert.Exactly(t, 0, res)
+}
+
+func Test_stringInSlice_StringIsInSlice(t *testing.T) {
+	s := "abc"
+	slice := []string{"iop", "zui", "abc"}
+	res := stringInSlice(s, slice)
+
+	assert.True(t, res)
+}
+
+func Test_stringInSlice_StringIsNotInSlice(t *testing.T) {
+	s := "abc"
+	slice := []string{"iop", "zui", "abf"}
+	res := stringInSlice(s, slice)
+
+	assert.False(t, res)
+}
+
+func Test_shallRevealItsDroxy(t *testing.T) {
+	testDataSet := map[string]struct {
+		args           []string
+		expectedResult bool
+	}{
+		"flag is not set": {args: []string{}, expectedResult: false},
+		"flag is set":     {args: []string{"--is-it-droxy"}, expectedResult: true},
+	}
+
+	for testCaseName, testData := range testDataSet {
+		t.Run(testCaseName, func(t *testing.T) {
+			assert.Exactly(t, testData.expectedResult, shallRevealItsDroxy(testData.args))
+		})
+	}
 }
 
 type executerMock struct {

@@ -1,4 +1,4 @@
-package proxyfile
+package crossplatform
 
 import (
 	"testing"

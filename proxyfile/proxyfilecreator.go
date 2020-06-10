@@ -3,6 +3,8 @@ package proxyfile
 import (
 	"os"
 
+	"github.com/Oppodelldog/droxy/crossplatform"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/sirupsen/logrus"
 )
@@ -50,7 +52,7 @@ func (pfc Creator) CreateProxyFiles(isForced bool) error {
 			continue
 		}
 
-		commandNameFileName := GetCommandNameFilename(commandName)
+		commandNameFileName := crossplatform.GetCommandNameFilename(commandName)
 
 		if fileExistsAsDir(commandNameFileName) {
 			logrus.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)

@@ -5,9 +5,10 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Oppodelldog/droxy/crossplatform"
+
 	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
 
-	"github.com/Oppodelldog/droxy/proxyfile"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -69,7 +70,7 @@ func shallExecuteSubCommand(args []string, rootCmd *cobra.Command) bool {
 }
 
 func shallDisplayHelp(args []string) bool {
-	return len(args) >= 1 && filepath.Base(args[0]) == proxyfile.GetCommandName()
+	return len(args) >= 1 && filepath.Base(args[0]) == crossplatform.GetCommandName()
 }
 
 func shallRevealItsDroxy(args []string) bool {

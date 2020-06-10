@@ -1,3 +1,3 @@
-package proxyfile
+package crossplatform
 
 const commandFileName = "droxy"

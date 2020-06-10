@@ -6,6 +6,8 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/Oppodelldog/droxy/crossplatform"
 )
 
 var errDroxyCommandNotFound = errors.New("could not find droxy command")
@@ -16,7 +18,7 @@ func getExecutableFilePath() (string, error) {
 		return "", err
 	}
 
-	commandFilepath := path.Join(executableDir, GetCommandName())
+	commandFilepath := path.Join(executableDir, crossplatform.GetCommandName())
 	if _, err := os.Stat(commandFilepath); os.IsNotExist(err) {
 		return "", fmt.Errorf("%w as expected at '%s'", errDroxyCommandNotFound, commandFilepath)
 	}
