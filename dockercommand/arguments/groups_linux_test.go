@@ -53,7 +53,7 @@ func TestAddGroups_AddGroupsTrue_IdResolverReturnsError_ExpectError(t *testing.T
 	}
 	builder := &mocks.Builder{}
 
-	idResolverError := errors.New("Id resolver error")
+	idResolverError := errors.New("id resolver error")
 	argumentBuilder := userGroupsArgumentBuilder{userGroupIdsResolver: &groupIDResolverStub{nil, idResolverError}}
 
 	err := argumentBuilder.BuildArgument(commandDef, builder)
