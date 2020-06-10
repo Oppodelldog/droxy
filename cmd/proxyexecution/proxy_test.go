@@ -1,12 +1,12 @@
 package proxyexecution
 
 import (
+	"errors"
 	"os/exec"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/cmd/mocks"
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

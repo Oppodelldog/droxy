@@ -1,12 +1,11 @@
 package commands
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/crossplatform"
-
-	"github.com/pkg/errors"
 
 	"github.com/stretchr/testify/assert"
 )

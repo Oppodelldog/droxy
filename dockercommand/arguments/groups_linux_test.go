@@ -1,11 +1,11 @@
 package arguments
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand/builder/mocks"
-	"github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"
 )
 
