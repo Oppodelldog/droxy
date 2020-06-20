@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/Oppodelldog/droxy/config"
 
 	"github.com/Oppodelldog/droxy/proxyfile"
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -52,11 +53,11 @@ func createCommand(commandName string, proxyFilesCreator ProxyFilesCreator) *cob
 		Long:  `creates clones of droxy for all command in the current directory`,
 		Run: func(cmd *cobra.Command, args []string) {
 			isForced, _ := cmd.Flags().GetBool("force")
-			logrus.Infof("creating '%s'...", commandName)
+			logger.Infof("creating '%s'...", commandName)
 
 			err := proxyFilesCreator.CreateProxyFiles(isForced)
 			if err != nil {
-				logrus.Error(err)
+				logger.Error(err)
 				os.Exit(1)
 			}
 		},

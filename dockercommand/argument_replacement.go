@@ -2,7 +2,7 @@ package dockercommand
 
 import (
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/droxy/logger"
 )
 
 func prepareCommandLineArguments(commandDef config.CommandDefinition, arguments []string) []string {
@@ -21,7 +21,7 @@ func getReplacement(commandDef config.CommandDefinition, s string) (string, bool
 		for _, replaceMapping := range replaceArgs {
 			const mustHaveEntries = 2
 			if len(replaceMapping) != mustHaveEntries {
-				logrus.Warnf(
+				logger.Warnf(
 					"invalid argument replacement mapping '%v'. Replacement mapping must consist of 2 array entries.",
 					replaceMapping,
 				)

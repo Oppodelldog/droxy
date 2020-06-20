@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/droxy/logger"
 )
 
 func copyFile(src, dst string) error {
@@ -16,7 +16,7 @@ func copyFile(src, dst string) error {
 	defer func() {
 		err = sf.Close()
 		if err != nil {
-			logrus.Error(err)
+			logger.Error(err)
 		}
 	}()
 
@@ -32,7 +32,7 @@ func copyFile(src, dst string) error {
 	defer func() {
 		err = df.Close()
 		if err != nil {
-			logrus.Error(err)
+			logger.Error(err)
 		}
 	}()
 

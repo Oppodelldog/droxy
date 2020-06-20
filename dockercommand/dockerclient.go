@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-	"github.com/sirupsen/logrus"
 )
 
 func newDockerClientAdapter() (dockerClientAdapter, error) {
@@ -42,7 +43,7 @@ func (a dockerClientAdapter) exists(containerName string) bool {
 
 	containers, err := a.dockerClient.ContainerList(ctx, options)
 	if err != nil {
-		logrus.Errorf("error loading container list: %v", err)
+		logger.Errorf("error loading container list: %v", err)
 
 		return false
 	}

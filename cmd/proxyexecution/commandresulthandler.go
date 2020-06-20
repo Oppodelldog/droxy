@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"syscall"
 
-	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/droxy/logger"
 )
 
 //ExtCodeError general error occurred when executing cmd.
@@ -29,26 +29,26 @@ type (
 func (rh commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int {
 	switch exitErr := err.(type) {
 	case *exec.Error:
-		logrus.Warning("Could execute command")
+		logger.Warning("Could execute command")
 
 		return ExtCodeError
 	case *exec.ExitError:
 		if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
-			logrus.Infof("docker finished with exit code '%v'", status.ExitStatus())
+			logger.Infof("docker finished with exit code '%v'", status.ExitStatus())
 			return status.ExitStatus()
 		}
 
-		logrus.Warning("Could not get exit code")
+		logger.Warning("Could not get exit code")
 
 		return ExitCodeExitError
 	}
 
 	if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
-		logrus.Infof("docker finished with exit code '%v'", status.ExitStatus())
+		logger.Infof("docker finished with exit code '%v'", status.ExitStatus())
 		return status.ExitStatus()
 	}
 
-	logrus.Warning("Could not get exit code")
+	logger.Warning("Could not get exit code")
 
 	return ExitSuccessError
 }

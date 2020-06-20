@@ -5,7 +5,8 @@ import (
 	"os/exec"
 	"testing"
 
-	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +15,7 @@ func TestNewCommandResultHandler(t *testing.T) {
 }
 
 func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	commandResultHandler := newResultHandler()
 
@@ -26,7 +27,7 @@ func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
 }
 
 func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.T) {
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	commandResultHandler := newResultHandler()
 
@@ -39,7 +40,7 @@ func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.
 }
 
 func TestCommandResultHandler_HandleCommandResult_ExtCodeError(t *testing.T) {
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	commandResultHandler := newResultHandler()
 

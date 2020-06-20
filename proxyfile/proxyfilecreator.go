@@ -3,10 +3,11 @@ package proxyfile
 import (
 	"os"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/Oppodelldog/droxy/crossplatform"
 
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/sirupsen/logrus"
 )
 
 // FileCreationStrategy defines the interface for creation of a droxy commands in filesystem.
@@ -38,13 +39,13 @@ func (pfc Creator) CreateProxyFiles(isForced bool) error {
 
 	commandBinaryFilePath, err := pfc.getExecutableFilePathFunc()
 	if err != nil {
-		logrus.Error(err)
+		logger.Error(err)
 		os.Exit(1)
 	}
 
 	for _, command := range cfg.Command {
 		if !command.HasName() {
-			logrus.Warnf("skipped command because name is missing!")
+			logger.Warnf("skipped command because name is missing!")
 			continue
 		}
 
@@ -60,24 +61,24 @@ func (pfc Creator) CreateProxyFiles(isForced bool) error {
 		commandNameFileName := crossplatform.GetCommandNameFilename(commandName)
 
 		if fileExistsAsDir(commandNameFileName) {
-			logrus.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
+			logger.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
 			return nil
 		}
 
 		if isForced {
 			removeFile(commandNameFileName)
 		} else if fileExists(commandNameFileName) {
-			logrus.Warnf("droxy command file (%s) already exists for command '%s'", commandNameFileName, commandName)
+			logger.Warnf("droxy command file (%s) already exists for command '%s'", commandNameFileName, commandName)
 			continue
 		}
 
 		err = pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, commandNameFileName)
 		if err != nil {
-			logrus.Errorf("error creating symlink '%s': %v", commandName, err)
+			logger.Errorf("error creating symlink '%s': %v", commandName, err)
 			continue
 		}
 
-		logrus.Infof("created '%s'", commandName)
+		logger.Infof("created '%s'", commandName)
 	}
 
 	return nil
@@ -92,7 +93,7 @@ func fileExists(filePath string) bool {
 func removeFile(filePath string) {
 	_, err := os.Stat(filePath)
 	if err != nil {
-		logrus.Warnf("cannot delete droxy command file (%s): %v", filePath, err)
+		logger.Warnf("cannot delete droxy command file (%s): %v", filePath, err)
 		return
 	}
 

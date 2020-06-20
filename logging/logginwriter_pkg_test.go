@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/Oppodelldog/droxy/logging"
 
 	"github.com/stretchr/testify/assert"
@@ -33,15 +35,15 @@ func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 }
 
 func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
-	logger := logrus.StandardLogger()
-	logger.Formatter = &testFormatter{}
+	log := logger.StandardLogger()
+	log.Formatter = &testFormatter{}
 
 	var bytesBuffer []byte
 	outputBuffer := bytes.NewBuffer(bytesBuffer)
-	logger.Out = outputBuffer
+	log.Out = outputBuffer
 
 	targetStub := ioutil.Discard
-	loggingWriter := logging.NewWriter(targetStub, logger, "logPrefix")
+	loggingWriter := logging.NewWriter(targetStub, log, "logPrefix")
 
 	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
 	if err != nil {
@@ -57,10 +59,10 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 }
 
 func getLoggerStub() *logrus.Logger {
-	logger := logrus.StandardLogger()
-	logger.Out = ioutil.Discard
+	log := logger.StandardLogger()
+	log.Out = ioutil.Discard
 
-	return logger
+	return log
 }
 
 type testFormatter struct {

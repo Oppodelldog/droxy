@@ -5,11 +5,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/Oppodelldog/droxy/crossplatform"
 
 	"github.com/Oppodelldog/droxy/cmd/proxyexecution"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
 
@@ -97,7 +98,7 @@ type executer interface {
 func execSubCommand(cmd executer) int {
 	err := cmd.Execute()
 	if err != nil {
-		logrus.Info(err)
+		logger.Info(err)
 	}
 
 	return 0
@@ -110,7 +111,7 @@ type helper interface {
 func displayHelp(cmd helper) int {
 	err := cmd.Help()
 	if err != nil {
-		logrus.Info(err)
+		logger.Info(err)
 	}
 
 	return 0

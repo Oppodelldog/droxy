@@ -3,11 +3,12 @@ package dockercommand
 import (
 	"testing"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"bytes"
 	"io/ioutil"
 
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -29,7 +30,7 @@ func TestPrepareArguments(t *testing.T) {
 
 func TestPrepareArguments_WithInvalidArgumentLength_ExpectWarning(t *testing.T) {
 	logRecorderBuffer := bytes.NewBufferString("")
-	logrus.SetOutput(logRecorderBuffer)
+	logger.SetOutput(logRecorderBuffer)
 
 	invalidReplacementArgs := &[][]string{
 		{

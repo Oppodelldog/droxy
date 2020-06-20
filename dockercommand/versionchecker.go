@@ -2,7 +2,7 @@ package dockercommand
 
 import (
 	"github.com/Masterminds/semver"
-	"github.com/sirupsen/logrus"
+	"github.com/Oppodelldog/droxy/logger"
 )
 
 type versionChecker struct {
@@ -12,14 +12,14 @@ type versionChecker struct {
 func (vc versionChecker) isVersionSupported(versionConstraint string) bool {
 	constraints, err := semver.NewConstraint(versionConstraint)
 	if err != nil {
-		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
+		logger.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
 
 		return false
 	}
 
 	dockerSemVer, err := semver.NewVersion(vc.dockerVersion)
 	if err != nil {
-		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
+		logger.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
 
 		return false
 	}

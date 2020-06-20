@@ -9,9 +9,10 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/Oppodelldog/droxy/config"
 
-	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -114,7 +115,7 @@ func TestCreator_CreateProxyFiles_commandIsTemplate_noFileWillBeCreated(t *testi
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existingFileWillNotBeReplaced(t *testing.T) {
 	defer prepareTest(t)()
 
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
@@ -149,7 +150,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForced_folderWillNotBeDeleted(t *testing.T) {
 	defer prepareTest(t)()
 
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
@@ -179,7 +180,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForce
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingFileWillBeReplaced(t *testing.T) {
 	defer prepareTest(t)()
 
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
@@ -215,7 +216,7 @@ func ensureOsSpecificBinaryFilename(filePath string) string {
 }
 
 func prepareTest(t *testing.T) func() {
-	logrus.SetOutput(ioutil.Discard)
+	logger.SetOutput(ioutil.Discard)
 
 	err := os.RemoveAll(testFolder)
 	if err != nil {

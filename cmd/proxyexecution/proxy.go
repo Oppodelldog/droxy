@@ -6,11 +6,12 @@ import (
 	"os/exec"
 	"strings"
 
+	"github.com/Oppodelldog/droxy/logger"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand"
 
 	"github.com/Oppodelldog/droxy/logging"
-	"github.com/sirupsen/logrus"
 )
 
 const errorPreparingDockerCall = 900
@@ -41,7 +42,7 @@ type (
 func ExecuteDroxyCommand(args []string) int {
 	dockerRunCommandBuilder, err := dockercommand.NewBuilder()
 	if err != nil {
-		logrus.Errorf("error preparing docker call: %v", err)
+		logger.Errorf("error preparing docker call: %v", err)
 
 		return errorPreparingDockerCall
 	}
@@ -76,41 +77,41 @@ func executeCommand(
 	closeLogger := enableLogging(cfg)
 	defer closeLogger()
 
-	logrus.Infof("configuration load from: '%s'", cfg.GetConfigurationFilePath())
-	logrus.Info()
+	logger.Infof("configuration load from: '%s'", cfg.GetConfigurationFilePath())
+	logger.Info()
 
-	logrus.Infof("environment variables:")
+	logger.Infof("environment variables:")
 
 	for _, envVar := range os.Environ() {
-		logrus.Info(envVar)
+		logger.Info(envVar)
 	}
 
-	logrus.Info("----------------------------------------------------------------------")
+	logger.Info("----------------------------------------------------------------------")
 
-	logrus.Infof("origin arguments:")
+	logger.Infof("origin arguments:")
 
 	for _, arg := range args {
-		logrus.Info(arg)
+		logger.Info(arg)
 	}
 
-	logrus.Info("----------------------------------------------------------------------")
+	logger.Info("----------------------------------------------------------------------")
 
 	commandName := executableNameParser.ParseCommandNameFromCommandLine()
 
 	cmdDef, err := cfg.FindCommandByName(commandName)
 	if err != nil {
-		logrus.Errorf("cannot find command definition for '%s', but got: %v", commandName, err)
+		logger.Errorf("cannot find command definition for '%s', but got: %v", commandName, err)
 	}
 
 	cmd, err := commandBuilder.BuildCommandFromConfig(cmdDef)
 	if err != nil {
-		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)
+		logger.Errorf("error preparing docker call for '%s': %v", commandName, err)
 
 		return errorPreparingDockerCall
 	}
 
-	logrus.Infof("calling docker ro tun '%s'", commandName)
-	logrus.Infof(strings.Join(cmd.Args, " "))
+	logger.Infof("calling docker ro tun '%s'", commandName)
+	logger.Infof(strings.Join(cmd.Args, " "))
 	err = commandRunner.RunCommand(cmd)
 
 	exitCode := commandResultHandler.HandleCommandResult(cmd, err)
@@ -122,23 +123,23 @@ func enableLogging(cfg *config.Configuration) (f func()) {
 	f = func() {}
 
 	if !cfg.Logging {
-		logrus.SetOutput(ioutil.Discard)
+		logger.SetOutput(ioutil.Discard)
 		return
 	}
 
 	logfileWriter, err := logging.GetLogWriter(cfg)
 	if err != nil {
 		// no chance to log error output since running docker process has priority before logging
-		logrus.SetOutput(ioutil.Discard)
+		logger.SetOutput(ioutil.Discard)
 		return
 	}
 
-	logrus.SetOutput(logfileWriter)
+	logger.SetOutput(logfileWriter)
 
 	f = func() {
 		err := logfileWriter.Close()
 		if err != nil {
-			logrus.Error(err)
+			logger.Error(err)
 		}
 	}
 
