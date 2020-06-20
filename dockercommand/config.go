@@ -12,25 +12,20 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//NewCommandBuilder returns a new commandBuilder.
-func NewCommandBuilder() (CommandBuilder, error) {
+//NewCommandBuilder returns a new *CommandBuilder.
+func NewCommandBuilder() (*CommandBuilder, error) {
 	clientAdapter, err := newDockerClientAdapter()
 	if err != nil {
 		return nil, err
 	}
 
-	return &commandBuilder{
+	return &CommandBuilder{
 		dockerVersionProvider:     clientAdapter,
 		containerExistenceChecker: clientAdapter,
 	}, nil
 }
 
 type (
-	// CommandBuilder builds a "docker run" command for the given command name and configuration
-	CommandBuilder interface {
-		BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error)
-	}
-
 	dockerVersionProvider interface {
 		getAPIVersion() (string, error)
 	}
@@ -39,7 +34,7 @@ type (
 		exists(containerName string) bool
 	}
 
-	commandBuilder struct {
+	CommandBuilder struct {
 		dockerVersionProvider     dockerVersionProvider
 		containerExistenceChecker containerExistenceChecker
 	}
@@ -48,7 +43,7 @@ type (
 )
 
 // BuildCommandFromConfig builds a docker-run command on base of the given configuration.
-func (cb *commandBuilder) BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
+func (cb *CommandBuilder) BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
 	commandDef, err := cfg.FindCommandByName(commandName)
 	if err != nil {
 		return nil, err
@@ -71,7 +66,7 @@ func (cb *commandBuilder) BuildCommandFromConfig(commandName string, cfg *config
 	return cmd, nil
 }
 
-func (cb *commandBuilder) buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+func (cb *CommandBuilder) buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 	commandBuilder := builder.New()
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
@@ -92,7 +87,7 @@ func (cb *commandBuilder) buildRunCommand(commandDef config.CommandDefinition) (
 	return commandBuilder.Build(), nil
 }
 
-func (cb *commandBuilder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+func (cb *CommandBuilder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 	commandBuilder := builder.New()
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
@@ -120,7 +115,7 @@ func (cb *commandBuilder) buildExecCommand(commandDef config.CommandDefinition) 
 	return commandBuilder.Build(), nil
 }
 
-func (cb *commandBuilder) buildRunArgumentsFromBuilders(
+func (cb *CommandBuilder) buildRunArgumentsFromBuilders(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
@@ -139,7 +134,7 @@ func (cb *commandBuilder) buildRunArgumentsFromBuilders(
 	return nil
 }
 
-func (cb *commandBuilder) buildRunArgumentsFromFunctions(
+func (cb *CommandBuilder) buildRunArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
@@ -175,7 +170,7 @@ func (cb *commandBuilder) buildRunArgumentsFromFunctions(
 	return nil
 }
 
-func (cb *commandBuilder) buildExecArgumentsFromFunctions(
+func (cb *CommandBuilder) buildExecArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
@@ -200,7 +195,7 @@ func (cb *commandBuilder) buildExecArgumentsFromFunctions(
 	return nil
 }
 
-func (cb *commandBuilder) withVersionConstraint(
+func (cb *CommandBuilder) withVersionConstraint(
 	argumentBuilderFunc argumentBuilderDef,
 	versionConstraint string,
 ) argumentBuilderDef {
@@ -213,7 +208,7 @@ func (cb *commandBuilder) withVersionConstraint(
 	}
 }
 
-func (cb *commandBuilder) isVersionSupported(versionConstraint string) bool {
+func (cb *CommandBuilder) isVersionSupported(versionConstraint string) bool {
 	constraints, err := semver.NewConstraint(versionConstraint)
 	if err != nil {
 		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
