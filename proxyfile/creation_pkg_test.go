@@ -1,4 +1,4 @@
-package proxyfile
+package proxyfile_test
 
 import (
 	"fmt"
@@ -7,16 +7,20 @@ import (
 	"path"
 	"testing"
 
+	"github.com/Oppodelldog/droxy/proxyfile"
+
 	"github.com/stretchr/testify/assert"
 )
 
+const writePerm = 0600
+
 func TestFileCreation_AllStrategies(t *testing.T) {
 	testCases := []struct {
-		strategy FileCreationStrategy
+		strategy proxyfile.FileCreationStrategy
 	}{
-		{NewClonesStrategy()},
-		{NewHardlinkStrategy()},
-		{NewSymlinkStrategy()},
+		{proxyfile.NewClonesStrategy()},
+		{proxyfile.NewHardlinkStrategy()},
+		{proxyfile.NewSymlinkStrategy()},
 	}
 
 	for _, tc := range testCases {

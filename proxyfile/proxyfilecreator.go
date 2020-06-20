@@ -9,6 +9,11 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// FileCreationStrategy defines the interface for creation of a droxy commands in filesystem.
+type FileCreationStrategy interface {
+	CreateProxyFile(string, string) error
+}
+
 // New creates a new proxy file creator.
 func New(creationStrategy FileCreationStrategy, configLoader config.Loader) Creator {
 	return Creator{
