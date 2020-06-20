@@ -27,7 +27,7 @@ func (b ExecBuilder) BuildCommandFromConfig(commandDef config.CommandDefinition)
 
 	commandBuilder.AddCmdArguments(args)
 
-	err := buildArgumentsFromFunctions(commandDef, commandBuilder, b.getExecArgumentBuilderFuncs())
+	err := buildArgumentsFromFunctions(commandDef, commandBuilder, b.getExecArgumentBuilders())
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (b ExecBuilder) BuildCommandFromConfig(commandDef config.CommandDefinition)
 	return commandBuilder.Build(), nil
 }
 
-func (b ExecBuilder) getExecArgumentBuilderFuncs() []argumentBuilderFunc {
+func (b ExecBuilder) getExecArgumentBuilders() []argumentBuilderFunc {
 	return []argumentBuilderFunc{
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
