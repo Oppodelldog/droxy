@@ -20,7 +20,7 @@ type (
 	ConfigLoader interface {
 		Load() *config.Configuration
 	}
-	//CommandBuilder builds a executable command object
+	//Builder builds a executable command object
 	CommandBuilder interface {
 		BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error)
 	}
@@ -39,7 +39,7 @@ type (
 )
 
 func ExecuteDroxyCommand(args []string) int {
-	dockerRunCommandBuilder, err := dockercommand.NewCommandBuilder()
+	dockerRunCommandBuilder, err := dockercommand.NewBuilder()
 	if err != nil {
 		logrus.Errorf("error preparing docker call: %v", err)
 

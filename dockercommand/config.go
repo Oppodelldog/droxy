@@ -12,14 +12,14 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//NewCommandBuilder returns a new *CommandBuilder.
-func NewCommandBuilder() (*CommandBuilder, error) {
+//NewBuilder returns a new *Builder.
+func NewBuilder() (*Builder, error) {
 	clientAdapter, err := newDockerClientAdapter()
 	if err != nil {
 		return nil, err
 	}
 
-	return &CommandBuilder{
+	return &Builder{
 		dockerVersionProvider:     clientAdapter,
 		containerExistenceChecker: clientAdapter,
 	}, nil
@@ -34,7 +34,7 @@ type (
 		exists(containerName string) bool
 	}
 
-	CommandBuilder struct {
+	Builder struct {
 		dockerVersionProvider     dockerVersionProvider
 		containerExistenceChecker containerExistenceChecker
 	}
@@ -44,7 +44,7 @@ type (
 
 // BuildCommandFromConfig builds a docker-run command on base of the given configuration.
 // If a container with the same name already exists a docker-exec command will be created.
-func (cb *CommandBuilder) BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
+func (cb *Builder) BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
 	commandDef, err := cfg.FindCommandByName(commandName)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func (cb *CommandBuilder) BuildCommandFromConfig(commandName string, cfg *config
 	return cmd, nil
 }
 
-func (cb *CommandBuilder) buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+func (cb *Builder) buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 	commandBuilder := builder.New()
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
@@ -88,7 +88,7 @@ func (cb *CommandBuilder) buildRunCommand(commandDef config.CommandDefinition) (
 	return commandBuilder.Build(), nil
 }
 
-func (cb *CommandBuilder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+func (cb *Builder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 	commandBuilder := builder.New()
 
 	args := prepareCommandLineArguments(commandDef, os.Args[1:])
@@ -116,7 +116,7 @@ func (cb *CommandBuilder) buildExecCommand(commandDef config.CommandDefinition) 
 	return commandBuilder.Build(), nil
 }
 
-func (cb *CommandBuilder) buildExecArgumentsFromFunctions(
+func (cb *Builder) buildExecArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
@@ -141,7 +141,7 @@ func (cb *CommandBuilder) buildExecArgumentsFromFunctions(
 	return nil
 }
 
-func (cb *CommandBuilder) withVersionConstraint(
+func (cb *Builder) withVersionConstraint(
 	argumentBuilderFunc argumentBuilderDef,
 	versionConstraint string,
 ) argumentBuilderDef {
@@ -154,7 +154,7 @@ func (cb *CommandBuilder) withVersionConstraint(
 	}
 }
 
-func (cb *CommandBuilder) isVersionSupported(versionConstraint string) bool {
+func (cb *Builder) isVersionSupported(versionConstraint string) bool {
 	constraints, err := semver.NewConstraint(versionConstraint)
 	if err != nil {
 		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)

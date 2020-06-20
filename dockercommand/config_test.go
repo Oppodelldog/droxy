@@ -40,9 +40,9 @@ func TestBuildCommandFromConfig(t *testing.T) {
 	commandName := someCommand
 	configuration := getFullFeatureConfig(commandName)
 
-	commandBuilder, err := NewCommandBuilder()
+	commandBuilder, err := NewBuilder()
 	if err != nil {
-		t.Fatalf("Did not expect NewCommandBuilder to return an error, but got: %v", err)
+		t.Fatalf("Did not expect NewBuilder to return an error, but got: %v", err)
 	}
 
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
@@ -89,9 +89,9 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 		},
 	}
 
-	commandBuilder, err := NewCommandBuilder()
+	commandBuilder, err := NewBuilder()
 	if err != nil {
-		t.Fatalf("Did not expect NewCommandBuilder to return an error, but got: %v", err)
+		t.Fatalf("Did not expect NewBuilder to return an error, but got: %v", err)
 	}
 
 	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
@@ -145,7 +145,7 @@ func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *
 			commandName := someCommand
 			configuration := getFullFeatureConfig(commandName)
 
-			cb := &CommandBuilder{
+			cb := &Builder{
 				dockerVersionProvider:     newDockerAPIVersionStub("1.25"),
 				containerExistenceChecker: newContainerExistenceChecker(testData.containerExists),
 			}
@@ -398,7 +398,7 @@ func TestBuildCommandFromConfig_singleArgumentTest(t *testing.T) {
 
 	for testCaseName, testData := range testDataSet {
 		t.Run(testCaseName, func(t *testing.T) {
-			cb := CommandBuilder{
+			cb := Builder{
 				dockerVersionProvider: newDockerAPIVersionStub(testData.dockerAPIVersion),
 			}
 
