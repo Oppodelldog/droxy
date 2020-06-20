@@ -67,7 +67,7 @@ func (cb *Builder) buildExecCommand(commandDef config.CommandDefinition) (*exec.
 
 	commandBuilder.AddCmdArguments(args)
 
-	err := cb.buildExecArgumentsFromFunctions(commandDef, commandBuilder)
+	err := buildArgumentsFromFunctions(commandDef, commandBuilder, cb.getExecArgumentBuilderFuncs())
 	if err != nil {
 		return nil, err
 	}
@@ -87,11 +87,8 @@ func (cb *Builder) buildExecCommand(commandDef config.CommandDefinition) (*exec.
 	return commandBuilder.Build(), nil
 }
 
-func (cb *Builder) buildExecArgumentsFromFunctions(
-	commandDef config.CommandDefinition,
-	builder builder.Builder,
-) error {
-	argumentBuilderFunctions := []argumentBuilderFunc{
+func (cb *Builder) getExecArgumentBuilderFuncs() []argumentBuilderFunc {
+	return []argumentBuilderFunc{
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
 		arguments.BuildDetachedFlag,
@@ -101,15 +98,6 @@ func (cb *Builder) buildExecArgumentsFromFunctions(
 		arguments.BuildImpersonation,
 		arguments.BuildCommand,
 	}
-
-	for _, argumentBuilderFunc := range argumentBuilderFunctions {
-		err := argumentBuilderFunc(commandDef, builder)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 func buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
@@ -120,7 +108,7 @@ func buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 
 	commandBuilder.AddCmdArguments(args)
 
-	err := buildRunArgumentsFromFunctions(commandDef, commandBuilder)
+	err := buildArgumentsFromFunctions(commandDef, commandBuilder, getRunArgumentBuilders())
 	if err != nil {
 		return nil, err
 	}
@@ -166,11 +154,23 @@ func buildRunArgumentsFromBuilders(
 	return nil
 }
 
-func buildRunArgumentsFromFunctions(
+func buildArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
+	builderFuncs []argumentBuilderFunc,
 ) error {
-	argumentBuilderFunctions := []argumentBuilderFunc{
+	for _, argumentBuilderFunc := range builderFuncs {
+		err := argumentBuilderFunc(commandDef, builder)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func getRunArgumentBuilders() []argumentBuilderFunc {
+	return []argumentBuilderFunc{
 		arguments.AttachStreams,
 		arguments.BuildTerminalContext,
 		arguments.BuildEntryPoint,
@@ -191,13 +191,4 @@ func buildRunArgumentsFromFunctions(
 		arguments.BuildLinks,
 		arguments.BuildWorkDir,
 	}
-
-	for _, argumentBuilderFunc := range argumentBuilderFunctions {
-		err := argumentBuilderFunc(commandDef, builder)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
