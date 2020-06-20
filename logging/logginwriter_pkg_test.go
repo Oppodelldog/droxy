@@ -1,9 +1,11 @@
-package logging
+package logging_test
 
 import (
 	"bytes"
 	"io/ioutil"
 	"testing"
+
+	"github.com/Oppodelldog/droxy/logging"
 
 	"github.com/stretchr/testify/assert"
 
@@ -15,11 +17,11 @@ func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 
 	var bytesBuffer []byte
 	target := bytes.NewBuffer(bytesBuffer)
-	loggingWriter := NewLoggingWriter(target, loggerStub, "logPrefix")
+	loggingWriter := logging.NewWriter(target, loggerStub, "logPrefix")
 
 	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
 	if err != nil {
-		t.Fatalf("Did not expect loggingWriter.Write to return an error, but got: %v", err)
+		t.Fatalf("Did not expect Writer.Write to return an error, but got: %v", err)
 	}
 
 	bufferContent, err := ioutil.ReadAll(target)
@@ -39,11 +41,11 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 	logger.Out = outputBuffer
 
 	targetStub := ioutil.Discard
-	loggingWriter := NewLoggingWriter(targetStub, logger, "logPrefix")
+	loggingWriter := logging.NewWriter(targetStub, logger, "logPrefix")
 
 	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
 	if err != nil {
-		t.Fatalf("Did not expect loggingWriter.Write to return an error, but got: %v", err)
+		t.Fatalf("Did not expect Writer.Write to return an error, but got: %v", err)
 	}
 
 	bufferContent, err := ioutil.ReadAll(outputBuffer)

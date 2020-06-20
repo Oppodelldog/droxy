@@ -1,10 +1,12 @@
-package logging
+package logging_test
 
 import (
 	"io"
 	"os"
 	"path"
 	"testing"
+
+	"github.com/Oppodelldog/droxy/logging"
 
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/stretchr/testify/assert"
@@ -20,7 +22,7 @@ func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 	cfg := &config.Configuration{}
 	cfg.SetConfigurationFilePath(configFilePath)
 
-	writer, err := GetLogWriter(cfg)
+	writer, err := logging.GetLogWriter(cfg)
 	if err != nil {
 		t.Fatalf("Did not expect GetLogWriter to return an error, but got: %v", err)
 	}
@@ -41,7 +43,7 @@ func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 	cfg := &config.Configuration{}
 	cfg.SetConfigurationFilePath(configFilePath)
 
-	writer, err := GetLogWriter(cfg)
+	writer, err := logging.GetLogWriter(cfg)
 	if err != nil {
 		t.Fatalf("Did not expect GetLogWriter to return an error, but got: %v", err)
 	}
@@ -60,7 +62,7 @@ func TestGetLogWriter_returnsErrorOnFileCreation(t *testing.T) {
 	cfg := &config.Configuration{}
 	cfg.SetConfigurationFilePath(configFilePath)
 
-	_, err := GetLogWriter(cfg)
+	_, err := logging.GetLogWriter(cfg)
 
 	assert.Error(t, err)
 }
