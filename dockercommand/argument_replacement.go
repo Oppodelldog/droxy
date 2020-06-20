@@ -7,16 +7,16 @@ import (
 
 func prepareCommandLineArguments(commandDef config.CommandDefinition, arguments []string) []string {
 	for index, argVal := range arguments {
-		replacement := getReplacement(commandDef, argVal)
-		if replacement != nil {
-			arguments[index] = *replacement
+		replacement, ok := getReplacement(commandDef, argVal)
+		if ok {
+			arguments[index] = replacement
 		}
 	}
 
 	return arguments
 }
 
-func getReplacement(commandDef config.CommandDefinition, s string) *string {
+func getReplacement(commandDef config.CommandDefinition, s string) (string, bool) {
 	if replaceArgs, ok := commandDef.GetReplaceArgs(); ok {
 		for _, replaceMapping := range replaceArgs {
 			const mustHaveEntries = 2
@@ -30,10 +30,10 @@ func getReplacement(commandDef config.CommandDefinition, s string) *string {
 			}
 
 			if replaceMapping[0] == s {
-				return &replaceMapping[1]
+				return replaceMapping[1], true
 			}
 		}
 	}
 
-	return nil
+	return "", false
 }
