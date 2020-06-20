@@ -75,12 +75,12 @@ func (cb *CommandBuilder) buildRunCommand(commandDef config.CommandDefinition) (
 
 	commandBuilder.AddCmdArguments(args)
 
-	err := cb.buildRunArgumentsFromFunctions(commandDef, commandBuilder)
+	err := buildRunArgumentsFromFunctions(commandDef, commandBuilder)
 	if err != nil {
 		return nil, err
 	}
 
-	err = cb.buildRunArgumentsFromBuilders(commandDef, commandBuilder)
+	err = buildRunArgumentsFromBuilders(commandDef, commandBuilder)
 	if err != nil {
 		return nil, err
 	}
@@ -114,61 +114,6 @@ func (cb *CommandBuilder) buildExecCommand(commandDef config.CommandDefinition) 
 	commandBuilder.SetDockerSubCommand(builder.DockerExecSubCommand)
 
 	return commandBuilder.Build(), nil
-}
-
-func (cb *CommandBuilder) buildRunArgumentsFromBuilders(
-	commandDef config.CommandDefinition,
-	builder builder.Builder,
-) error {
-	argumentBuilders := []arguments.ArgumentBuilderInterface{
-		arguments.NewUserGroupsArgumentBuilder(),
-		arguments.NewNameArgumentBuilder(),
-	}
-
-	for _, argumentBuilder := range argumentBuilders {
-		err := argumentBuilder.BuildArgument(commandDef, builder)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (cb *CommandBuilder) buildRunArgumentsFromFunctions(
-	commandDef config.CommandDefinition,
-	builder builder.Builder,
-) error {
-	argumentBuilderFunctions := []argumentBuilderDef{
-		arguments.AttachStreams,
-		arguments.BuildTerminalContext,
-		arguments.BuildEntryPoint,
-		arguments.BuildCommand,
-		arguments.BuildNetwork,
-		arguments.BuildEnvFile,
-		arguments.BuildIP,
-		arguments.BuildInteractiveFlag,
-		arguments.BuildDetachedFlag,
-		arguments.BuildRemoveContainerFlag,
-		arguments.BuildImpersonation,
-		arguments.BuildImage,
-		arguments.BuildEnvVars,
-		arguments.LabelContainer,
-		arguments.BuildPorts,
-		arguments.BuildPortsFromParams,
-		arguments.BuildVolumes,
-		arguments.BuildLinks,
-		arguments.BuildWorkDir,
-	}
-
-	for _, argumentBuilderFunc := range argumentBuilderFunctions {
-		err := argumentBuilderFunc(commandDef, builder)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
 
 func (cb *CommandBuilder) buildExecArgumentsFromFunctions(
@@ -232,4 +177,59 @@ func (cb *CommandBuilder) isVersionSupported(versionConstraint string) bool {
 	}
 
 	return constraints.Check(dockerSemVer)
+}
+
+func buildRunArgumentsFromBuilders(
+	commandDef config.CommandDefinition,
+	builder builder.Builder,
+) error {
+	argumentBuilders := []arguments.ArgumentBuilderInterface{
+		arguments.NewUserGroupsArgumentBuilder(),
+		arguments.NewNameArgumentBuilder(),
+	}
+
+	for _, argumentBuilder := range argumentBuilders {
+		err := argumentBuilder.BuildArgument(commandDef, builder)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func buildRunArgumentsFromFunctions(
+	commandDef config.CommandDefinition,
+	builder builder.Builder,
+) error {
+	argumentBuilderFunctions := []argumentBuilderDef{
+		arguments.AttachStreams,
+		arguments.BuildTerminalContext,
+		arguments.BuildEntryPoint,
+		arguments.BuildCommand,
+		arguments.BuildNetwork,
+		arguments.BuildEnvFile,
+		arguments.BuildIP,
+		arguments.BuildInteractiveFlag,
+		arguments.BuildDetachedFlag,
+		arguments.BuildRemoveContainerFlag,
+		arguments.BuildImpersonation,
+		arguments.BuildImage,
+		arguments.BuildEnvVars,
+		arguments.LabelContainer,
+		arguments.BuildPorts,
+		arguments.BuildPortsFromParams,
+		arguments.BuildVolumes,
+		arguments.BuildLinks,
+		arguments.BuildWorkDir,
+	}
+
+	for _, argumentBuilderFunc := range argumentBuilderFunctions {
+		err := argumentBuilderFunc(commandDef, builder)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
