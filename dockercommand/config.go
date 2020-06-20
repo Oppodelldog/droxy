@@ -39,7 +39,7 @@ type (
 		containerExistenceChecker containerExistenceChecker
 	}
 
-	argumentBuilderDef func(commandDef config.CommandDefinition, builder builder.Builder) error
+	argumentBuilderFunc func(commandDef config.CommandDefinition, builder builder.Builder) error
 )
 
 // BuildCommandFromConfig builds a docker-run command on base of the given CommandDefinition.
@@ -60,27 +60,6 @@ func (cb *Builder) BuildCommandFromConfig(commandDef config.CommandDefinition) (
 	}
 
 	return cmd, nil
-}
-
-func buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
-	commandBuilder := builder.New()
-
-	args := prepareCommandLineArguments(commandDef, os.Args[1:])
-	args = prependAdditionalArguments(commandDef, args)
-
-	commandBuilder.AddCmdArguments(args)
-
-	err := buildRunArgumentsFromFunctions(commandDef, commandBuilder)
-	if err != nil {
-		return nil, err
-	}
-
-	err = buildRunArgumentsFromBuilders(commandDef, commandBuilder)
-	if err != nil {
-		return nil, err
-	}
-
-	return commandBuilder.Build(), nil
 }
 
 func (cb *Builder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
@@ -115,13 +94,13 @@ func (cb *Builder) buildExecArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
-	argumentBuilderFunctions := []argumentBuilderDef{
+	argumentBuilderFunctions := []argumentBuilderFunc{
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
 		arguments.BuildDetachedFlag,
-		cb.withVersionConstraint(arguments.BuildEnvVars, ">= 1.25"),
+		withVersionConstraint(arguments.BuildEnvVars, ">= 1.25", cb.dockerVersionProvider),
 		arguments.BuildEnvFile,
-		cb.withVersionConstraint(arguments.BuildWorkDir, ">= 1.35"),
+		withVersionConstraint(arguments.BuildWorkDir, ">= 1.35", cb.dockerVersionProvider),
 		arguments.BuildImpersonation,
 		arguments.BuildCommand,
 	}
@@ -136,20 +115,42 @@ func (cb *Builder) buildExecArgumentsFromFunctions(
 	return nil
 }
 
-func (cb *Builder) withVersionConstraint(
-	argumentBuilderFunc argumentBuilderDef,
+func buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+	commandBuilder := builder.New()
+
+	args := prepareCommandLineArguments(commandDef, os.Args[1:])
+	args = prependAdditionalArguments(commandDef, args)
+
+	commandBuilder.AddCmdArguments(args)
+
+	err := buildRunArgumentsFromFunctions(commandDef, commandBuilder)
+	if err != nil {
+		return nil, err
+	}
+
+	err = buildRunArgumentsFromBuilders(commandDef, commandBuilder)
+	if err != nil {
+		return nil, err
+	}
+
+	return commandBuilder.Build(), nil
+}
+
+func withVersionConstraint(
+	buildArgument argumentBuilderFunc,
 	versionConstraint string,
-) argumentBuilderDef {
+	vp dockerVersionProvider,
+) argumentBuilderFunc {
 	return func(commandDef config.CommandDefinition, builder builder.Builder) error {
-		if cb.isVersionSupported(versionConstraint) {
-			return argumentBuilderFunc(commandDef, builder)
+		if isVersionSupported(versionConstraint, vp) {
+			return buildArgument(commandDef, builder)
 		}
 
 		return nil
 	}
 }
 
-func (cb *Builder) isVersionSupported(versionConstraint string) bool {
+func isVersionSupported(versionConstraint string, vp dockerVersionProvider) bool {
 	constraints, err := semver.NewConstraint(versionConstraint)
 	if err != nil {
 		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
@@ -157,7 +158,7 @@ func (cb *Builder) isVersionSupported(versionConstraint string) bool {
 		return false
 	}
 
-	dockerVersion, err := cb.dockerVersionProvider.getAPIVersion()
+	dockerVersion, err := vp.getAPIVersion()
 	if err != nil {
 		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
 
@@ -197,7 +198,7 @@ func buildRunArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
 ) error {
-	argumentBuilderFunctions := []argumentBuilderDef{
+	argumentBuilderFunctions := []argumentBuilderFunc{
 		arguments.AttachStreams,
 		arguments.BuildTerminalContext,
 		arguments.BuildEntryPoint,
