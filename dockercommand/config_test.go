@@ -15,6 +15,7 @@ import (
 
 const someCommand = "some-command"
 
+//nolint:funlen
 func TestBuildCommandFromConfig(t *testing.T) {
 	originalArgs := os.Args
 
@@ -45,7 +46,12 @@ func TestBuildCommandFromConfig(t *testing.T) {
 		t.Fatalf("Did not expect NewBuilder to return an error, but got: %v", err)
 	}
 
-	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
+	commandDef, err := configuration.FindCommandByName(commandName)
+	if err != nil {
+		t.Fatalf("Did not expect FindCommandByName to return an error, but got: %v", err)
+	}
+
+	cmd, err := commandBuilder.BuildCommandFromConfig(commandDef)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
 	}
@@ -94,7 +100,12 @@ func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *test
 		t.Fatalf("Did not expect NewBuilder to return an error, but got: %v", err)
 	}
 
-	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, configuration)
+	cmdDef, err := configuration.FindCommandByName(commandName)
+	if err != nil {
+		t.Fatalf("Did not expect FindCommandByName to return an error, but got: %v", err)
+	}
+
+	cmd, err := commandBuilder.BuildCommandFromConfig(cmdDef)
 	if err != nil {
 		t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
 	}
@@ -150,7 +161,12 @@ func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *
 				containerExistenceChecker: newContainerExistenceChecker(testData.containerExists),
 			}
 
-			cmd, err := cb.BuildCommandFromConfig(commandName, configuration)
+			cmdDef, err := configuration.FindCommandByName(commandName)
+			if err != nil {
+				t.Fatalf("Did not expect FindCommandByName to return an error, but got: %v", err)
+			}
+
+			cmd, err := cb.BuildCommandFromConfig(cmdDef)
 			if err != nil {
 				t.Fatalf("Did not expect BuildCommandFromConfig to return an error, but got: %v", err)
 			}

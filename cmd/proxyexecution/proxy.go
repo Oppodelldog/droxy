@@ -22,7 +22,7 @@ type (
 	}
 	//Builder builds a executable command object
 	CommandBuilder interface {
-		BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error)
+		BuildCommandFromConfig(cmdDef config.CommandDefinition) (*exec.Cmd, error)
 	}
 	//CommandRunner runs a command
 	CommandRunner interface {
@@ -97,7 +97,12 @@ func executeCommand(
 
 	commandName := executableNameParser.ParseCommandNameFromCommandLine()
 
-	cmd, err := commandBuilder.BuildCommandFromConfig(commandName, cfg)
+	cmdDef, err := cfg.FindCommandByName(commandName)
+	if err != nil {
+		logrus.Errorf("cannot find command definition for '%s', but got: %v", commandName, err)
+	}
+
+	cmd, err := commandBuilder.BuildCommandFromConfig(cmdDef)
 	if err != nil {
 		logrus.Errorf("error preparing docker call for '%s': %v", commandName, err)
 

@@ -4,6 +4,7 @@ BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 setup: ## Install tools
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s v1.27.0
 	mkdir .bin || mv bin/golangci-lint .bin/golangci-lint && rm -rf bin
+	go get github.com/vektra/mockery/.../
 
 lint: ## Run the linters
 	golangci-lint run
@@ -15,6 +16,13 @@ test: ## Run all the tests
 
 fmt: ## gofmt and goimports all go files
 	find . -name '*.go' -not -wholename './vendor/*' | while read -r file; do gofmt -w -s "$$file"; goimports -w "$$file"; done
+
+mocks:
+	mockery -name CommandBuilder -dir=cmd/proxyexecution -output=cmd/mocks
+	mockery -name CommandResultHandler -dir=cmd/proxyexecution -output=cmd/mocks
+	mockery -name CommandRunner -dir=cmd/proxyexecution -output=cmd/mocks
+	mockery -name ConfigLoader -dir=cmd/proxyexecution -output=cmd/mocks
+	mockery -name ExecutableNameParser -dir=cmd/proxyexecution -output=cmd/mocks
 
 ci: test build lint ## Run all the tests and code checks
 

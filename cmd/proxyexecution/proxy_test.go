@@ -101,13 +101,18 @@ func TestExecuteCommand_ExecutableNameIsParsed(t *testing.T) {
 }
 
 func TestExecuteCommand_CommandIsBuild(t *testing.T) {
-	configStub := &config.Configuration{}
+	commandNameStub := someCommandName
+	cmdDefStub := config.CommandDefinition{
+		Name: &commandNameStub,
+	}
+	configStub := &config.Configuration{
+		Command: []config.CommandDefinition{cmdDefStub},
+	}
 	configLoaderStub := &mocks.ConfigLoader{}
 	configLoaderStub.On("Load").
 		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := someCommandName
 	executableNameParserStub.
 		On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
@@ -115,7 +120,7 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 	commandBuilderMock := &mocks.CommandBuilder{}
 
 	commandBuilderMock.
-		On("BuildCommandFromConfig", commandNameStub, configStub).
+		On("BuildCommandFromConfig", cmdDefStub).
 		Return(&exec.Cmd{Args: []string{"echo", "1"}}, nil)
 
 	commandRunnerStub := &mocks.CommandRunner{}
@@ -143,13 +148,18 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 }
 
 func TestExecuteCommand_CommandIsRun(t *testing.T) {
-	configStub := &config.Configuration{}
+	commandNameStub := someCommandName
+	cmdDefStub := config.CommandDefinition{
+		Name: &commandNameStub,
+	}
+	configStub := &config.Configuration{
+		Command: []config.CommandDefinition{cmdDefStub},
+	}
 	configLoaderStub := &mocks.ConfigLoader{}
 	configLoaderStub.On("Load").
 		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := someCommandName
 	executableNameParserStub.
 		On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
@@ -160,7 +170,7 @@ func TestExecuteCommand_CommandIsRun(t *testing.T) {
 	var errStub error
 
 	commandBuilderStub.
-		On("BuildCommandFromConfig", commandNameStub, configStub).
+		On("BuildCommandFromConfig", cmdDefStub).
 		Return(cmdStub, errStub)
 
 	commandRunnerMock := &mocks.CommandRunner{}
@@ -187,14 +197,18 @@ func TestExecuteCommand_CommandIsRun(t *testing.T) {
 }
 
 func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
-	configStub := &config.Configuration{}
+	commandNameStub := someCommandName
+	cmdDefStub := config.CommandDefinition{
+		Name: &commandNameStub,
+	}
+	configStub := &config.Configuration{
+		Command: []config.CommandDefinition{cmdDefStub},
+	}
 	configLoaderStub := &mocks.ConfigLoader{}
-	configLoaderStub.
-		On("Load").
+	configLoaderStub.On("Load").
 		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := someCommandName
 	executableNameParserStub.
 		On("ParseCommandNameFromCommandLine").
 		Return(commandNameStub)
@@ -205,7 +219,7 @@ func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
 	var errStub error
 
 	commandBuilderStub.
-		On("BuildCommandFromConfig", commandNameStub, configStub).
+		On("BuildCommandFromConfig", cmdDefStub).
 		Return(cmdStub, errStub)
 
 	commandRunnerStub := &mocks.CommandRunner{}
@@ -233,16 +247,25 @@ func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
 }
 
 func TestExecuteCommand_ErrorFromCommandBuild_ExitCode900Returned(t *testing.T) {
-	configStub := &config.Configuration{}
+	commandNameStub := someCommandName
+	cmdDefStub := config.CommandDefinition{
+		Name: &commandNameStub,
+	}
+	configStub := &config.Configuration{
+		Command: []config.CommandDefinition{cmdDefStub},
+	}
 	configLoaderStub := &mocks.ConfigLoader{}
-	configLoaderStub.On("Load").Return(configStub)
+	configLoaderStub.On("Load").
+		Return(configStub)
 
 	executableNameParserStub := &mocks.ExecutableNameParser{}
-	commandNameStub := someCommandName
-	executableNameParserStub.On("ParseCommandNameFromCommandLine").Return(commandNameStub)
+	executableNameParserStub.
+		On("ParseCommandNameFromCommandLine").
+		Return(commandNameStub)
 
 	commandBuilderStub := &mocks.CommandBuilder{}
-	commandBuilderStub.On("BuildCommandFromConfig", commandNameStub, configStub).Return(nil, errors.New("some-error"))
+	commandBuilderStub.On("BuildCommandFromConfig", cmdDefStub).
+		Return(nil, errors.New("some-error"))
 
 	commandRunnerStub := &mocks.CommandRunner{}
 	commandRunnerStub.On("RunCommand", mock.Anything).Return(nil)
