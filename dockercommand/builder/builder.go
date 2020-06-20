@@ -14,6 +14,23 @@ const (
 	DockerExecSubCommand = "exec"
 )
 
+const (
+	flagPortMapping  = "-p"
+	flagLabel        = "-l"
+	flagAttachStream = "-a"
+	flagVolume       = "-v"
+	flagLink         = "--link"
+	flagEnvVar       = "-e"
+	flagAddGroup     = "--group-add"
+	flagEntryPoint   = "--entrypoint"
+	flagNetwork      = "--network"
+	flagEnvFile      = "--env-file"
+	flagIP           = "--ip"
+	flagWorkingDir   = "-w"
+	flagName         = "--name"
+	flagUserID       = "-u"
+)
+
 type (
 	// builder can be used to build a docker run command
 	builder struct {
@@ -82,63 +99,73 @@ func (b *builder) SetStdErr(w io.Writer) Builder {
 
 // AddPortMapping adds a mapping of ports between the docker container and the host.
 func (b *builder) AddPortMapping(portMapping string) Builder {
-	b.portMappings = append(b.portMappings, "-p", portMapping)
+	b.portMappings = append(b.portMappings, flagPortMapping, portMapping)
+
 	return b
 }
 
 // AddLabel adds a label to the docker container.
 func (b *builder) AddLabel(label string) Builder {
-	b.labels = append(b.labels, "-l", label)
+	b.labels = append(b.labels, flagLabel, label)
+
 	return b
 }
 
 // AddCmdArguments adds command arguments that are applied to the dockerBinaryName executed inside the container.
 func (b *builder) AddCmdArguments(arguments []string) Builder {
 	b.cmdArgs = append(b.cmdArgs, arguments...)
+
 	return b
 }
 
 // AddArgument adds arguments to the docker run command.
 func (b *builder) AddArgument(argument string) Builder {
 	b.args = append(b.args, argument)
+
 	return b
 }
 
 // AttachTo attaches Streams to the docker-container.
 // possible values: STDERR, STDOUT, STDIN.
 func (b *builder) AttachTo(stream string) Builder {
-	b.attachedStreams = append(b.attachedStreams, "-a", stream)
+	b.attachedStreams = append(b.attachedStreams, flagAttachStream, stream)
+
 	return b
 }
 
 // AddVolumeMapping adds a volume mapping between the docker container and the host.
 func (b *builder) AddVolumeMapping(volume string) Builder {
-	b.volumeMappings = append(b.volumeMappings, "-v", volume)
+	b.volumeMappings = append(b.volumeMappings, flagVolume, volume)
+
 	return b
 }
 
 // AddLinkMapping adds a volume mapping between the docker container and the host.
 func (b *builder) AddLinkMapping(link string) Builder {
-	b.linkMappings = append(b.linkMappings, "--link", link)
+	b.linkMappings = append(b.linkMappings, flagLink, link)
+
 	return b
 }
 
 // AddEnvVar adds an environment variable to the docker-container.
 // example: HOME=/home/myUser
 func (b *builder) AddEnvVar(envVarDeclaration string) Builder {
-	b.envVarMappings = append(b.envVarMappings, "-e", envVarDeclaration)
+	b.envVarMappings = append(b.envVarMappings, flagEnvVar, envVarDeclaration)
+
 	return b
 }
 
 // AddGroup adds the given group name into the docker container.
 func (b *builder) AddGroup(groupName string) Builder {
-	b.addedGroups = append(b.addedGroups, "--group-add", groupName)
+	b.addedGroups = append(b.addedGroups, flagAddGroup, groupName)
+
 	return b
 }
 
 // SetEntryPoint sets the entryPoint for the docker run command.
 func (b *builder) SetEntryPoint(entryPoint string) Builder {
-	b.entryPoint = []string{"--entrypoint", entryPoint}
+	b.entryPoint = []string{flagEntryPoint, entryPoint}
+
 	return b
 }
 
@@ -150,19 +177,22 @@ func (b *builder) SetCommand(command string) Builder {
 
 // SetNetwork connects the docker container to the given docker-network.
 func (b *builder) SetNetwork(network string) Builder {
-	b.network = []string{"--network", network}
+	b.network = []string{flagNetwork, network}
+
 	return b
 }
 
 // SetEnvFile sets an env-file which is load into the environment of the container.
 func (b *builder) SetEnvFile(envFile string) Builder {
-	b.envFile = []string{"--env-file", envFile}
+	b.envFile = []string{flagEnvFile, envFile}
+
 	return b
 }
 
 // SetIP sets an env-file which is load into the environment of the container.
 func (b *builder) SetIP(ip string) Builder {
-	b.ip = []string{"--ip", ip}
+	b.ip = []string{flagIP, ip}
+
 	return b
 }
 
@@ -174,20 +204,21 @@ func (b *builder) SetImageName(imageName string) Builder {
 
 // SetWorkingDir sets the default working dir for commands executed inside the container.
 func (b *builder) SetWorkingDir(workingDir string) Builder {
-	b.workingDir = []string{"-w", workingDir}
+	b.workingDir = []string{flagWorkingDir, workingDir}
+
 	return b
 }
 
 // SetContainerName sets the display name of the container.
 func (b *builder) SetContainerName(containerName string) Builder {
-	b.containerName = []string{"--name", containerName}
+	b.containerName = []string{flagName, containerName}
 
 	return b
 }
 
 // SetContainerUserAndGroup sets the given userId:groupId as current user and group in the container.
 func (b *builder) SetContainerUserAndGroup(userID string, groupID string) Builder {
-	b.containerUser = []string{"-u", fmt.Sprintf("%s:%s", userID, groupID)}
+	b.containerUser = []string{flagUserID, fmt.Sprintf("%s:%s", userID, groupID)}
 
 	return b
 }
