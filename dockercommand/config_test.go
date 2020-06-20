@@ -157,7 +157,7 @@ func TestBuildCommandFromConfig_ifContainerIsRunning_expectDockerExecCommand(t *
 			configuration := getFullFeatureConfig(commandName)
 
 			cb := &Builder{
-				dockerVersionProvider:     newDockerAPIVersionStub("1.25"),
+				versionChecker:            versionChecker{versionProvider: newDockerAPIVersionStub("1.25")},
 				containerExistenceChecker: newContainerExistenceChecker(testData.containerExists),
 			}
 
@@ -415,7 +415,7 @@ func TestBuildCommandFromConfig_singleArgumentTest(t *testing.T) {
 	for testCaseName, testData := range testDataSet {
 		t.Run(testCaseName, func(t *testing.T) {
 			cb := Builder{
-				dockerVersionProvider: newDockerAPIVersionStub(testData.dockerAPIVersion),
+				versionChecker: versionChecker{versionProvider: newDockerAPIVersionStub(testData.dockerAPIVersion)},
 			}
 
 			workDir := "someWorkDir"

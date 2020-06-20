@@ -4,26 +4,10 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/Masterminds/semver"
-	"github.com/sirupsen/logrus"
-
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/Oppodelldog/droxy/dockercommand/arguments"
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
-
-//NewBuilder returns a new *Builder.
-func NewBuilder() (*Builder, error) {
-	clientAdapter, err := newDockerClientAdapter()
-	if err != nil {
-		return nil, err
-	}
-
-	return &Builder{
-		dockerVersionProvider:     clientAdapter,
-		containerExistenceChecker: clientAdapter,
-	}, nil
-}
 
 type (
 	dockerVersionProvider interface {
@@ -35,12 +19,25 @@ type (
 	}
 
 	Builder struct {
-		dockerVersionProvider     dockerVersionProvider
 		containerExistenceChecker containerExistenceChecker
+		versionChecker            versionChecker
 	}
 
 	argumentBuilderFunc func(commandDef config.CommandDefinition, builder builder.Builder) error
 )
+
+//NewBuilder returns a new *Builder.
+func NewBuilder() (*Builder, error) {
+	clientAdapter, err := newDockerClientAdapter()
+	if err != nil {
+		return nil, err
+	}
+
+	return &Builder{
+		containerExistenceChecker: clientAdapter,
+		versionChecker:            versionChecker{versionProvider: clientAdapter},
+	}, nil
+}
 
 // BuildCommandFromConfig builds a docker-run command on base of the given CommandDefinition.
 // If a container with the same name already exists a docker-exec command will be created.
@@ -98,9 +95,9 @@ func (cb *Builder) buildExecArgumentsFromFunctions(
 		arguments.BuildInteractiveFlag,
 		arguments.BuildTerminalContext,
 		arguments.BuildDetachedFlag,
-		withVersionConstraint(arguments.BuildEnvVars, ">= 1.25", cb.dockerVersionProvider),
+		withVersionConstraint(arguments.BuildEnvVars, ">= 1.25", cb.versionChecker),
 		arguments.BuildEnvFile,
-		withVersionConstraint(arguments.BuildWorkDir, ">= 1.35", cb.dockerVersionProvider),
+		withVersionConstraint(arguments.BuildWorkDir, ">= 1.35", cb.versionChecker),
 		arguments.BuildImpersonation,
 		arguments.BuildCommand,
 	}
@@ -139,40 +136,15 @@ func buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
 func withVersionConstraint(
 	buildArgument argumentBuilderFunc,
 	versionConstraint string,
-	vp dockerVersionProvider,
+	vc versionChecker,
 ) argumentBuilderFunc {
 	return func(commandDef config.CommandDefinition, builder builder.Builder) error {
-		if isVersionSupported(versionConstraint, vp) {
+		if vc.isVersionSupported(versionConstraint) {
 			return buildArgument(commandDef, builder)
 		}
 
 		return nil
 	}
-}
-
-func isVersionSupported(versionConstraint string, vp dockerVersionProvider) bool {
-	constraints, err := semver.NewConstraint(versionConstraint)
-	if err != nil {
-		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
-
-		return false
-	}
-
-	dockerVersion, err := vp.getAPIVersion()
-	if err != nil {
-		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
-
-		return false
-	}
-
-	dockerSemVer, err := semver.NewVersion(dockerVersion)
-	if err != nil {
-		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
-
-		return false
-	}
-
-	return constraints.Check(dockerSemVer)
 }
 
 func buildRunArgumentsFromBuilders(
