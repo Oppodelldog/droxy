@@ -43,6 +43,7 @@ type (
 )
 
 // BuildCommandFromConfig builds a docker-run command on base of the given configuration.
+// If a container with the same name already exists a docker-exec command will be created.
 func (cb *CommandBuilder) BuildCommandFromConfig(commandName string, cfg *config.Configuration) (*exec.Cmd, error) {
 	commandDef, err := cfg.FindCommandByName(commandName)
 	if err != nil {
