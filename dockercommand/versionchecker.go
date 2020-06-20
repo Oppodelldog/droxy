@@ -6,7 +6,7 @@ import (
 )
 
 type versionChecker struct {
-	versionProvider dockerVersionProvider
+	dockerVersion string
 }
 
 func (vc versionChecker) isVersionSupported(versionConstraint string) bool {
@@ -17,14 +17,7 @@ func (vc versionChecker) isVersionSupported(versionConstraint string) bool {
 		return false
 	}
 
-	dockerVersion, err := vc.versionProvider.getAPIVersion()
-	if err != nil {
-		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
-
-		return false
-	}
-
-	dockerSemVer, err := semver.NewVersion(dockerVersion)
+	dockerSemVer, err := semver.NewVersion(vc.dockerVersion)
 	if err != nil {
 		logrus.Errorf("unable to check version constraint '%s': %v", versionConstraint, err)
 

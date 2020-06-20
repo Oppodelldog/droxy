@@ -22,7 +22,7 @@ type (
 	}
 	//Builder builds a executable command object
 	CommandBuilder interface {
-		BuildCommandFromConfig(cmdDef config.CommandDefinition) (*exec.Cmd, error)
+		BuildCommandFromConfig(commandDef config.CommandDefinition) (*exec.Cmd, error)
 	}
 	//CommandRunner runs a command
 	CommandRunner interface {

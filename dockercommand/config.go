@@ -1,11 +1,9 @@
 package dockercommand
 
 import (
-	"os"
 	"os/exec"
 
 	"github.com/Oppodelldog/droxy/config"
-	"github.com/Oppodelldog/droxy/dockercommand/arguments"
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
@@ -20,7 +18,7 @@ type (
 
 	Builder struct {
 		containerExistenceChecker containerExistenceChecker
-		versionChecker            versionChecker
+		versionProvider           dockerVersionProvider
 	}
 
 	argumentBuilderFunc func(commandDef config.CommandDefinition, builder builder.Builder) error
@@ -35,23 +33,28 @@ func NewBuilder() (*Builder, error) {
 
 	return &Builder{
 		containerExistenceChecker: clientAdapter,
-		versionChecker:            versionChecker{versionProvider: clientAdapter},
+		versionProvider:           clientAdapter,
 	}, nil
 }
 
 // BuildCommandFromConfig builds a docker-run command on base of the given CommandDefinition.
 // If a container with the same name already exists a docker-exec command will be created.
-func (cb *Builder) BuildCommandFromConfig(commandDef config.CommandDefinition) (*exec.Cmd, error) {
-	if cb.containerExists(commandDef) {
-		return cb.buildExecCommand(commandDef)
+func (b *Builder) BuildCommandFromConfig(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+	dockerVersion, err := b.versionProvider.getAPIVersion()
+	if err != nil {
+		return nil, err
 	}
 
-	return buildRunCommand(commandDef)
+	if b.containerExists(commandDef) {
+		return NewExecBuilder(dockerVersion).BuildCommandFromConfig(commandDef)
+	}
+
+	return NewRunBuilder().BuildCommandFromConfig(commandDef)
 }
 
-func (cb *Builder) containerExists(commandDef config.CommandDefinition) bool {
+func (b *Builder) containerExists(commandDef config.CommandDefinition) bool {
 	if containerName, ok := commandDef.GetName(); ok {
-		if cb.containerExistenceChecker.exists(containerName) {
+		if b.containerExistenceChecker.exists(containerName) {
 			return true
 		}
 	}
@@ -59,107 +62,12 @@ func (cb *Builder) containerExists(commandDef config.CommandDefinition) bool {
 	return false
 }
 
-func (cb *Builder) buildExecCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
-	commandBuilder := builder.New()
-
-	args := prepareCommandLineArguments(commandDef, os.Args[1:])
-	args = prependAdditionalArguments(commandDef, args)
-
-	commandBuilder.AddCmdArguments(args)
-
-	err := buildArgumentsFromFunctions(commandDef, commandBuilder, cb.getExecArgumentBuilderFuncs())
-	if err != nil {
-		return nil, err
-	}
-
-	if containerName, ok := commandDef.GetName(); ok {
-		commandBuilder.SetImageName(containerName)
-	}
-
-	if entryPoint, ok := commandDef.GetEntryPoint(); ok {
-		commandBuilder.SetCommand(entryPoint)
-	} else if command, ok := commandDef.GetCommand(); ok {
-		commandBuilder.SetCommand(command)
-	}
-
-	commandBuilder.SetDockerSubCommand(builder.DockerExecSubCommand)
-
-	return commandBuilder.Build(), nil
-}
-
-func (cb *Builder) getExecArgumentBuilderFuncs() []argumentBuilderFunc {
-	return []argumentBuilderFunc{
-		arguments.BuildInteractiveFlag,
-		arguments.BuildTerminalContext,
-		arguments.BuildDetachedFlag,
-		withVersionConstraint(arguments.BuildEnvVars, ">= 1.25", cb.versionChecker),
-		arguments.BuildEnvFile,
-		withVersionConstraint(arguments.BuildWorkDir, ">= 1.35", cb.versionChecker),
-		arguments.BuildImpersonation,
-		arguments.BuildCommand,
-	}
-}
-
-func buildRunCommand(commandDef config.CommandDefinition) (*exec.Cmd, error) {
-	commandBuilder := builder.New()
-
-	args := prepareCommandLineArguments(commandDef, os.Args[1:])
-	args = prependAdditionalArguments(commandDef, args)
-
-	commandBuilder.AddCmdArguments(args)
-
-	err := buildArgumentsFromFunctions(commandDef, commandBuilder, getRunArgumentBuilders())
-	if err != nil {
-		return nil, err
-	}
-
-	err = buildRunArgumentsFromBuilders(commandDef, commandBuilder)
-	if err != nil {
-		return nil, err
-	}
-
-	return commandBuilder.Build(), nil
-}
-
-func withVersionConstraint(
-	buildArgument argumentBuilderFunc,
-	versionConstraint string,
-	vc versionChecker,
-) argumentBuilderFunc {
-	return func(commandDef config.CommandDefinition, builder builder.Builder) error {
-		if vc.isVersionSupported(versionConstraint) {
-			return buildArgument(commandDef, builder)
-		}
-
-		return nil
-	}
-}
-
-func buildRunArgumentsFromBuilders(
-	commandDef config.CommandDefinition,
-	builder builder.Builder,
-) error {
-	argumentBuilders := []arguments.ArgumentBuilderInterface{
-		arguments.NewUserGroupsArgumentBuilder(),
-		arguments.NewNameArgumentBuilder(),
-	}
-
-	for _, argumentBuilder := range argumentBuilders {
-		err := argumentBuilder.BuildArgument(commandDef, builder)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 func buildArgumentsFromFunctions(
 	commandDef config.CommandDefinition,
 	builder builder.Builder,
-	builderFuncs []argumentBuilderFunc,
+	builders []argumentBuilderFunc,
 ) error {
-	for _, argumentBuilderFunc := range builderFuncs {
+	for _, argumentBuilderFunc := range builders {
 		err := argumentBuilderFunc(commandDef, builder)
 		if err != nil {
 			return err
@@ -167,28 +75,4 @@ func buildArgumentsFromFunctions(
 	}
 
 	return nil
-}
-
-func getRunArgumentBuilders() []argumentBuilderFunc {
-	return []argumentBuilderFunc{
-		arguments.AttachStreams,
-		arguments.BuildTerminalContext,
-		arguments.BuildEntryPoint,
-		arguments.BuildCommand,
-		arguments.BuildNetwork,
-		arguments.BuildEnvFile,
-		arguments.BuildIP,
-		arguments.BuildInteractiveFlag,
-		arguments.BuildDetachedFlag,
-		arguments.BuildRemoveContainerFlag,
-		arguments.BuildImpersonation,
-		arguments.BuildImage,
-		arguments.BuildEnvVars,
-		arguments.LabelContainer,
-		arguments.BuildPorts,
-		arguments.BuildPortsFromParams,
-		arguments.BuildVolumes,
-		arguments.BuildLinks,
-		arguments.BuildWorkDir,
-	}
 }
