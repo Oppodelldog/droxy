@@ -1,5 +1,6 @@
 BINARY_NAME=droxy
 BINARY_FILE_PATH=".build/$(BINARY_NAME)"
+MAIN_FILE="cmd/main.go"
 
 setup: ## Install tools
 	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s v1.27.0
@@ -39,12 +40,12 @@ all-functional-tests: functional-tests local-functional-tests ## Runs all functi
 
 unsafe-build: ## build binary to .build folder without testing
 	rm -f $(BINARY_FILE_PATH)
-	go build -o $(BINARY_FILE_PATH) main.go
+	go build -o $(BINARY_FILE_PATH) $(MAIN_FILE)
 	cd .droxy && ../$(BINARY_FILE_PATH) clones -f
 
 build: ## build binary to .build folder
 	rm -f $(BINARY_FILE_PATH) 
-	go build -o $(BINARY_FILE_PATH) main.go
+	go build -o $(BINARY_FILE_PATH) $(MAIN_FILE)
 
 install: build ## build with tests, then install to <gopath>/src
 	rm -f $$GOPATH/bin/$(BINARY_NAME)
