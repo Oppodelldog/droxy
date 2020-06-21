@@ -2,8 +2,32 @@ package dockercommand
 
 import (
 	"github.com/Oppodelldog/droxy/config"
+	"github.com/Oppodelldog/droxy/dockercommand/builder"
 	"github.com/Oppodelldog/droxy/logger"
 )
+
+func prependAdditionalArguments(commandDef config.CommandDefinition, arguments []string) []string {
+	if additionalArguments, ok := commandDef.GetAdditionalArgs(); ok {
+		arguments = append(additionalArguments, arguments...)
+	}
+
+	return arguments
+}
+
+func buildArgumentsFromFunctions(
+	commandDef config.CommandDefinition,
+	builder builder.Builder,
+	builders []argumentBuilderFunc,
+) error {
+	for _, argumentBuilderFunc := range builders {
+		err := argumentBuilderFunc(commandDef, builder)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 
 func prepareCommandLineArguments(commandDef config.CommandDefinition, arguments []string) []string {
 	for index, argVal := range arguments {

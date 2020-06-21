@@ -9,7 +9,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-func NewRunBuilder() RunBuilder {
+func NewRunBuilder(_ string) RunBuilder {
 	return RunBuilder{}
 }
 

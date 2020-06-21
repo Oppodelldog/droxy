@@ -19,9 +19,18 @@ type (
 	Builder struct {
 		containerExistenceChecker containerExistenceChecker
 		versionProvider           dockerVersionProvider
+		newExec                   newCommandBuilderFunc
+		newRun                    newCommandBuilderFunc
 	}
 
 	argumentBuilderFunc func(commandDef config.CommandDefinition, builder builder.Builder) error
+)
+
+type (
+	CommandBuilder interface {
+		BuildCommandFromConfig(commandDef config.CommandDefinition) (*exec.Cmd, error)
+	}
+	newCommandBuilderFunc func(string) CommandBuilder
 )
 
 //NewBuilder returns a new *Builder.
@@ -34,6 +43,8 @@ func NewBuilder() (*Builder, error) {
 	return &Builder{
 		containerExistenceChecker: clientAdapter,
 		versionProvider:           clientAdapter,
+		newExec:                   func(dockerVersion string) CommandBuilder { return NewExecBuilder(dockerVersion) },
+		newRun:                    func(dockerVersion string) CommandBuilder { return NewRunBuilder(dockerVersion) },
 	}, nil
 }
 
@@ -46,10 +57,10 @@ func (b *Builder) BuildCommandFromConfig(commandDef config.CommandDefinition) (*
 	}
 
 	if b.containerExists(commandDef) {
-		return NewExecBuilder(dockerVersion).BuildCommandFromConfig(commandDef)
+		return b.newExec(dockerVersion).BuildCommandFromConfig(commandDef)
 	}
 
-	return NewRunBuilder().BuildCommandFromConfig(commandDef)
+	return b.newRun(dockerVersion).BuildCommandFromConfig(commandDef)
 }
 
 func (b *Builder) containerExists(commandDef config.CommandDefinition) bool {
@@ -60,19 +71,4 @@ func (b *Builder) containerExists(commandDef config.CommandDefinition) bool {
 	}
 
 	return false
-}
-
-func buildArgumentsFromFunctions(
-	commandDef config.CommandDefinition,
-	builder builder.Builder,
-	builders []argumentBuilderFunc,
-) error {
-	for _, argumentBuilderFunc := range builders {
-		err := argumentBuilderFunc(commandDef, builder)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
 }
