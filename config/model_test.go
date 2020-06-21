@@ -168,15 +168,15 @@ func Test_resolvePropertyStringArray2D_BaseAndOverlaySet(t *testing.T) {
 func TestConfiguration_SetConfigurationFilePath(t *testing.T) {
 	cfg := Configuration{}
 	somePath := "/tmp/configPath"
-	cfg.SetConfigurationFilePath(somePath)
+	cfg.ConfigFilePath = somePath
 
-	assert.Equal(t, somePath, cfg.configFilePath)
+	assert.Equal(t, somePath, cfg.ConfigFilePath)
 }
 
 func TestConfiguration_GetConfigurationFilePath(t *testing.T) {
 	cfg := Configuration{}
 	somePath := "/tmp/configPath"
-	cfg.configFilePath = somePath
+	cfg.ConfigFilePath = somePath
 	configPath := cfg.GetConfigurationFilePath()
 
 	assert.Equal(t, somePath, configPath)

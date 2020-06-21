@@ -32,18 +32,18 @@ func TestCreator_New(t *testing.T) {
 	}
 }
 
-func getTestConfig() *config.Configuration {
+func getTestConfig() config.Configuration {
 	commandNameStub := "some-command-name"
 
-	return &config.Configuration{
+	return config.Configuration{
 		Command: []config.CommandDefinition{
 			{Name: &commandNameStub},
 		},
 	}
 }
 
-func getTestConfigWithEmptyCommand() *config.Configuration {
-	return &config.Configuration{Command: []config.CommandDefinition{{}}}
+func getTestConfigWithEmptyCommand() config.Configuration {
+	return config.Configuration{Command: []config.CommandDefinition{{}}}
 }
 
 func TestCreator_CreateProxyFiles(t *testing.T) {

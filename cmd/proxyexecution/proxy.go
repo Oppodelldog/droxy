@@ -19,7 +19,7 @@ const errorPreparingDockerCall = 900
 type (
 	//ConfigLoader loads configuration
 	ConfigLoader interface {
-		Load() *config.Configuration
+		Load() config.Configuration
 	}
 	//Builder builds a executable command object
 	CommandBuilder interface {
@@ -74,7 +74,7 @@ func executeCommand(
 	cfg := configLoader.Load()
 	cfg.Logging = true
 
-	closeLogger := enableLogging(cfg)
+	closeLogger := enableLogging(&cfg)
 	defer closeLogger()
 
 	logger.Infof("configuration load from: '%s'", cfg.GetConfigurationFilePath())

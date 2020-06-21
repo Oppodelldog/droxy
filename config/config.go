@@ -13,13 +13,13 @@ func NewLoader() Loader {
 type (
 	// Loader is able to locate and load configuration from a config file
 	Loader interface {
-		Load() *Configuration
+		Load() Configuration
 	}
 	configLoader struct{}
 )
 
 // Load loads the configuration file.
-func (cl *configLoader) Load() *Configuration {
+func (cl *configLoader) Load() Configuration {
 	configFileDiscovery := cl.createFileDiscovery()
 	configFilePath, err := configFileDiscovery.Discover(configFileName)
 
@@ -31,8 +31,6 @@ func (cl *configLoader) Load() *Configuration {
 	if err != nil {
 		panic(err)
 	}
-
-	cfg.SetConfigurationFilePath(configFilePath)
 
 	return cfg
 }

@@ -14,6 +14,7 @@ Version="1"
           "${PWD}:/go/src/github.com/Oppodelldog/droxy",
           "/etc/passwd:/etc/passwd:ro",
           "/etc/group:/etc/group:ro",
+          "${GOPATH}/bin:/go/bin",
           "${GOPATH}/pkg:/go/pkg",
           "${GOPATH}/mod:/go/mod",
           "${HOME}/.cache/golangci-lint:${HOME}/.cache/golangci-lint"

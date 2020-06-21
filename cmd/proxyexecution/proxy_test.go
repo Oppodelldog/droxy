@@ -14,7 +14,7 @@ import (
 const someCommandName = "some-command-name"
 
 func TestExecuteCommand_LoadsConfigFromLoader(t *testing.T) {
-	configStub := &config.Configuration{}
+	configStub := config.Configuration{}
 	configLoaderMock := &mocks.ConfigLoader{}
 	configLoaderMock.
 		On("Load").Once().
@@ -58,7 +58,7 @@ func TestExecuteCommand_LoadsConfigFromLoader(t *testing.T) {
 }
 
 func TestExecuteCommand_ExecutableNameIsParsed(t *testing.T) {
-	configStub := &config.Configuration{}
+	configStub := config.Configuration{}
 	configLoaderStub := &mocks.ConfigLoader{}
 	configLoaderStub.On("Load").
 		Return(configStub)
@@ -105,7 +105,7 @@ func TestExecuteCommand_CommandIsBuild(t *testing.T) {
 	cmdDefStub := config.CommandDefinition{
 		Name: &commandNameStub,
 	}
-	configStub := &config.Configuration{
+	configStub := config.Configuration{
 		Command: []config.CommandDefinition{cmdDefStub},
 	}
 	configLoaderStub := &mocks.ConfigLoader{}
@@ -152,7 +152,7 @@ func TestExecuteCommand_CommandIsRun(t *testing.T) {
 	cmdDefStub := config.CommandDefinition{
 		Name: &commandNameStub,
 	}
-	configStub := &config.Configuration{
+	configStub := config.Configuration{
 		Command: []config.CommandDefinition{cmdDefStub},
 	}
 	configLoaderStub := &mocks.ConfigLoader{}
@@ -201,7 +201,7 @@ func TestExecuteCommand_CommandResultIsHandled(t *testing.T) {
 	cmdDefStub := config.CommandDefinition{
 		Name: &commandNameStub,
 	}
-	configStub := &config.Configuration{
+	configStub := config.Configuration{
 		Command: []config.CommandDefinition{cmdDefStub},
 	}
 	configLoaderStub := &mocks.ConfigLoader{}
@@ -251,7 +251,7 @@ func TestExecuteCommand_ErrorFromCommandBuild_ExitCode900Returned(t *testing.T) 
 	cmdDefStub := config.CommandDefinition{
 		Name: &commandNameStub,
 	}
-	configStub := &config.Configuration{
+	configStub := config.Configuration{
 		Command: []config.CommandDefinition{cmdDefStub},
 	}
 	configLoaderStub := &mocks.ConfigLoader{}

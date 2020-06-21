@@ -20,7 +20,7 @@ func TestGetLogWriter_returnsAWriterCloser(t *testing.T) {
 	configFilePath := path.Join(testFolder, "droxy.toml")
 
 	cfg := &config.Configuration{}
-	cfg.SetConfigurationFilePath(configFilePath)
+	cfg.ConfigFilePath = configFilePath
 
 	writer, err := logging.GetLogWriter(cfg)
 	if err != nil {
@@ -41,7 +41,7 @@ func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 	configFilePath := path.Join(testFolder, "droxy.toml")
 
 	cfg := &config.Configuration{}
-	cfg.SetConfigurationFilePath(configFilePath)
+	cfg.ConfigFilePath = configFilePath
 
 	writer, err := logging.GetLogWriter(cfg)
 	if err != nil {
@@ -59,8 +59,9 @@ func TestGetLogWriter_createsFileNextToConfig(t *testing.T) {
 func TestGetLogWriter_returnsErrorOnFileCreation(t *testing.T) {
 	configFilePath := "/invalid-path/this-will-create-an-error"
 
-	cfg := &config.Configuration{}
-	cfg.SetConfigurationFilePath(configFilePath)
+	cfg := &config.Configuration{
+		ConfigFilePath: configFilePath,
+	}
 
 	_, err := logging.GetLogWriter(cfg)
 

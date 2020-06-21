@@ -15,13 +15,13 @@ type CommandBuilder struct {
 	mock.Mock
 }
 
-// BuildCommandFromConfig provides a mock function with given fields: cmdDef
-func (_m *CommandBuilder) BuildCommandFromConfig(cmdDef config.CommandDefinition) (*exec.Cmd, error) {
-	ret := _m.Called(cmdDef)
+// BuildCommandFromConfig provides a mock function with given fields: commandDef
+func (_m *CommandBuilder) BuildCommandFromConfig(commandDef config.CommandDefinition) (*exec.Cmd, error) {
+	ret := _m.Called(commandDef)
 
 	var r0 *exec.Cmd
 	if rf, ok := ret.Get(0).(func(config.CommandDefinition) *exec.Cmd); ok {
-		r0 = rf(cmdDef)
+		r0 = rf(commandDef)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*exec.Cmd)
@@ -30,7 +30,7 @@ func (_m *CommandBuilder) BuildCommandFromConfig(cmdDef config.CommandDefinition
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(config.CommandDefinition) error); ok {
-		r1 = rf(cmdDef)
+		r1 = rf(commandDef)
 	} else {
 		r1 = ret.Error(1)
 	}

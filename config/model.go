@@ -12,12 +12,12 @@ var errCouldNotFindTemplate = errors.New("could not find template")
 type Configuration struct {
 	Command        []CommandDefinition
 	Version        string
-	configFilePath string
+	ConfigFilePath string
 	Logging        bool
 }
 
 // FindCommandByName finds a command by the given name.
-func (c *Configuration) FindCommandByName(commandName string) (CommandDefinition, error) {
+func (c Configuration) FindCommandByName(commandName string) (CommandDefinition, error) {
 	for _, command := range c.Command {
 		if configCommandName, ok := command.GetName(); ok {
 			if configCommandName == commandName {
@@ -29,17 +29,12 @@ func (c *Configuration) FindCommandByName(commandName string) (CommandDefinition
 	return CommandDefinition{}, fmt.Errorf("%w: '%s'", errCommandNotDefined, commandName)
 }
 
-// SetConfigurationFilePath sets the filepath the configuration was load from. this is for debugging purpose.
-func (c *Configuration) SetConfigurationFilePath(configFilePath string) {
-	c.configFilePath = configFilePath
-}
-
 // GetConfigurationFilePath returns the path the configuration was load from. this is for debugging purpose.
-func (c *Configuration) GetConfigurationFilePath() string {
-	return c.configFilePath
+func (c Configuration) GetConfigurationFilePath() string {
+	return c.ConfigFilePath
 }
 
-func (c *Configuration) resolveConfig(command CommandDefinition) (CommandDefinition, error) {
+func (c Configuration) resolveConfig(command CommandDefinition) (CommandDefinition, error) {
 	if !command.HasTemplate() {
 		return command, nil
 	}

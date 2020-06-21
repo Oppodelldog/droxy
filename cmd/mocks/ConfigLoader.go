@@ -13,16 +13,14 @@ type ConfigLoader struct {
 }
 
 // Load provides a mock function with given fields:
-func (_m *ConfigLoader) Load() *config.Configuration {
+func (_m *ConfigLoader) Load() config.Configuration {
 	ret := _m.Called()
 
-	var r0 *config.Configuration
-	if rf, ok := ret.Get(0).(func() *config.Configuration); ok {
+	var r0 config.Configuration
+	if rf, ok := ret.Get(0).(func() config.Configuration); ok {
 		r0 = rf()
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*config.Configuration)
-		}
+		r0 = ret.Get(0).(config.Configuration)
 	}
 
 	return r0

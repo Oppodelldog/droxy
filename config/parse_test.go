@@ -24,7 +24,7 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 
 	expectedConfiguration.Command = []CommandDefinition{getFullFeatureCommandDefinition()}
 
-	assert.Equal(t, &expectedConfiguration, configuration)
+	assert.Equal(t, expectedConfiguration, configuration)
 }
 
 //nolint:funlen
@@ -131,7 +131,7 @@ func TestParseFromBytes_emptyConfig(t *testing.T) {
 
 	var expectedConfiguration Configuration
 
-	assert.Equal(t, &expectedConfiguration, configuration)
+	assert.Equal(t, expectedConfiguration, configuration)
 }
 
 func getEmptyConfig() []byte {
@@ -158,14 +158,15 @@ func TestParse(t *testing.T) {
 	command := CommandDefinition{
 		Name: &commandName,
 	}
+	testFilePath := path.Join(testFolder, testFile)
+
 	cfg := Configuration{
 		Version: "4711",
 		Command: []CommandDefinition{
 			command,
 		},
+		ConfigFilePath: testFilePath,
 	}
-
-	testFilePath := path.Join(testFolder, testFile)
 
 	tempFile, err := os.OpenFile(testFilePath, os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
@@ -189,7 +190,7 @@ func TestParse(t *testing.T) {
 		t.Fatalf("Did not expect Parse to return an error, but got: %v", err)
 	}
 
-	assert.Equal(t, &cfg, parsedCfg)
+	assert.Equal(t, cfg, parsedCfg)
 
 	err = os.RemoveAll(testFolder)
 	if err != nil {

@@ -37,10 +37,10 @@ func (m *mockFileCreationStrategy) CreateProxyFile(commandBinaryFilePath string,
 
 type configLoaderMock struct {
 	wasLoadCalled bool
-	stubbedConfig *config.Configuration
+	stubbedConfig config.Configuration
 }
 
-func (m *configLoaderMock) Load() *config.Configuration {
+func (m *configLoaderMock) Load() config.Configuration {
 	m.wasLoadCalled = true
 
 	return m.stubbedConfig
