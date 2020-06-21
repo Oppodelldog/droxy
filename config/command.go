@@ -4,33 +4,68 @@ import "strings"
 
 // CommandDefinition gives public access to the fields by accessor functions.
 type CommandDefinition struct {
-	RequireEnvVars      *bool
-	IsTemplate          *bool
-	Template            *string
-	EntryPoint          *string
-	Command             *string
-	Name                *string
-	UniqueNames         *bool
-	Image               *string
-	Network             *string
-	EnvFile             *string
-	IP                  *string
-	IsInteractive       *bool
-	IsDetached          *bool
-	IsDaemon            *bool // deprecated
-	Volumes             *[]string
-	Links               *[]string
-	EnvVars             *[]string
-	Ports               *[]string
-	PortsFromParams     *[]string
+	// RequireEnvVars requires all EnvVars to be resolvable.
+	// If a variable is not set, the command fails.
+	RequireEnvVars *bool
+	// IsTemplate prevents an executable file to be generated for this command entry.
+	IsTemplate *bool
+	// Template defines the template commands name that settings will be used as a base for this command.
+	Template *string
+	// EntryPoint represents the docker flag --entrypoint
+	EntryPoint *string
+	// Command represents the docker run [COMMAND] part.
+	Command *string
+	// Name represents the docker run flag --name
+	Name *string
+	// UniqueNames will make Name unique by appending a unique value to the Name.
+	UniqueNames *bool
+	//Image represents the docker Image to be used.
+	Image *string
+	// Network represents the docker run flag --network.
+	Network *string
+	// EnvFile represents the docker run flag --env-file
+	EnvFile *string
+	// EnvFile represents the docker run flag --ip
+	IP *string
+	// IsInteractive sets -i and if IsInteractive is set true, attaches (-a) streams STDIN STDOUT STDERR
+	IsInteractive *bool
+	// IsDetached represents the docker run flag -d
+	IsDetached *bool
+	// IsDaemon represents the docker run flag -d
+	IsDaemon *bool // deprecated
+	// Volumes holds a list of volume mappings which correspond to the docker run flag -v
+	Volumes *[]string
+	// Links holds a list of links which correspond to the docker run flag --link
+	Links *[]string
+	// EnvVars holds a list of environment variable mappings which correspond to the docker run flag -e
+	EnvVars *[]string
+	// Ports holds a list of port mappings which correspond to the docker run flag -p
+	Ports *[]string
+	// PortsFromParams holds a list of regular expressions that are used to read a port from a command argument.
+	// The parsed port will be applied like follows: -p port:port.
+	PortsFromParams *[]string
+	// MergeTemplateArrays holds a list of array names that should be applied from the template and merged with
+	// The current command. By default a array definition in a command would overwrite a template array.
+	// Possible to merge are the following arrays: Volumes, Links, EnvVars, Ports, PortsFromParams, AdditionalArgs.
 	MergeTemplateArrays *[]string
-	AddGroups           *bool
-	Impersonate         *bool
-	WorkDir             *string
-	AutoMountWorkDir    *bool
-	RemoveContainer     *bool
-	ReplaceArgs         *[][]string
-	AdditionalArgs      *[]string
+	// AddGroups, if set to true, will automatically resolve and add the current user groups to the container.
+	// The corresponding docker run flag is --group-add.
+	AddGroups *bool
+	// Impersonate sets the current user,group for the container.  docker run flag -u.
+	Impersonate *bool
+	// WorkDir sets the workdir inside the container. docker run flag -w.
+	WorkDir *string
+	// AutoMountWorkDir will add a volume mapping for the current WorkDir like this: -v WorkDir:WorkDir
+	AutoMountWorkDir *bool
+	// RemoveContainer removes the container after execution. docker flag --rm.
+	RemoveContainer *bool
+	// ReplaceArgs allows to manipulate the command arguments.
+	// Each entry must be an array of two entries. The first entry defines which argument shall be replaced, the second
+	// one defines the replacement.
+	// Example: [["arg2", "arg99"]] would replace "arg2" with "arg99".
+	ReplaceArgs *[][]string
+	// AdditionalArgs contains a list of strings that are prepended the original command arguments.
+	AdditionalArgs *[]string
 }
 
 // GetEntryPoint returns entrypoint and an boolean indicating if value is set.
