@@ -15,7 +15,7 @@ import (
 const someCommand = "some-command"
 
 //nolint:funlen
-func TestBuildCommandFromConfig2(t *testing.T) {
+func TestBuilder(t *testing.T) {
 	originalArgs := os.Args
 
 	defer func() { os.Args = originalArgs }()
@@ -83,7 +83,7 @@ func TestBuildCommandFromConfig2(t *testing.T) {
 	}
 }
 
-func TestBuildCommandFromConfig_EmptyCommandDoesNotProduceSpaceInCommand(t *testing.T) {
+func TestBuilder_EmptyCommandDoesNotProduceSpaceInCommand(t *testing.T) {
 	commandName := someCommand
 
 	configuration := &config.Configuration{

@@ -9,6 +9,7 @@ import (
 	"github.com/Oppodelldog/droxy/config"
 )
 
+//nolint:funlen
 func TestBuildCommandFromConfig(t *testing.T) {
 	var (
 		cmdStub    = exec.Command("test")
@@ -16,7 +17,7 @@ func TestBuildCommandFromConfig(t *testing.T) {
 		versionErr = errors.New("version error stub")
 	)
 
-	testCases := map[string]struct {
+	testCases := map[string]struct { //nolint:maligned
 		containerExists bool
 		version         string
 		versionErr      error
