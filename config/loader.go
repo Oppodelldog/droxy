@@ -23,7 +23,7 @@ func (cl Loader) Load() Configuration {
 		panic(err)
 	}
 
-	cfg, err := Parse(configFilePath)
+	cfg, err := readFromFile(configFilePath)
 	if err != nil {
 		panic(err)
 	}

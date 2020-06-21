@@ -140,7 +140,7 @@ func getEmptyConfig() []byte {
 
 func TestParse(t *testing.T) {
 	const (
-		testFolder = "/tmp/droxy/test/config/parse"
+		testFolder = "/tmp/droxy/test/config/readFromFile"
 		testFile   = "testFile.toml"
 	)
 
@@ -185,9 +185,9 @@ func TestParse(t *testing.T) {
 		t.Fatalf("Did not expect tempFile.Close to return an error, but got: %v", err)
 	}
 
-	parsedCfg, err := Parse(testFilePath)
+	parsedCfg, err := readFromFile(testFilePath)
 	if err != nil {
-		t.Fatalf("Did not expect Parse to return an error, but got: %v", err)
+		t.Fatalf("Did not expect readFromFile to return an error, but got: %v", err)
 	}
 
 	assert.Equal(t, cfg, parsedCfg)
@@ -199,7 +199,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestParse_FileNotExists_Error(t *testing.T) {
-	_, err := Parse("/tmp/droxy/this-does-not-exist.toml")
+	_, err := readFromFile("/tmp/droxy/this-does-not-exist.toml")
 	assert.Error(t, err)
 }
 
