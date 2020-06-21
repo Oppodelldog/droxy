@@ -12,7 +12,7 @@ import (
 const testFolder = "/tmp/droxy/test/config/load"
 
 func TestNewLoader(t *testing.T) {
-	assert.IsType(t, new(configLoader), NewLoader())
+	assert.IsType(t, Loader{}, NewLoader())
 }
 
 func TestConfigLoader_Load(t *testing.T) {

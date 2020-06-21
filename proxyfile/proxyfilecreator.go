@@ -10,13 +10,19 @@ import (
 	"github.com/Oppodelldog/droxy/config"
 )
 
-// FileCreationStrategy defines the interface for creation of a droxy commands in filesystem.
-type FileCreationStrategy interface {
-	CreateProxyFile(string, string) error
-}
+type (
+	// FileCreationStrategy defines the interface for creation of a droxy commands in filesystem.
+	FileCreationStrategy interface {
+		CreateProxyFile(string, string) error
+	}
+	// Loader is able to locate and load configuration from a config file
+	Loader interface {
+		Load() config.Configuration
+	}
+)
 
 // New creates a new proxy file creator.
-func New(creationStrategy FileCreationStrategy, configLoader config.Loader) Creator {
+func New(creationStrategy FileCreationStrategy, configLoader Loader) Creator {
 	return Creator{
 		creationStrategy:          creationStrategy,
 		configLoader:              configLoader,
@@ -27,7 +33,7 @@ func New(creationStrategy FileCreationStrategy, configLoader config.Loader) Crea
 // Creator creates commands.
 type Creator struct {
 	creationStrategy          FileCreationStrategy
-	configLoader              config.Loader
+	configLoader              Loader
 	getExecutableFilePathFunc getExecutableFilePathFuncDef
 }
 

@@ -7,20 +7,16 @@ const configEnvVarName = "DROXY_CONFIG"
 
 //NewLoader returns a new config loader.
 func NewLoader() Loader {
-	return &configLoader{}
+	return Loader{}
 }
 
 type (
-	// Loader is able to locate and load configuration from a config file
-	Loader interface {
-		Load() Configuration
-	}
-	configLoader struct{}
+	Loader struct{}
 )
 
 // Load loads the configuration file.
-func (cl *configLoader) Load() Configuration {
-	configFileDiscovery := cl.createFileDiscovery()
+func (cl Loader) Load() Configuration {
+	configFileDiscovery := createFileDiscovery()
 	configFilePath, err := configFileDiscovery.Discover(configFileName)
 
 	if err != nil {
@@ -35,7 +31,7 @@ func (cl *configLoader) Load() Configuration {
 	return cfg
 }
 
-func (cl *configLoader) createFileDiscovery() filediscovery.FileDiscoverer {
+func createFileDiscovery() filediscovery.FileDiscoverer {
 	return filediscovery.New(
 		[]filediscovery.FileLocationProvider{
 			filediscovery.WorkingDirProvider(),
