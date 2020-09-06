@@ -28,6 +28,8 @@ func (cl Loader) Load() Configuration {
 		panic(err)
 	}
 
+	cfg.osNameMatcher = defaultOSNameMatcher
+
 	return cfg
 }
 

@@ -12,26 +12,85 @@ const commandNameC = "COMMAND-Z"
 
 func TestConfiguration_FindCommandByName(t *testing.T) {
 	nameA := commandNameA
-	commandA := CommandDefinition{Name: &nameA}
-	nameX := commandNameX
-	commandX := CommandDefinition{Name: &nameX}
 	nameZ := commandNameC
+	commandA := CommandDefinition{Name: &nameA, Command: stringP("A")}
+	commandA1 := CommandDefinition{Name: &nameA, Command: stringP("A1")}
 	commandZ := CommandDefinition{Name: &nameZ}
 
 	cfg := Configuration{
+		osNameMatcher: defaultOSNameMatcher,
 		Command: []CommandDefinition{
 			commandA,
-			commandX,
+			commandA1,
 			commandZ,
 		},
 	}
 
-	commandDef, err := cfg.FindCommandByName(commandNameX)
+	commandDef, err := cfg.FindCommandByName(commandNameA)
 	if err != nil {
 		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
 	}
 
-	assert.Equal(t, commandX, commandDef)
+	assert.Equal(t, commandA1, commandDef)
+}
+
+func TestConfiguration_FindCommandByName_OSSpecific(t *testing.T) {
+	name := commandNameA
+	command1 := CommandDefinition{Name: &name, OS: stringP("windows")}
+	command2 := CommandDefinition{Name: &name, Command: stringP("linux")}
+
+	cfg := Configuration{
+		osNameMatcher: defaultOSNameMatcher,
+		Command: []CommandDefinition{
+			command1,
+			command2,
+		},
+	}
+
+	commandDef, err := cfg.FindCommandByName(commandNameA)
+	if err != nil {
+		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
+	}
+
+	assert.Equal(t, command2, commandDef)
+}
+
+func TestConfiguration_FindCommandByName_OSSpecific_Templating(t *testing.T) {
+	templateName := stringP("base1")
+	commandName := stringP("command")
+	baseTemplateName := stringP("base")
+	baseCommand := stringP("base-cmd")
+	baseEntryPoint := stringP("base-entry-point")
+	windowsCommand := stringP("windows-cmd")
+	linuxCommand := stringP("linux-cmd")
+
+	template1 := CommandDefinition{Name: baseTemplateName, Command: baseCommand, EntryPoint: baseEntryPoint}
+	template2 := CommandDefinition{Name: templateName, Template: baseTemplateName, OS: stringP("windows"), Command: windowsCommand}
+	template3 := CommandDefinition{Name: templateName, Template: baseTemplateName, OS: stringP("linux"), Command: linuxCommand}
+
+	command := CommandDefinition{Name: commandName, Template: templateName, OS: stringP("linux")}
+
+	cfg := Configuration{
+		osNameMatcher: fakeOSMatcher("linux"),
+		Command: []CommandDefinition{
+			template1,
+			template2,
+			template3,
+			command,
+		},
+	}
+
+	commandDef, err := cfg.FindCommandByName("command")
+	if err != nil {
+		t.Fatalf("Did not expect cgf.FindCommandByName to return an error, but got: %v", err)
+	}
+
+	assert.Equal(t, CommandDefinition{
+		OS:         nil,
+		EntryPoint: baseEntryPoint,
+		Command:    linuxCommand,
+		Name:       commandName,
+	}, commandDef)
 }
 
 func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {
@@ -39,6 +98,7 @@ func TestConfiguration_FindCommandByName_NotFoundError(t *testing.T) {
 	commandA := CommandDefinition{Name: &nameA}
 
 	cfg := Configuration{
+		osNameMatcher: defaultOSNameMatcher,
 		Command: []CommandDefinition{
 			commandA,
 		},
@@ -59,6 +119,7 @@ func TestConfiguration_FindCommandByName_ResolvesTemplate(t *testing.T) {
 	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
 
 	cfg := Configuration{
+		osNameMatcher: defaultOSNameMatcher,
 		Command: []CommandDefinition{
 			commandA,
 			templateCommand,
@@ -79,6 +140,7 @@ func TestConfiguration_FindCommandByName_TemplateNotFoundError(t *testing.T) {
 	commandA := CommandDefinition{Name: &nameA, Template: &templateName}
 
 	cfg := Configuration{
+		osNameMatcher: defaultOSNameMatcher,
 		Command: []CommandDefinition{
 			commandA,
 		},
@@ -99,6 +161,7 @@ func TestConfiguration_FindCommandByName_TemplateHasTemplate(t *testing.T) {
 	commandA := CommandDefinition{Name: &nameA, Template: &template2Name}
 
 	cfg := Configuration{
+		osNameMatcher: defaultOSNameMatcher,
 		Command: []CommandDefinition{
 			template1,
 			template2,
@@ -180,4 +243,14 @@ func TestConfiguration_GetConfigurationFilePath(t *testing.T) {
 	configPath := cfg.GetConfigurationFilePath()
 
 	assert.Equal(t, somePath, configPath)
+}
+
+func stringP(s string) *string {
+	return &s
+}
+
+func fakeOSMatcher(fakeCurrentOS string) func(string) bool {
+	return func(s string) bool {
+		return fakeCurrentOS == s
+	}
 }

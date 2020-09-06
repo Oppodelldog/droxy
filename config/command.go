@@ -4,6 +4,9 @@ import "strings"
 
 // CommandDefinition gives public access to the fields by accessor functions.
 type CommandDefinition struct {
+	// OS is set to load this configuration only when executed from the given operating system.
+	// accepted values are: "windows", "linux" , "darwin"
+	OS *string
 	// RequireEnvVars requires all EnvVars to be resolvable.
 	// If a variable is not set, the command fails.
 	RequireEnvVars *bool
@@ -66,6 +69,11 @@ type CommandDefinition struct {
 	ReplaceArgs *[][]string
 	// AdditionalArgs contains a list of strings that are prepended the original command arguments.
 	AdditionalArgs *[]string
+}
+
+// GetOS returns value of OS and an boolean indicating if value is set.
+func (c CommandDefinition) GetOS() (string, bool) {
+	return getString(c.OS)
 }
 
 // GetEntryPoint returns entrypoint and an boolean indicating if value is set.

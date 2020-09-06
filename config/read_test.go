@@ -29,6 +29,7 @@ func TestParseFromBytes_fullFeatureConfig(t *testing.T) {
 
 //nolint:funlen
 func getFullFeatureCommandDefinition() CommandDefinition {
+	opsys := "linux"
 	isTemplate := true
 	isDetached := true
 	requireEnvVars := true
@@ -82,6 +83,7 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 	}
 
 	return CommandDefinition{
+		OS:              &opsys,
 		RequireEnvVars:  &requireEnvVars,
 		IsTemplate:      &isTemplate,
 		IsDetached:      &isDetached,
