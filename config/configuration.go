@@ -20,32 +20,48 @@ type Configuration struct {
 
 // FindCommandByName finds a command by the given name.
 func (c Configuration) FindCommandByName(commandName string) (CommandDefinition, error) {
-	var commandDef CommandDefinition
-	var found bool
+	var commandDef *CommandDefinition
 
 	for _, command := range c.Command {
-		if configCommandName, ok := command.GetName(); ok {
-			os, _ := command.GetOS()
-			if configCommandName == commandName && c.matchesOS(os) {
-				cd, err := c.resolveConfig(command)
-				if err != nil {
-					return CommandDefinition{}, fmt.Errorf("error finding command '%s': %v", commandName, err)
-				}
-
-				commandDef = cd
-				found = true
-			}
+		if !c.match(commandName, command) {
+			continue
 		}
+
+		cd, err := c.resolveConfig(command)
+		if err != nil {
+			return CommandDefinition{}, fmt.Errorf("error resolving config '%s': %w", commandName, err)
+		}
+
+		commandDef = &cd
 	}
 
-	if found {
-		return commandDef, nil
+	if commandDef != nil {
+		return *commandDef, nil
 	}
 
 	return CommandDefinition{}, fmt.Errorf("%w: '%s'", errCommandNotDefined, commandName)
 }
 
-func (c Configuration) matchesOS(osName string) bool {
+func (c Configuration) match(commandName string, command CommandDefinition) bool {
+	configCommandName, ok := command.GetName()
+	if !ok {
+		return false
+	}
+
+	if configCommandName != commandName {
+		return false
+	}
+
+	if !c.matchesOS(command) {
+		return false
+	}
+
+	return true
+}
+
+func (c Configuration) matchesOS(command CommandDefinition) bool {
+	osName, _ := command.GetOS()
+
 	if osName == "" {
 		return true
 	}
