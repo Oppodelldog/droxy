@@ -80,6 +80,7 @@ func resolvePropertyBool(bBase *bool, bOverlay *bool) *bool {
 	res := resolveProperty(bBase, bOverlay)
 	if v, ok := res.(*bool); ok && v != nil {
 		c := *v
+
 		return &c
 	}
 
@@ -90,6 +91,7 @@ func resolvePropertyString(sBase *string, sOverlay *string) *string {
 	res := resolveProperty(sBase, sOverlay)
 	if v, ok := res.(*string); ok && v != nil {
 		c := *v
+
 		return &c
 	}
 
@@ -100,6 +102,7 @@ func resolvePropertyStringArray(isMerged bool, sBase *[]string, sOverlay *[]stri
 	if isMerged {
 		if sBase != nil && sOverlay != nil {
 			mergedArray := append(*sBase, *sOverlay...)
+
 			return &mergedArray
 		}
 	}
@@ -107,6 +110,7 @@ func resolvePropertyStringArray(isMerged bool, sBase *[]string, sOverlay *[]stri
 	res := resolveProperty(sBase, sOverlay)
 	if v, ok := res.(*[]string); ok && v != nil {
 		c := *v
+
 		return &c
 	}
 
@@ -117,6 +121,7 @@ func resolvePropertyStringArray2D(sBase *[][]string, sOverlay *[][]string) *[][]
 	res := resolveProperty(sBase, sOverlay)
 	if v, ok := res.(*[][]string); ok && v != nil {
 		c := *v
+
 		return &c
 	}
 

@@ -19,5 +19,6 @@ type Writer struct {
 
 func (w Writer) Write(p []byte) (n int, err error) {
 	w.logger.Infof("%s:%s", w.loggingPrefix, string(p))
+
 	return w.targetWriter.Write(p)
 }

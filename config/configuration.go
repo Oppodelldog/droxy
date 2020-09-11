@@ -6,8 +6,10 @@ import (
 	"runtime"
 )
 
-var errCommandNotDefined = errors.New("command not defined")
-var errCouldNotFindTemplate = errors.New("could not find template")
+var (
+	errCommandNotDefined    = errors.New("command not defined")
+	errCouldNotFindTemplate = errors.New("could not find template")
+)
 
 // Configuration defines the fields/types of the configuration file.
 type Configuration struct {

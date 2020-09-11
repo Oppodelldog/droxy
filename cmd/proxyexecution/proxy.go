@@ -17,23 +17,23 @@ import (
 const errorPreparingDockerCall = 900
 
 type (
-	//ConfigLoader loads configuration
+	// ConfigLoader loads configuration.
 	ConfigLoader interface {
 		Load() config.Configuration
 	}
-	//Builder builds a executable command object
+	// Builder builds a executable command object.
 	CommandBuilder interface {
 		BuildCommandFromConfig(commandDef config.CommandDefinition) (*exec.Cmd, error)
 	}
-	//CommandRunner runs a command
+	// CommandRunner runs a command.
 	CommandRunner interface {
 		RunCommand(cmd *exec.Cmd) error
 	}
-	//CommandResultHandler handles the result of an executed command
+	// CommandResultHandler handles the result of an executed command.
 	CommandResultHandler interface {
 		HandleCommandResult(*exec.Cmd, error) int
 	}
-	//ExecutableNameParser parsed the name of the current executed file from cli arguments
+	// ExecutableNameParser parsed the name of the current executed file from cli arguments.
 	ExecutableNameParser interface {
 		ParseCommandNameFromCommandLine() string
 	}
@@ -124,6 +124,7 @@ func enableLogging(cfg *config.Configuration) (f func()) {
 
 	if !cfg.Logging {
 		logger.SetOutput(ioutil.Discard)
+
 		return
 	}
 
@@ -131,6 +132,7 @@ func enableLogging(cfg *config.Configuration) (f func()) {
 	if err != nil {
 		// no chance to log error output since running docker process has priority before logging
 		logger.SetOutput(ioutil.Discard)
+
 		return
 	}
 

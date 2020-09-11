@@ -7,7 +7,7 @@ import (
 	"github.com/Oppodelldog/droxy/dockercommand/builder"
 )
 
-//NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out.
+// NewUserGroupsArgumentBuilder has no implementation for windows, it is stubbed out.
 func NewUserGroupsArgumentBuilder() ArgumentBuilderInterface {
 	return &userGroupsArgumentBuilder{
 		userGroupIdsResolver: &currentUserGroupIDsResolver{},

@@ -78,8 +78,8 @@ func TestNewClonesStrategy_callsConfiguredSystemFunction(t *testing.T) {
 
 	expectedSrc := "A"
 	expectedDst := "B"
-	err := strategy.CreateProxyFile(expectedSrc, expectedDst)
 
+	err := strategy.CreateProxyFile(expectedSrc, expectedDst)
 	if err != nil {
 		t.Fatalf("Did not expect CreateProxyFile to return an error, but got: %v", err)
 	}

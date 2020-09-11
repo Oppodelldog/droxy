@@ -88,6 +88,7 @@ const theTruth = "YES-IT-IS"
 
 func revealTheTruth() int {
 	fmt.Println(theTruth)
+
 	return 0
 }
 

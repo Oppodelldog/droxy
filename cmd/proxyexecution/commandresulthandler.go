@@ -35,6 +35,7 @@ func (rh commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int
 	case *exec.ExitError:
 		if status, ok := exitErr.Sys().(syscall.WaitStatus); ok {
 			logger.Infof("docker finished with exit code '%v'", status.ExitStatus())
+
 			return status.ExitStatus()
 		}
 
@@ -45,6 +46,7 @@ func (rh commandResultHandler) HandleCommandResult(cmd *exec.Cmd, err error) int
 
 	if status, ok := cmd.ProcessState.Sys().(syscall.WaitStatus); ok {
 		logger.Infof("docker finished with exit code '%v'", status.ExitStatus())
+
 		return status.ExitStatus()
 	}
 

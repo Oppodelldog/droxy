@@ -15,7 +15,7 @@ type (
 	FileCreationStrategy interface {
 		CreateProxyFile(string, string) error
 	}
-	// Loader is able to locate and load configuration from a config file
+	// Loader is able to locate and load configuration from a config file.
 	Loader interface {
 		Load() config.Configuration
 	}
@@ -52,6 +52,7 @@ func (pfc Creator) CreateProxyFiles(isForced bool) error {
 	for _, command := range cfg.Command {
 		if !command.HasName() {
 			logger.Warnf("skipped command because name is missing!")
+
 			continue
 		}
 
@@ -68,6 +69,7 @@ func (pfc Creator) CreateProxyFiles(isForced bool) error {
 
 		if fileExistsAsDir(commandNameFileName) {
 			logger.Warnf("droxy command file already exists as a directory '%s'", commandNameFileName)
+
 			return nil
 		}
 
@@ -75,12 +77,14 @@ func (pfc Creator) CreateProxyFiles(isForced bool) error {
 			removeFile(commandNameFileName)
 		} else if fileExists(commandNameFileName) {
 			logger.Warnf("droxy command file (%s) already exists for command '%s'", commandNameFileName, commandName)
+
 			continue
 		}
 
 		err = pfc.creationStrategy.CreateProxyFile(commandBinaryFilePath, commandNameFileName)
 		if err != nil {
 			logger.Errorf("error creating symlink '%s': %v", commandName, err)
+
 			continue
 		}
 
@@ -100,6 +104,7 @@ func removeFile(filePath string) {
 	_, err := os.Stat(filePath)
 	if err != nil {
 		logger.Warnf("cannot delete droxy command file (%s): %v", filePath, err)
+
 		return
 	}
 

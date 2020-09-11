@@ -168,6 +168,7 @@ type executerMock struct {
 
 func (e *executerMock) Execute() error {
 	e.wasCalled = true
+
 	return e.result
 }
 
@@ -185,6 +186,7 @@ type helperMock struct {
 
 func (e *helperMock) Help() error {
 	e.wasCalled = true
+
 	return e.result
 }
 

@@ -13,8 +13,8 @@ const writePerm = 0600
 
 func TestCopyFile(t *testing.T) {
 	testFolder := "/tmp/droxy/fileCopyTest/"
-	err := os.MkdirAll(testFolder, 0776)
 
+	err := os.MkdirAll(testFolder, 0776)
 	if err != nil {
 		t.Fatalf("Did not expect os.MkdirAll to return an error, but got: %v", err)
 	}

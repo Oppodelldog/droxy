@@ -206,8 +206,8 @@ func TestGetStringConfigValues(t *testing.T) {
 
 	for _, fieldName := range stringFields {
 		t.Run(fieldName, func(t *testing.T) {
-			var want = "TEST"
 			var (
+				want     = "TEST"
 				r        []reflect.Value
 				gotValue string
 				gotOk    bool

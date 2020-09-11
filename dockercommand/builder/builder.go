@@ -32,7 +32,7 @@ const (
 )
 
 type (
-	// builder can be used to build a docker run command
+	// builder can be used to build a docker run command.
 	builder struct {
 		dockerSubCommand string
 		imageName        string
@@ -73,6 +73,7 @@ func New() Builder {
 
 func (b *builder) SetDockerSubCommand(subCommand string) Builder {
 	b.dockerSubCommand = subCommand
+
 	return b
 }
 
@@ -172,6 +173,7 @@ func (b *builder) SetEntryPoint(entryPoint string) Builder {
 // SetCommand sets the command/CMD for the docker run command.
 func (b *builder) SetCommand(command string) Builder {
 	b.command = command
+
 	return b
 }
 
@@ -199,6 +201,7 @@ func (b *builder) SetIP(ip string) Builder {
 // SetImageName sets the image on which base the container is created.
 func (b *builder) SetImageName(imageName string) Builder {
 	b.imageName = imageName
+
 	return b
 }
 
@@ -279,6 +282,7 @@ func sanitize(str string) string {
 		if r >= 32 && r < 127 {
 			return r
 		}
+
 		return -1
 	}, str)
 }

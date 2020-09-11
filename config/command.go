@@ -22,7 +22,7 @@ type CommandDefinition struct {
 	Name *string
 	// UniqueNames will make Name unique by appending a unique value to the Name.
 	UniqueNames *bool
-	//Image represents the docker Image to be used.
+	// Image represents the docker Image to be used.
 	Image *string
 	// Network represents the docker run flag --network.
 	Network *string

@@ -34,12 +34,12 @@ func NewClonesStrategy() ClonesStrategy {
 	}
 }
 
-//ClonesStrategy contains the implementation of creating clones of droxy executable.
+// ClonesStrategy contains the implementation of creating clones of droxy executable.
 type ClonesStrategy struct {
 	FsLinkCreator
 }
 
-//CreateProxyFile creates a clone of the given commandBinaryFilePath to commandNameFilePath.
+// CreateProxyFile creates a clone of the given commandBinaryFilePath to commandNameFilePath.
 func (s ClonesStrategy) CreateProxyFile(commandBinaryFilePath, commandNameFilePath string) error {
 	cleanSrc := filepath.Clean(commandBinaryFilePath)
 	cleanDst := filepath.Clean(commandNameFilePath)

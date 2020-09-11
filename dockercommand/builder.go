@@ -33,7 +33,7 @@ type (
 	newCommandBuilderFunc func(string) CommandBuilder
 )
 
-//NewBuilder returns a new *Builder.
+// NewBuilder returns a new *Builder.
 func NewBuilder() (*Builder, error) {
 	clientAdapter, err := newDockerClientAdapter()
 	if err != nil {

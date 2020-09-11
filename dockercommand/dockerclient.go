@@ -14,6 +14,7 @@ func newDockerClientAdapter() (dockerClientAdapter, error) {
 	dockerClient, err := client.NewEnvClient()
 	if err != nil {
 		err = fmt.Errorf("error building name argument, opening docker client failed: %w", err)
+
 		return dockerClientAdapter{}, err
 	}
 

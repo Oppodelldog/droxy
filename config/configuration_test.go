@@ -6,9 +6,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const commandNameA = "COMMAND-A"
-const commandNameX = "COMMAND-X"
-const commandNameC = "COMMAND-Z"
+const (
+	commandNameA = "COMMAND-A"
+	commandNameX = "COMMAND-X"
+	commandNameC = "COMMAND-Z"
+)
 
 func TestConfiguration_FindCommandByName(t *testing.T) {
 	nameA := commandNameA
@@ -56,19 +58,19 @@ func TestConfiguration_FindCommandByName_OSSpecific(t *testing.T) {
 }
 
 func TestConfiguration_FindCommandByName_OSSpecific_Templating(t *testing.T) {
-	templateName := stringP("base1")
+	tplName := stringP("base1")
 	commandName := stringP("command")
-	baseTemplateName := stringP("base")
+	baseTplName := stringP("base")
 	baseCommand := stringP("base-cmd")
 	baseEntryPoint := stringP("base-entry-point")
 	windowsCommand := stringP("windows-cmd")
 	linuxCommand := stringP("linux-cmd")
 
-	template1 := CommandDefinition{Name: baseTemplateName, Command: baseCommand, EntryPoint: baseEntryPoint}
-	template2 := CommandDefinition{Name: templateName, Template: baseTemplateName, OS: stringP("windows"), Command: windowsCommand}
-	template3 := CommandDefinition{Name: templateName, Template: baseTemplateName, OS: stringP("linux"), Command: linuxCommand}
+	template1 := CommandDefinition{Name: baseTplName, Command: baseCommand, EntryPoint: baseEntryPoint}
+	template2 := CommandDefinition{Name: tplName, Template: baseTplName, OS: stringP("windows"), Command: windowsCommand}
+	template3 := CommandDefinition{Name: tplName, Template: baseTplName, OS: stringP("linux"), Command: linuxCommand}
 
-	command := CommandDefinition{Name: commandName, Template: templateName, OS: stringP("linux")}
+	command := CommandDefinition{Name: commandName, Template: tplName, OS: stringP("linux")}
 
 	cfg := Configuration{
 		osNameMatcher: fakeOSMatcher("linux"),

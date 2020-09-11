@@ -20,4 +20,5 @@ linters:
     - typecheck
     - gochecknoglobals
     - testpackage
+    - gofumpt
   fast: false

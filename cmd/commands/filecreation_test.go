@@ -45,7 +45,7 @@ func TestNewCloneCommandWrapper(t *testing.T) {
 	gotForced := mock.isForced
 	wantForced := false
 
-	//noinspection GoBoolExpressions
+	// noinspection GoBoolExpressions
 	if wantForced != gotForced {
 		t.Fatalf("wantForced: %v, gotForced: %v", wantForced, gotForced)
 	}
@@ -70,7 +70,7 @@ func TestNewCloneCommandWrapper_Forced(t *testing.T) {
 	gotForced := mock.isForced
 	wantForced := true
 
-	//noinspection GoBoolExpressions
+	// noinspection GoBoolExpressions
 	if wantForced != gotForced {
 		t.Fatalf("wantForced: %v, gotForced: %v", wantForced, gotForced)
 	}
