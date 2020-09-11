@@ -23,7 +23,7 @@ fi
 
 target_folder=".release"
 binary_name="droxy"
-package="github.com/Oppodelldog/${binary_name}"
+package="github.com/Oppodelldog/${binary_name}/cmd"
 ldflags=-ldflags="-X github.com/Oppodelldog/droxy/version.Number=${tag}"
 
 platforms=("linux/amd64" "windows/amd64" "windows/386" "linux/arm/7")
@@ -52,10 +52,11 @@ do
     fi
 
     currentWd=$(pwd)
+    sha256sum -b "${target_folder}/${tag}/${output_folder}/${output_name}" | awk '{ print $1 }' > "${target_folder}/${tag}/${output_folder}/${binary_name}.sum"
     cp LICENSE "${target_folder}/${tag}/${output_folder}/LICENSE"
     cd "${target_folder}/${tag}/${output_folder}" || exit
 
-    tar -cvzf "../${output_name}-${output_folder}.tar.gz" "${output_name}" LICENSE
+    tar -cvzf "../${output_name}-${output_folder}.tar.gz" "${output_name}" "${binary_name}.sum" LICENSE
 
     cd "${currentWd}" || exit
     rm -rf "${target_folder:?}/${tag}/${output_folder}"
