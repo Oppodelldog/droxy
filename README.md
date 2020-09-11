@@ -35,7 +35,8 @@ The following example contains all possible configuration options.
       isInteractive=true      # enable interaction with the called command
       isDetached=false        # starts the container in background
       RequireEnvVars=false    # if true, not defined env vars that are configured will lead to an error
-      uniqueNames=true
+      uniqueNames=true        # will generate unique container names for every run.
+      os = "linux"            # if set this config will load iof executed on linux. 
       mergeTemplateArrays = ["Volumes"] # in command config this will merge Volumes instead of overwriting them
       # volume mappings
       volumes = [
