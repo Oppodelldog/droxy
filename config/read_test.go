@@ -212,5 +212,6 @@ func TestParseBytes_InvalidInput_ExpectError(t *testing.T) {
 
 func getProjectDir() string {
 	gp := os.Getenv("GOPATH")
+
 	return path.Join(gp, "src/github.com/Oppodelldog/droxy")
 }
