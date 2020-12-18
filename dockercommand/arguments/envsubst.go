@@ -9,6 +9,11 @@ import (
 	"github.com/drone/envsubst"
 )
 
+type envVarResolver struct {
+	overwrites      map[string]string
+	requiresEnvVars bool
+}
+
 func newEnvVarResolver(definition config.CommandDefinition) envVarResolver {
 	var overwrites = map[string]string{}
 
@@ -23,13 +28,27 @@ func newEnvVarResolver(definition config.CommandDefinition) envVarResolver {
 		}
 	}
 
+	requiresEnvVars, _ := definition.GetRequireEnvVars()
+
 	return envVarResolver{
-		overwrites: overwrites,
+		overwrites:      overwrites,
+		requiresEnvVars: requiresEnvVars,
 	}
 }
 
-type envVarResolver struct {
-	overwrites map[string]string
+func (r envVarResolver) substitute(text string) (string, error) {
+	return envsubst.Eval(text, func(normalizedEnvVarName string) string {
+		if envValue, ok := os.LookupEnv(normalizedEnvVarName); ok {
+			return r.resolve(normalizedEnvVarName, envValue)
+		}
+
+		envValue := r.resolve(normalizedEnvVarName, "")
+		if envValue == "" && r.requiresEnvVars {
+			panic(fmt.Sprintf("env var %v is not set!", normalizedEnvVarName))
+		}
+
+		return envValue
+	})
 }
 
 func (r envVarResolver) resolve(envVarName, defaultValue string) string {
@@ -38,24 +57,4 @@ func (r envVarResolver) resolve(envVarName, defaultValue string) string {
 	}
 
 	return defaultValue
-}
-
-func (r envVarResolver) resolveEnvVarStrict(envVarName string) (string, error) {
-	return envsubst.Eval(envVarName, func(normalizedEnvVarName string) string {
-		if envValue, ok := os.LookupEnv(normalizedEnvVarName); !ok {
-			panic(fmt.Sprintf("env var %v is not set!", normalizedEnvVarName))
-		} else {
-			return r.resolve(normalizedEnvVarName, envValue)
-		}
-	})
-}
-
-func (r envVarResolver) resolveEnvVar(envVarName string) (string, error) {
-	return envsubst.Eval(envVarName, func(normalizedEnvVarName string) string {
-		if envValue, ok := os.LookupEnv(normalizedEnvVarName); ok {
-			return r.resolve(normalizedEnvVarName, envValue)
-		}
-
-		return ""
-	})
 }

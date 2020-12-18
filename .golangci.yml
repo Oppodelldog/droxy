@@ -23,4 +23,5 @@ linters:
     - gofumpt
     - paralleltest
     - exhaustivestruct
+    - maligned
   fast: false

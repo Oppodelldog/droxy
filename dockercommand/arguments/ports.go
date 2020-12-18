@@ -16,7 +16,7 @@ func BuildPorts(commandDef config.CommandDefinition, builder builder.Builder) er
 
 func buildPorts(portMappings []string, builder builder.Builder, commandDef config.CommandDefinition) error {
 	for _, portMapping := range portMappings {
-		portMappingWithValues, resolveErr := newEnvVarResolver(commandDef).resolveEnvVar(portMapping)
+		portMappingWithValues, resolveErr := newEnvVarResolver(commandDef).substitute(portMapping)
 		if resolveErr != nil {
 			return resolveErr
 		}
