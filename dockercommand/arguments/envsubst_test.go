@@ -90,6 +90,9 @@ func Test_resolveEnvVar_strict(t *testing.T) {
 			prepare: func() {
 				must(t, os.Setenv("VALUE", "123"))
 			},
+			cleanup: func() {
+				must(t, os.Unsetenv("VALUE"))
+			},
 		},
 	}.run(t)
 }
