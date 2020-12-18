@@ -43,6 +43,11 @@ func mergeCommand(baseCommand CommandDefinition, overlayCommand CommandDefinitio
 		baseCommand.EnvVars,
 		overlayCommand.EnvVars,
 	)
+	mergedCommand.EnvVarOverwrites = resolvePropertyStringArray(
+		mergedCommand.IsTemplateArrayMerged("EnvVarOverwrites"),
+		baseCommand.EnvVarOverwrites,
+		overlayCommand.EnvVarOverwrites,
+	)
 	mergedCommand.Ports = resolvePropertyStringArray(
 		mergedCommand.IsTemplateArrayMerged("Ports"),
 		baseCommand.Ports,

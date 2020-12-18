@@ -8,15 +8,15 @@ import (
 // BuildPorts sets mappings of host ports to container ports.
 func BuildPorts(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if ports, ok := commandDef.GetPorts(); ok {
-		return buildPorts(ports, builder)
+		return buildPorts(ports, builder, commandDef)
 	}
 
 	return nil
 }
 
-func buildPorts(portMappings []string, builder builder.Builder) error {
+func buildPorts(portMappings []string, builder builder.Builder, commandDef config.CommandDefinition) error {
 	for _, portMapping := range portMappings {
-		portMappingWithValues, resolveErr := resolveEnvVar(portMapping)
+		portMappingWithValues, resolveErr := newEnvVarResolver(commandDef).resolveEnvVar(portMapping)
 		if resolveErr != nil {
 			return resolveErr
 		}

@@ -9,7 +9,7 @@ import (
 func BuildVolumes(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if volumes, ok := commandDef.GetVolumes(); ok {
 		for _, volume := range volumes {
-			resolvedVolume, err := resolveEnvVar(volume)
+			resolvedVolume, err := newEnvVarResolver(commandDef).resolveEnvVar(volume)
 			if err != nil {
 				return err
 			}

@@ -12,7 +12,7 @@ import (
 // if the directory exists on the host, it is automatically mounted when the appropriate option is set.
 func BuildWorkDir(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if workDir, ok := commandDef.GetWorkDir(); ok {
-		resolvedWorkDir, err := resolveEnvVar(workDir)
+		resolvedWorkDir, err := newEnvVarResolver(commandDef).resolveEnvVar(workDir)
 		if err != nil {
 			return err
 		}

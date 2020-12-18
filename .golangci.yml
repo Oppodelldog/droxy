@@ -21,4 +21,6 @@ linters:
     - gochecknoglobals
     - testpackage
     - gofumpt
+    - paralleltest
+    - exhaustivestruct
   fast: false

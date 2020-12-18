@@ -15,9 +15,9 @@ func BuildEnvVars(commandDef config.CommandDefinition, builder builder.Builder) 
 			)
 
 			if envVarsRequired, ok := commandDef.GetRequireEnvVars(); ok && envVarsRequired {
-				envVarValue, err = resolveEnvVarStrict(envVar)
+				envVarValue, err = newEnvVarResolver(commandDef).resolveEnvVarStrict(envVar)
 			} else {
-				envVarValue, err = resolveEnvVar(envVar)
+				envVarValue, err = newEnvVarResolver(commandDef).resolveEnvVar(envVar)
 			}
 
 			if err != nil {

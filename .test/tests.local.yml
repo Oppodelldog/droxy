@@ -50,5 +50,19 @@ testcases:
         type: exec
         assertions:
           - result.systemout ShouldEqual "{{.DROXY_TEST_VAR}}"
+
+  - name: test envvar overwrites from global config
+    steps:
+      - script: ./full-feature -c "env | grep GLOBAL_OVERWRITE | cut -c 18-"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual "GLOBALLY_OVERWRITTEN"
+
+  - name: test envvar overwrites from command config
+    steps:
+      - script: ./full-feature -c "env | grep LOCAL_OVERWRITE | cut -c 17-"
+        type: exec
+        assertions:
+          - result.systemout ShouldEqual "LOCALLY_OVERWRITTEN"
             
                     

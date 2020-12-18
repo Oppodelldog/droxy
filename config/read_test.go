@@ -167,7 +167,8 @@ func TestParse(t *testing.T) {
 		Command: []CommandDefinition{
 			command,
 		},
-		ConfigFilePath: testFilePath,
+		ConfigFilePath:   testFilePath,
+		EnvVarOverwrites: &[]string{"VAR=VAL"},
 	}
 
 	tempFile, err := os.OpenFile(testFilePath, os.O_CREATE|os.O_WRONLY, 0666)

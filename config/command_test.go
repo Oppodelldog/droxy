@@ -238,6 +238,7 @@ func TestGetStringSliceConfigValues(t *testing.T) {
 		"Ports",
 		"PortsFromParams",
 		"Volumes",
+		"EnvVarOverwrites",
 	}
 
 	for _, fieldName := range stringSliceFieldNames {

@@ -9,7 +9,7 @@ import (
 func BuildLinks(commandDef config.CommandDefinition, builder builder.Builder) error {
 	if Links, ok := commandDef.GetLinks(); ok {
 		for _, volume := range Links {
-			resolvedLinkMapping, err := resolveEnvVar(volume)
+			resolvedLinkMapping, err := newEnvVarResolver(commandDef).resolveEnvVar(volume)
 			if err != nil {
 				return err
 			}

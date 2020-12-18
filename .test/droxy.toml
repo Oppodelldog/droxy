@@ -1,5 +1,9 @@
 Version="1"
 Logging=true
+EnvVarOverwrites=[
+    "DROXY_GLOBAL_OVERWRITE=GLOBALLY_OVERWRITTEN",
+    "DROXY_LOCAL_OVERWRITE=GLOBALLY_OVERWRITTEN",
+]
     [[command]]
       name = "build-container"
       image = "oppodelldog/droxy:functional-tests"
@@ -13,17 +17,21 @@ Logging=true
         template = "build-container"
     	entryPoint = "echo"
     	command="test123"
-    	
+
     # test impersonation
     [[command]]
     	name = "full-feature"
         template = "build-container"
     	entryPoint = "sh"
-    	
+        EnvVarOverwrites=["DROXY_LOCAL_OVERWRITE=LOCALLY_OVERWRITTEN"]
         impersonate=true
         isinteractive=true
         volumes = ["${DROXY_MOUNT_DIR}:/test-dir"]
         mergeTemplateArrays=["volumes"]
         workDir = "${DROXY_HOST_TEST_DIR}"
         AutoMountWorkDir=true
-        envvars = ["TESTVAR=${DROXY_TEST_VAR}"]
+        envvars = [
+            "TESTVAR=${DROXY_TEST_VAR}",
+            "GLOBAL_OVERWRITE=${DROXY_GLOBAL_OVERWRITE}",
+            "LOCAL_OVERWRITE=${DROXY_LOCAL_OVERWRITE}"
+        ]

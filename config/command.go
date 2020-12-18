@@ -42,6 +42,9 @@ type CommandDefinition struct {
 	Links *[]string
 	// EnvVars holds a list of environment variable mappings which correspond to the docker run flag -e
 	EnvVars *[]string
+	// EnvVarOverwrites holds a list of environment variable mappings which be taken in favor of env variable values
+	// when applying EnvVars to the docker run flag -e
+	EnvVarOverwrites *[]string
 	// Ports holds a list of port mappings which correspond to the docker run flag -p
 	Ports *[]string
 	// PortsFromParams holds a list of regular expressions that are used to read a port from a command argument.
@@ -184,6 +187,11 @@ func (c CommandDefinition) GetLinks() ([]string, bool) {
 // GetEnvVars returns value of EnvVars and an boolean indicating if value is set.
 func (c CommandDefinition) GetEnvVars() ([]string, bool) {
 	return getStringSlice(c.EnvVars)
+}
+
+// GetEnvVarOverwrites returns value of EnvVarOverwrites and an boolean indicating if value is set.
+func (c CommandDefinition) GetEnvVarOverwrites() ([]string, bool) {
+	return getStringSlice(c.EnvVarOverwrites)
 }
 
 // GetPorts returns value of Ports and an boolean indicating if value is set.

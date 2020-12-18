@@ -13,11 +13,12 @@ var (
 
 // Configuration defines the fields/types of the configuration file.
 type Configuration struct {
-	Command        []CommandDefinition
-	Version        string
-	ConfigFilePath string
-	Logging        bool
-	osNameMatcher  func(string) bool
+	Command          []CommandDefinition
+	Version          string
+	ConfigFilePath   string
+	Logging          bool
+	EnvVarOverwrites *[]string
+	osNameMatcher    func(string) bool
 }
 
 // FindCommandByName finds a command by the given name.
@@ -38,10 +39,25 @@ func (c Configuration) FindCommandByName(commandName string) (CommandDefinition,
 	}
 
 	if commandDef != nil {
+		c.applyGlobalConfig(commandDef)
+
 		return *commandDef, nil
 	}
 
 	return CommandDefinition{}, fmt.Errorf("%w: '%s'", errCommandNotDefined, commandName)
+}
+
+func (c Configuration) applyGlobalConfig(commandDef *CommandDefinition) {
+	if globalEnvOverwrites, ok := c.GetEnvVarOverwrites(); ok {
+		if commandDef.EnvVarOverwrites != nil && len(*commandDef.EnvVarOverwrites) > 0 {
+			var newOverwrites []string
+			newOverwrites = append(newOverwrites, *c.EnvVarOverwrites...)
+			newOverwrites = append(newOverwrites, *commandDef.EnvVarOverwrites...)
+			commandDef.EnvVarOverwrites = &newOverwrites
+		} else {
+			commandDef.EnvVarOverwrites = &globalEnvOverwrites
+		}
+	}
 }
 
 func (c Configuration) match(commandName string, command CommandDefinition) bool {
@@ -93,6 +109,11 @@ func (c Configuration) resolveConfig(command CommandDefinition) (CommandDefiniti
 	}
 
 	return mergeCommand(templateDefinition, command), nil
+}
+
+// GetEnvVarOverwrites returns env var mappings that will be passed to all commands EnvVarOverwrites.
+func (c Configuration) GetEnvVarOverwrites() ([]string, bool) {
+	return getStringSlice(c.EnvVarOverwrites)
 }
 
 func defaultOSNameMatcher(osName string) bool {
