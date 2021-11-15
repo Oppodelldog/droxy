@@ -3,9 +3,8 @@ BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 MAIN_FILE="cmd/main.go"
 
 setup: ## Install tools
-	curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | bash -s v1.27.0
-	mv bin/golangci-lint $(GOPATH)/bin/golangci-lint && rm -rf bin
-	go get github.com/vektra/mockery/.../
+	go install golang.org/x/tools/cmd/goimports
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.43.0
 
 lint: ## Run the linters
 	golangci-lint run
