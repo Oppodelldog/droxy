@@ -119,7 +119,7 @@ func displayHelp(cmd helper) int {
 }
 
 func isSubCommand(s string, commands []*cobra.Command) bool {
-	subCommandNames := make([]string, len(commands))
+	subCommandNames := make([]string, 0, len(commands))
 
 	for _, subCommand := range commands {
 		subCommandNames = append(subCommandNames, subCommand.Name())

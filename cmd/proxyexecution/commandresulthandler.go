@@ -7,13 +7,13 @@ import (
 	"github.com/Oppodelldog/droxy/logger"
 )
 
-//ExtCodeError general error occurred when executing cmd.
+// ExtCodeError general error occurred when executing cmd.
 const ExtCodeError = 993
 
-//ExitCodeExitError of executed cmd could not be determined.
+// ExitCodeExitError of executed cmd could not be determined.
 const ExitCodeExitError = 990
 
-//ExitSuccessError ExitCode of successfully executed cmd could not be determined.
+// ExitSuccessError ExitCode of successfully executed cmd could not be determined.
 const ExitSuccessError = 991
 
 func newResultHandler() commandResultHandler {
