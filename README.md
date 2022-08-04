@@ -5,8 +5,8 @@
 ![DROXY](droxy.png)
 
 ## Getting started
-If you have go installed on your machine simply get it.  
-```go get github.com/Oppodelldog/droxy```  
+If you have go installed on your machine simply install it.  
+```go install github.com/Oppodelldog/droxy@latest```  
 
 Otherwise, download a precompiled binary from [releases](https://github.com/Oppodelldog/droxy/releases).  
 
