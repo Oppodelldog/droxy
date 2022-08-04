@@ -5,6 +5,7 @@ MAIN_FILE="cmd/main.go"
 setup: ## Install tools
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.47.3
+	go get github.com/vektra/mockery/.../
 
 lint: ## Run the linters
 	golangci-lint run
