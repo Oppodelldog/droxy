@@ -110,7 +110,7 @@ func executeCommand(
 		return errorPreparingDockerCall
 	}
 
-	logger.Infof("calling docker ro tun '%s'", commandName)
+	logger.Infof("calling docker to run '%s'", commandName)
 	logger.Infof(strings.Join(cmd.Args, " "))
 	err = commandRunner.RunCommand(cmd)
 

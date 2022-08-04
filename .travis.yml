@@ -1,11 +1,11 @@
 language: go
 
 go:
-  - 1.17.x
+  - 1.19.x
 
 os:
   - linux
-  - windows
+  #- windows
 
 env:
   global:
