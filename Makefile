@@ -3,8 +3,8 @@ BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 MAIN_FILE="cmd/main.go"
 
 setup: ## Install tools
-	go install golang.org/x/tools/cmd/goimports
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.43.0
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.47.3
 
 lint: ## Run the linters
 	golangci-lint run
