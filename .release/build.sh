@@ -23,7 +23,7 @@ fi
 
 target_folder=".release"
 binary_name="droxy"
-package="github.com/Oppodelldog/${binary_name}/cmd"
+package="github.com/Oppodelldog/${binary_name}"
 ldflags=-ldflags="-X github.com/Oppodelldog/droxy/version.Number=${tag}"
 
 platforms=("linux/amd64" "windows/amd64" "windows/386" "linux/arm/7")

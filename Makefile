@@ -1,6 +1,6 @@
 BINARY_NAME=droxy
 BINARY_FILE_PATH=".build/$(BINARY_NAME)"
-MAIN_FILE="cmd/main.go"
+MAIN_FILE="main.go"
 
 setup: ## Install tools
 	go install golang.org/x/tools/cmd/goimports@latest
