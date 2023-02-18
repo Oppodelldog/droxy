@@ -33,7 +33,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.4.0 // indirect
-	golang.org/x/net v0.0.0-20220802222814-0bcc04d9c69b // indirect
+	golang.org/x/net v0.0.0-20220906165146-f3363e06e74c // indirect
 	golang.org/x/sys v0.0.0-20220804182731-e052cef7d300 // indirect
 	golang.org/x/time v0.0.0-20220722155302-e5dcc9cfc0b9 // indirect
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
