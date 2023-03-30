@@ -7,6 +7,7 @@ import (
 	"github.com/Oppodelldog/droxy/logger"
 
 	"bytes"
+
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/stretchr/testify/assert"
 )
