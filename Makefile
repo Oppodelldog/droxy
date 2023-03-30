@@ -6,6 +6,7 @@ setup: ## Install tools
 	go install golang.org/x/tools/cmd/goimports@latest
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2
 	go get github.com/vektra/mockery/.../
+	curl https://github.com/ovh/venom/releases/download/v1.0.1/venom.linux-amd64 -L -o $(go env GOPATH)/bin/venom && chmod +x $(go env GOPATH)/bin/venom
 
 lint: ## Run the linters
 	golangci-lint run
