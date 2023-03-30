@@ -1,7 +1,7 @@
 package proxyfile
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -115,7 +115,7 @@ func TestCreator_CreateProxyFiles_commandIsTemplate_noFileWillBeCreated(t *testi
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existingFileWillNotBeReplaced(t *testing.T) {
 	defer prepareTest(t)()
 
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
@@ -128,9 +128,9 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
 	fileThatShouldNotBeDeleted := commandNameStub
 
-	err := ioutil.WriteFile(fileThatShouldNotBeDeleted, []byte("TEST"), writePerm)
+	err := os.WriteFile(fileThatShouldNotBeDeleted, []byte("TEST"), writePerm)
 	if err != nil {
-		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
+		t.Fatalf("Did not expect os.WriteFile to return an error, but got: %v", err)
 	}
 
 	err = creator.CreateProxyFiles(false)
@@ -150,7 +150,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsNotForced_existi
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForced_folderWillNotBeDeleted(t *testing.T) {
 	defer prepareTest(t)()
 
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
@@ -180,7 +180,7 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAsDirectoryAndCreationIsForce
 func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingFileWillBeReplaced(t *testing.T) {
 	defer prepareTest(t)()
 
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	fileCreatorMock := &mockFileCreationStrategy{}
 	configLoaderMock := &configLoaderMock{stubbedConfig: getTestConfig()}
@@ -193,9 +193,9 @@ func TestCreator_CreateProxyFiles_fileAlreadyExistsAndCreationIsForced_existingF
 	commandNameStub := *configLoaderMock.stubbedConfig.Command[0].Name
 	fileThatShouldBeDeleted := ensureOsSpecificBinaryFilename(commandNameStub)
 
-	err := ioutil.WriteFile(fileThatShouldBeDeleted, []byte("TEST"), writePerm)
+	err := os.WriteFile(fileThatShouldBeDeleted, []byte("TEST"), writePerm)
 	if err != nil {
-		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
+		t.Fatalf("Did not expect os.WriteFile to return an error, but got: %v", err)
 	}
 
 	err = creator.CreateProxyFiles(true)
@@ -216,7 +216,7 @@ func ensureOsSpecificBinaryFilename(filePath string) string {
 }
 
 func prepareTest(t *testing.T) func() {
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	err := os.RemoveAll(testFolder)
 	if err != nil {

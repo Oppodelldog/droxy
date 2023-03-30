@@ -1,13 +1,13 @@
 package config
 
 import (
-	"io/ioutil"
+	"os"
 
 	"github.com/BurntSushi/toml"
 )
 
 func readFromFile(filepath string) (Configuration, error) {
-	fileContent, err := ioutil.ReadFile(filepath)
+	fileContent, err := os.ReadFile(filepath)
 	if err != nil {
 		return Configuration{}, err
 	}

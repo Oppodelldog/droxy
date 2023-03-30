@@ -1,13 +1,12 @@
 package dockercommand
 
 import (
+	"io"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/logger"
 
 	"bytes"
-	"io/ioutil"
-
 	"github.com/Oppodelldog/droxy/config"
 	"github.com/stretchr/testify/assert"
 )
@@ -61,9 +60,9 @@ func TestPrepareArguments_WithInvalidArgumentLength_ExpectWarning(t *testing.T) 
 	arguments := []string{"arg2"}
 	prepareCommandLineArguments(commandDef, arguments)
 
-	recordedLogEntries, err := ioutil.ReadAll(logRecorderBuffer)
+	recordedLogEntries, err := io.ReadAll(logRecorderBuffer)
 	if err != nil {
-		t.Fatalf("Did not expect ioutil.ReadAll to return an error, but got: %v", err)
+		t.Fatalf("Did not expect io.ReadAll to return an error, but got: %v", err)
 	}
 
 	assert.Contains(

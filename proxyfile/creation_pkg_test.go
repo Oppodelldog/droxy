@@ -2,7 +2,6 @@ package proxyfile_test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"testing"
@@ -42,15 +41,15 @@ func TestFileCreation_AllStrategies(t *testing.T) {
 			src := path.Join(testFolderPath, "testFileSrc")
 
 			srcBytes := []byte{1, 2, 3, 4, 5}
-			err = ioutil.WriteFile(src, srcBytes, writePerm)
-			failOnError(t, err, "did not expect ioutil.WriteAndSyncFile to return an error, but got: %v")
+			err = os.WriteFile(src, srcBytes, writePerm)
+			failOnError(t, err, "did not expect os.WriteFile to return an error, but got: %v")
 
 			target := path.Join(testFolderPath, "testFileTarget")
 
 			err = strategy.CreateProxyFile(src, target)
 			failOnError(t, err, "did not expect CreateProxyFile to return an error, but got: %v")
 
-			targetBytes, err := ioutil.ReadFile(target)
+			targetBytes, err := os.ReadFile(target)
 			failOnError(t, err, "did not expect ReadFile to return an error, but got: %v")
 
 			assert.Equal(t, srcBytes, targetBytes)

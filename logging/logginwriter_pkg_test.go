@@ -2,7 +2,7 @@ package logging_test
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/Oppodelldog/droxy/logger"
@@ -26,7 +26,7 @@ func TestLoggingWriter_Write_WritesToWriter(t *testing.T) {
 		t.Fatalf("Did not expect Writer.Write to return an error, but got: %v", err)
 	}
 
-	bufferContent, err := ioutil.ReadAll(target)
+	bufferContent, err := io.ReadAll(target)
 	if err != nil {
 		panic(err)
 	}
@@ -42,7 +42,7 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 	outputBuffer := bytes.NewBuffer(bytesBuffer)
 	log.Out = outputBuffer
 
-	targetStub := ioutil.Discard
+	targetStub := io.Discard
 	loggingWriter := logging.NewWriter(targetStub, log, "logPrefix")
 
 	_, err := loggingWriter.Write([]byte("HELLO WORLD"))
@@ -50,7 +50,7 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 		t.Fatalf("Did not expect Writer.Write to return an error, but got: %v", err)
 	}
 
-	bufferContent, err := ioutil.ReadAll(outputBuffer)
+	bufferContent, err := io.ReadAll(outputBuffer)
 	if err != nil {
 		panic(err)
 	}
@@ -60,7 +60,7 @@ func TestLoggingWriter_Write_LogsInfo(t *testing.T) {
 
 func getLoggerStub() *logrus.Logger {
 	log := logger.StandardLogger()
-	log.Out = ioutil.Discard
+	log.Out = io.Discard
 
 	return log
 }

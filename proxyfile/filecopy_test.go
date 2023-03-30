@@ -1,7 +1,6 @@
 package proxyfile
 
 import (
-	"io/ioutil"
 	"os"
 	"path"
 	"testing"
@@ -22,9 +21,9 @@ func TestCopyFile(t *testing.T) {
 	srcBytes := []byte("HELLO DROXY!!")
 	src := path.Join(testFolder, "fileToCopy")
 
-	err = ioutil.WriteFile(src, srcBytes, writePerm)
+	err = os.WriteFile(src, srcBytes, writePerm)
 	if err != nil {
-		t.Fatalf("Did not expect ioutil.WriteFile to return an error, but got: %v", err)
+		t.Fatalf("Did not expect os.WriteFile to return an error, but got: %v", err)
 	}
 
 	dst := path.Join(testFolder, "fileCopied")
@@ -34,9 +33,9 @@ func TestCopyFile(t *testing.T) {
 		t.Fatalf("Did not expect copyFile to return an error, but got: %v", err)
 	}
 
-	dstBytes, err := ioutil.ReadFile(dst)
+	dstBytes, err := os.ReadFile(dst)
 	if err != nil {
-		t.Fatalf("Did not expect ioutil.ReadFile to return an error, but got: %v", err)
+		t.Fatalf("Did not expect os.ReadFile to return an error, but got: %v", err)
 	}
 
 	assert.Equal(t, dstBytes, srcBytes)

@@ -1,7 +1,7 @@
 package proxyexecution
 
 import (
-	"io/ioutil"
+	"io"
 	"os/exec"
 	"testing"
 
@@ -15,7 +15,7 @@ func TestNewCommandResultHandler(t *testing.T) {
 }
 
 func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	commandResultHandler := newResultHandler()
 
@@ -27,7 +27,7 @@ func TestCommandResultHandler_HandleCommandResult_smokeTest(t *testing.T) {
 }
 
 func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.T) {
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	commandResultHandler := newResultHandler()
 
@@ -40,7 +40,7 @@ func TestCommandResultHandler_HandleCommandResult_ExitCodeIsReturned(t *testing.
 }
 
 func TestCommandResultHandler_HandleCommandResult_ExtCodeError(t *testing.T) {
-	logger.SetOutput(ioutil.Discard)
+	logger.SetOutput(io.Discard)
 
 	commandResultHandler := newResultHandler()
 

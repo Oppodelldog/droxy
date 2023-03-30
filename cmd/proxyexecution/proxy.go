@@ -1,7 +1,7 @@
 package proxyexecution
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -123,7 +123,7 @@ func enableLogging(cfg *config.Configuration) (f func()) {
 	f = func() {}
 
 	if !cfg.Logging {
-		logger.SetOutput(ioutil.Discard)
+		logger.SetOutput(io.Discard)
 
 		return
 	}
@@ -131,7 +131,7 @@ func enableLogging(cfg *config.Configuration) (f func()) {
 	logfileWriter, err := logging.GetLogWriter(cfg)
 	if err != nil {
 		// no chance to log error output since running docker process has priority before logging
-		logger.SetOutput(ioutil.Discard)
+		logger.SetOutput(io.Discard)
 
 		return
 	}
