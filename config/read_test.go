@@ -1,7 +1,8 @@
 package config
 
 import (
-	"io/ioutil"
+	"path/filepath"
+	"runtime"
 	"testing"
 
 	"os"
@@ -113,9 +114,9 @@ func getFullFeatureCommandDefinition() CommandDefinition {
 }
 
 func getFullFeatureConfigFixture(t *testing.T) []byte {
-	fullFeatureConfig := path.Join(getProjectDir(), "config/test/fullFeature.toml")
+	fullFeatureConfig := path.Join(getProjectDir(), "test/fullFeature.toml")
 
-	b, err := ioutil.ReadFile(fullFeatureConfig)
+	b, err := os.ReadFile(fullFeatureConfig)
 	if err != nil {
 		t.Fatalf("did not expect ReadFile to return an error, but got: %v", err)
 	}
@@ -201,7 +202,7 @@ func TestParse(t *testing.T) {
 }
 
 func TestParse_FileNotExists_Error(t *testing.T) {
-	_, err := readFromFile("/tmp/droxy/this-does-not-exist.toml")
+	_, err := readFromFile(filepath.Join(os.TempDir(), "droxy/this-does-not-exist.toml"))
 	assert.Error(t, err)
 }
 
@@ -211,7 +212,7 @@ func TestParseBytes_InvalidInput_ExpectError(t *testing.T) {
 }
 
 func getProjectDir() string {
-	gp := os.Getenv("GOPATH")
+	var _, b, _, _ = runtime.Caller(0)
 
-	return path.Join(gp, "src/github.com/Oppodelldog/droxy")
+	return filepath.Dir(b)
 }
