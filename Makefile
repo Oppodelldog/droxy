@@ -1,12 +1,24 @@
 BINARY_NAME=droxy
 BINARY_FILE_PATH=".build/$(BINARY_NAME)"
 MAIN_FILE="main.go"
+VENOM_BIN := $(shell go env GOPATH)/bin/venom
+MOCKERY_VERSION := 2.30.1
+MOCKERY_ARCHIVE := mockery_$(MOCKERY_VERSION)_Linux_x86_64.tar.gz
+MOCKERY_URL := https://github.com/vektra/mockery/releases/download/v$(MOCKERY_VERSION)/$(MOCKERY_ARCHIVE)
+MOCKERY_BIN := $(shell go env GOPATH)/bin/mockery
+
+install_mockery:
+	curl -L $(MOCKERY_URL) -o $(MOCKERY_ARCHIVE)
+	tar -xzf $(MOCKERY_ARCHIVE)
+	mv mockery $(MOCKERY_BIN)
+	chmod +x $(MOCKERY_BIN)
+	rm -rf $(MOCKERY_ARCHIVE)
 
 setup: ## Install tools
+	which golangci-lint || go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.1
 	go install golang.org/x/tools/cmd/goimports@latest
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.52.2
-	go get github.com/vektra/mockery/.../
-	curl https://github.com/ovh/venom/releases/download/v1.0.1/venom.linux-amd64 -L -o $(go env GOPATH)/bin/venom && chmod +x $(go env GOPATH)/bin/venom
+	go install github.com/vektra/mockery@latest
+	curl https://github.com/ovh/venom/releases/download/v1.0.1/venom.linux-amd64 -L -o $(VENOM_BIN) && chmod +x $(VENOM_BIN)
 
 lint: ## Run the linters
 	golangci-lint run
@@ -20,11 +32,12 @@ fmt: ## gofmt and goimports all go files
 	find . -name '*.go' -not -wholename './vendor/*' | while read -r file; do gofmt -w -s "$$file"; goimports -w "$$file"; done
 
 mocks:
-	mockery -name CommandBuilder -dir=cmd/proxyexecution -output=cmd/mocks
-	mockery -name CommandResultHandler -dir=cmd/proxyexecution -output=cmd/mocks
-	mockery -name CommandRunner -dir=cmd/proxyexecution -output=cmd/mocks
-	mockery -name ConfigLoader -dir=cmd/proxyexecution -output=cmd/mocks
-	mockery -name ExecutableNameParser -dir=cmd/proxyexecution -output=cmd/mocks
+	mockery --name CommandBuilder --output cmd/mocks --outpkg mocks --dir dockercommand
+	mockery --name CommandResultHandler --output=cmd/mocks --outpkg mocks --dir=cmd/proxyexecution
+	mockery --name CommandRunner --output=cmd/mocks --outpkg mocks --dir=cmd/proxyexecution
+	mockery --name ConfigLoader --output=cmd/mocks --outpkg mocks --dir=cmd/proxyexecution
+	mockery --name ExecutableNameParser --output=cmd/mocks --outpkg mocks --dir=cmd/proxyexecution
+	mockery --name Builder --output=dockercommand/builder/mocks --outpkg mocks --dir=dockercommand/builder
 
 ci: test build lint ## Run all the tests and code checks
 
