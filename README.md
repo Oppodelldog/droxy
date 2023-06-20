@@ -46,6 +46,9 @@ The following example contains all possible configuration options.
           "/etc/group:/etc/group:ro",
           "/run/docker.sock:/run/docker.sock"
       ]
+      tmpfs = [
+          "/tmpfs1"
+      ]
 
       # environment variable mappings
       envvars = [

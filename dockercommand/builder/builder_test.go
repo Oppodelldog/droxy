@@ -43,6 +43,8 @@ func buildCmd(w1 io.Writer, w2 io.Writer, r io.Reader) *exec.Cmd {
 	b.AddPortMapping("portMapping2")
 	b.AddVolumeMapping("volumeMapping1Host:volumeMapping1Container:volumeMapping1Options")
 	b.AddVolumeMapping("volumeMapping2Host:volumeMapping2Container:volumeMapping2Options")
+	b.AddTmpfsMount("tmpfsMount1")
+	b.AddTmpfsMount("tmpfsMount2")
 	b.AttachTo("Stdin")
 	b.AttachTo("Stdout")
 	b.AttachTo("Stderr")
@@ -71,6 +73,8 @@ arg2
 -p portMapping2
 -v volumeMapping1Host:volumeMapping1Container:volumeMapping1Options
 -v volumeMapping2Host:volumeMapping2Container:volumeMapping2Options
+--mount=type=tmpfs,destination=tmpfsMount1
+--mount=type=tmpfs,destination=tmpfsMount2
 -e envVar1
 -e envVar2
 --group-add group1

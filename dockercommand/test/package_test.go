@@ -61,8 +61,8 @@ func TestBuilder(t *testing.T) {
 	expectedHostDirMount := fmt.Sprintf("%s:%s", getTestHostDir(), getTestHostDir())
 
 	expectedCommandStrings := []string{
-		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w " + getTestHostDir() + " -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -v " + expectedHostDirMount + " --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),    //nolint:lll
-		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w " + getTestHostDir() + " -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -v " + expectedHostDirMount + " --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")), //nolint:lll
+		strings.TrimSpace(strings.Join([]string{"docker run -i --rm --name some-command -w " + getTestHostDir() + " -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -v " + expectedHostDirMount + " --mount=type=tmpfs,destination=/tmpfs1 --mount=type=tmpfs,destination=/tmpfs2 --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")),    //nolint:lll
+		strings.TrimSpace(strings.Join([]string{"docker run -t -i --rm --name some-command -w " + getTestHostDir() + " -p 8080:9080 -p 8081:9081 -p 78129:78129 -v volEnvVarStub:volEnvVarStub -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /run/docker.sock:/run/docker.sock -v " + expectedHostDirMount + " --mount=type=tmpfs,destination=/tmpfs1 --mount=type=tmpfs,destination=/tmpfs2 --link linkEnvVarStub:linkEnvVarStub --link containerXY:aliasXY -e HOME:envVarStub -e SSH_AUTH_SOCK:/run/ssh.sock -e DOCKER_HOST=unix:///run/docker.sock -l droxy -a STDIN -a STDOUT -a STDERR --network some-docker-network --env-file .env --ip 127.1.2.3 --entrypoint some-entrypoint some-image:v1.02 some-cmd additionalArgument=123", expectedArgsFromTestCall}, " ")), //nolint:lll
 	}
 
 	assert.Contains(t, expectedCommandStrings, commandString)
@@ -169,6 +169,10 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		"/etc/group:/etc/group:ro",
 		"/run/docker.sock:/run/docker.sock",
 	}
+	tmpfs := []string{
+		"/tmpfs1",
+		"/tmpfs2",
+	}
 	links := []string{
 		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
 		"containerXY:aliasXY",
@@ -214,6 +218,7 @@ func getFullFeatureTemplateDef() config.CommandDefinition {
 		RemoveContainer: &removeContainer,
 		WorkDir:         &workDir,
 		Volumes:         &volumes,
+		Tmpfs:           &tmpfs,
 		Links:           &links,
 		EnvVars:         &envVars,
 		Ports:           &ports,
@@ -260,6 +265,10 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		"/etc/passwd:/etc/passwd:ro",
 		"/etc/group:/etc/group:ro",
 		"/run/docker.sock:/run/docker.sock",
+	}
+	tmpfs := []string{
+		"/tmpfs1",
+		"/tmpfs2",
 	}
 	links := []string{
 		"${LINK_ENV_VAR}:${LINK_ENV_VAR}",
@@ -308,6 +317,7 @@ func getFullFeatureDef(commandName string) config.CommandDefinition {
 		WorkDir:          &workDir,
 		AutoMountWorkDir: &autoMountWorkDir,
 		Volumes:          &volumes,
+		Tmpfs:            &tmpfs,
 		Links:            &links,
 		EnvVars:          &envVars,
 		Ports:            &ports,

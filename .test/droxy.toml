@@ -13,13 +13,13 @@ Logging=true
         template = "build-container"
     	entryPoint = "echo"
     	command="test123"
-    	
+
     # test impersonation
     [[command]]
     	name = "full-feature"
         template = "build-container"
     	entryPoint = "sh"
-    	
+
         impersonate=true
         isinteractive=true
         volumes = ["${DROXY_MOUNT_DIR}:/test-dir"]
@@ -27,3 +27,10 @@ Logging=true
         workDir = "${DROXY_HOST_TEST_DIR}"
         AutoMountWorkDir=true
         envvars = ["TESTVAR=${DROXY_TEST_VAR}"]
+
+    #test tmpfs
+    [[command]]
+        name = "tmpfs"
+        template = "build-container"
+        entryPoint = "sh"
+        tmpfs = ["/tmpfs1"]

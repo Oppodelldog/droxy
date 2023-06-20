@@ -38,6 +38,8 @@ type CommandDefinition struct {
 	IsDaemon *bool // deprecated
 	// Volumes holds a list of volume mappings which correspond to the docker run flag -v
 	Volumes *[]string
+	// Tmpfs holds a list of tmpfs destinations that will be mounted via the corresponding docker run flag --mount type=tmpfs,destination=...
+	Tmpfs *[]string
 	// Links holds a list of links which correspond to the docker run flag --link
 	Links *[]string
 	// EnvVars holds a list of environment variable mappings which correspond to the docker run flag -e
@@ -174,6 +176,11 @@ func (c CommandDefinition) GetUniqueNames() (bool, bool) {
 // GetVolumes returns value of Volumes and an boolean indicating if value is set.
 func (c CommandDefinition) GetVolumes() ([]string, bool) {
 	return getStringSlice(c.Volumes)
+}
+
+// GetTmpfsMounts returns value of Tmpfs and an boolean indicating if value is set.
+func (c CommandDefinition) GetTmpfsMounts() ([]string, bool) {
+	return getStringSlice(c.Tmpfs)
 }
 
 // GetLinks returns value of Links and an boolean indicating if value is set.

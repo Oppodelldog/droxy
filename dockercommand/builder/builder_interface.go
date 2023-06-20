@@ -15,6 +15,7 @@ type Builder interface {
 	AddArgument(argument string) Builder
 	AttachTo(stream string) Builder
 	AddVolumeMapping(volumeMapping string) Builder
+	AddTmpfsMount(destination string) Builder
 	AddLinkMapping(linkMapping string) Builder
 	AddEnvVar(envVarDeclaration string) Builder
 	AddGroup(groupName string) Builder

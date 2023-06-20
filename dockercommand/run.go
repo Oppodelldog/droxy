@@ -75,6 +75,7 @@ func getRunArgumentBuilders() []argumentBuilderFunc {
 		arguments.BuildPorts,
 		arguments.BuildPortsFromParams,
 		arguments.BuildVolumes,
+		arguments.BuildTmpfsMounts,
 		arguments.BuildLinks,
 		arguments.BuildWorkDir,
 	}

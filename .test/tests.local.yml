@@ -50,5 +50,12 @@ testcases:
         type: exec
         assertions:
           - result.systemout ShouldEqual "{{.DROXY_TEST_VAR}}"
-            
+
+  - name: test tmpfs
+    steps:
+      - script: ./tmpfs -c "stat /tmpfs1"
+        type: exec
+        assertions:
+          - result.code ShouldEqual 0
+
                     

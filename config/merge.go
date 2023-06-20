@@ -33,6 +33,11 @@ func mergeCommand(baseCommand CommandDefinition, overlayCommand CommandDefinitio
 		baseCommand.Volumes,
 		overlayCommand.Volumes,
 	)
+	mergedCommand.Tmpfs = resolvePropertyStringArray(
+		mergedCommand.IsTemplateArrayMerged("Tmpfs"),
+		baseCommand.Tmpfs,
+		overlayCommand.Tmpfs,
+	)
 	mergedCommand.Links = resolvePropertyStringArray(
 		mergedCommand.IsTemplateArrayMerged("Links"),
 		baseCommand.Links,

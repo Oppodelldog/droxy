@@ -29,6 +29,7 @@ const (
 	flagWorkingDir   = "-w"
 	flagName         = "--name"
 	flagUserID       = "-u"
+	flagMount        = "--mount"
 )
 
 type (
@@ -44,6 +45,7 @@ type (
 		args             []string
 		portMappings     []string
 		volumeMappings   []string
+		tmpfsMounts      []string
 		linkMappings     []string
 		envVarMappings   []string
 		attachedStreams  []string
@@ -137,6 +139,13 @@ func (b *builder) AttachTo(stream string) Builder {
 // AddVolumeMapping adds a volume mapping between the docker container and the host.
 func (b *builder) AddVolumeMapping(volume string) Builder {
 	b.volumeMappings = append(b.volumeMappings, flagVolume, volume)
+
+	return b
+}
+
+// AddTmpfsMount adds a tmpfs mapping between the docker container and the host.
+func (b *builder) AddTmpfsMount(destination string) Builder {
+	b.tmpfsMounts = append(b.tmpfsMounts, fmt.Sprintf("%s=type=tmpfs,destination=%s", flagMount, destination))
 
 	return b
 }
@@ -244,6 +253,7 @@ func (b *builder) Build() *exec.Cmd {
 	b.buildArgsAppend(b.workingDir...)
 	b.buildArgsAppend(b.portMappings...)
 	b.buildArgsAppend(b.volumeMappings...)
+	b.buildArgsAppend(b.tmpfsMounts...)
 	b.buildArgsAppend(b.linkMappings...)
 	b.buildArgsAppend(b.envVarMappings...)
 	b.buildArgsAppend(b.labels...)
