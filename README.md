@@ -1,5 +1,13 @@
 # Droxy
 > create commands that proxy to docker
+
+> [!NOTE]
+> This project is archived and no longer maintained.
+>
+> Droxy was an experiment for exposing Docker-based command wrappers as native
+> CLI tools. I no longer use it, and modern alternatives such as Dev Containers,
+> WSL, Nix/devenv, and language-specific tool runners cover most of the original
+> use cases.
   
 
 ![DROXY](droxy.png)
@@ -119,4 +127,3 @@ Beside creating clones of droxy there are two other options the droxy-files can 
 
 ## Contribute
 Feature requests and pull requests are welcome.
-
